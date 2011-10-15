@@ -14,15 +14,16 @@ test("Test that the timer exists, and that it can stop start", function() {
 
 asyncTest("the timer runs for the correct period of time", 1, function(){
   var totalTime = 0,
+    amountOfTime = 400,
     timer2 = Abacus.timer({
     callback: function( timerData ) {
       totalTime += timerData.delta;
     }
   });
-  timer2.start( 400 );
+  timer2.start( amountOfTime );
   
   setTimeout( function() {
-    ok(totalTime <= 400, "total time is less than 400");
+    ok(totalTime <= amountOfTime, "total time is less than the set amount of time");
     start();
   }, 500);
 
@@ -34,7 +35,7 @@ asyncTest("timer.start(0) calls once", function() {
       callback: function( timerData ) {
         timesCalled++;
         
-        ok(timesCalled <= 1, "called time " + timesCalled);
+        ok(timesCalled <= 1, "called " + timesCalled + " time");
         if (timesCalled > 1) {
           timer.pause();
         }
@@ -48,6 +49,9 @@ asyncTest("timer.start(0) calls once", function() {
   }, 100);
 });
 
+/**
+ * Test to make sure the timer loop is not running twice
+ */
 asyncTest("timers do not get called twice in one frame", function() {
   Abacus.timer({
     callback: function( timerData ) {
@@ -57,7 +61,7 @@ asyncTest("timers do not get called twice in one frame", function() {
       setTimeout(function() {
         Abacus.timer({
           callback: function( timerData ) {
-            ok(timesCalled++ <= 1, "called time " + timesCalled);
+            ok(timesCalled++ <= 1, "called " + timesCalled + " time");
           }
         }).start(0);
         
@@ -67,4 +71,36 @@ asyncTest("timers do not get called twice in one frame", function() {
       }, 100);
     }
   }).start(0);
+});
+
+asyncTest("timer.complete callback after completion", 2, function() {
+  var completed = false;
+  
+  Abacus.timer({
+    callback: function() {
+      ok(!completed, 'options.callback is called');
+    },
+    complete: function() {
+      completed = true;
+      ok(true, 'options.complete is called');
+    }
+  }).start(0);
+  
+  setTimeout(start, 100);
+});
+
+asyncTest("timerData.tick increments with 0-index", function() {
+  var tick = -1,
+    timer = Abacus.timer({
+      callback: function(timerData) {
+        tick++;
+        equals(tick, timerData.ticks, 'tick count is correct');
+      }
+    });
+  timer.start();
+  
+  setTimeout(function() {
+    timer.pause();
+    start();
+  }, 100);
 });
