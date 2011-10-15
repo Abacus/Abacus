@@ -35,7 +35,10 @@
           _until = 0,
           pauseFlag = false,
 				  importantStuff = {
-				    delta: 0
+				    delta: 0,
+				    
+				    // how many times callback is called
+				    ticks: 0
 				  };
 
       function stop() {
@@ -53,13 +56,16 @@
           stop();
           
           // return early so callback is not called again
-          return;
+          if (importantStuff.ticks !== 0)
+            return;
         }
 
 				// If there is a callback pass the importantStuff to it
 				if( options.callback ) {
           options.callback( importantStuff );
 				}
+				
+        importantStuff.ticks++;
 
       }
 
