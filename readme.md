@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #Abacus.js
 ## The Open Source HTML5 Games Framework
 
@@ -113,4 +114,27 @@ What we really want from browser vendors:
 * GPU profiling
 * GPU fingerprinting details 
 * Higher resolution timer (micros plz)
+=======
+# Dependencies
+
+
+One time setup:
+
+* Node.js
+* NPM
+
+# Setup
+
+Once the dependencies are installed:
+
+	$ make setup
+
+Future re-builds require _only_:
+
+	$ make
+
+	Or...
+
+	$ jake
+>>>>>>> 960f84652c75343f39d6f5d3880275d55de741b5
 
