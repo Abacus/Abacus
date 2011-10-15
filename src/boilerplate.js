@@ -25,64 +25,67 @@
         }
       };
 
-  var Abacus = {
-    noop: function(){},
+  var Abacus = (function(){
+    var noop = function(){},
 
-    timer: function( options ){
-      // Options is expected to have optional
-      // callback and element properties
+    timer = function( options ){
+				// Options is expected to have optional
+				// callback and element properties
 
-      var _lastTick = 0,
-          _lastStart = 0,
-          _until = 0,
-          pauseFlag = false,
-          importantStuff = {
-            delta: 0
-          };
+			_lastTick = 0,
+			_lastStart = 0,
+			_until = 0,
+			pauseFlag = false,
+			importantStuff = {
+				delta: 0
+			},
 
-      function stop() {
-        var idx = _timerCallbacks.indexOf( _loop );
-        _timerCallbacks.splice( idx, 1 );
-      }
+			stop = function() {
+				var idx = _timerCallbacks.indexOf( _loop );
+				_timerCallbacks.splice( idx, 1 );
+			},
 
-      function _loop(){
-        var now = Date.now();
-        importantStuff.delta = now - _lastTick;
-        _lastTick = now;
+			_loop = function() {
+				var now = Date.now();
+				importantStuff.delta = now - _lastTick;
+				_lastTick = now;
 				
-        // Check to see if the timer is paused
-        if ( pauseFlag || ( _until && _lastTick - _lastStart > _until ) ) {
-          stop();
-          if( options.complete ){
-            options.complete();
-          }
-        }
+				// Check to see if the timer is paused
+				if ( pauseFlag || ( _until && _lastTick - _lastStart > _until ) ) {
+					stop();
+					if( options.complete ){
+						options.complete();
+					}
+				}
 
-        // If there is a callback pass the importantStuff to it
-        if( options.callback ) {
-          options.callback( importantStuff );
-        }
+				// If there is a callback pass the importantStuff to it
+				if( options.callback ) {
+					options.callback( importantStuff );
+				}
 
-      }
+			};
 
-      return {
-        start: function( until ) {
-          _lastStart = Date.now();
-          _until = until;
-          _lastTick = _lastStart;
-          pauseFlag = false;
+			return {
+				start: function( until ) {
+					_lastStart = Date.now();
+					_until = until;
+					_lastTick = _lastStart;
+					pauseFlag = false;
 
-          if( _timerCallbacks.length === 0 ) {
-            requestAnimFrame(_timerLoop);
-          }
-          _timerCallbacks.push( _loop );
+					if( _timerCallbacks.length === 0 ) {
+						requestAnimFrame(_timerLoop);
+					}
+					_timerCallbacks.push( _loop );
 
-        },
-        pause: function() {
-          pauseFlag = true;
-        }
-      };
-    }
-  }
+				},
+				pause: function() {
+					pauseFlag = true;
+				}
+			}
+		};
+    return {
+		  timer: timer
+		}
+	})()
   window.Abacus = Abacus;
 })( window );
