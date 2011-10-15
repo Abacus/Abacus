@@ -15,12 +15,8 @@
 		noop: function(){},
 
     timer: function( options ){
-			if( !options ) {
-			  var options = {
-					callback: this.noop,
-				  element: window.document.documentElement
-				}
-			}
+			// Options is expected to have optional
+			// callback and element properties
 
       var _lastTick = 0,
           _lastStart = 0,
@@ -34,9 +30,13 @@
         var now = Date.now();
         importantStuff.delta = now - _lastTick;
         _lastTick = now;
+				
+				// If there is a callback pass the importantStuff to it
+				if( options.callback ) {
+          options.callback( importantStuff );
+				}
 
-        options.callback( importantStuff );
-
+				// Check to see if the timer is paused before calling RAF
         if ( !pauseFlag && ( !_until || ( _until && _lastTick - _lastStart < _until ) ) ) {
           requestAnimFrame(_loop, options.element);
         }
