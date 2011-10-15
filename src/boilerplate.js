@@ -13,59 +13,60 @@
   })();
 
   var Abacus = window.Abacus || {},
-			// An array of callbacks to call in our rAF
-			callbackQueue = [],
+      // An array of callbacks to call in our rAF
+      callbackQueue = [],
       // the function we call on each tick of the rAF
       timerLoop = function() {
+
+        var queueLength = callbackQueue.length,
+        i = queueLength - 1;
+
         // If there are callbacks, then run the loop again
-        if ( callbackQueue.length > 0 ) {
-          requestAnimFrame(timerLoop);
+        if ( queueLength ) {
+          requestAnimFrame( timerLoop );
         }
 
-        timerLoop.running = callbackQueue.length > 0;
+        timerLoop.running = !!queueLength;
 
         // Iterate and execute all callbacks in the queue
-        for ( var i = callbackQueue.length-1; i >= 0; --i ) {
+        for ( ; i >= 0; --i ) {
           callbackQueue[ i ]();
         }
       },
-			noop = function() {};
+      noop = function() {};
 
 
-	Abacus.timer = function( options ) {
+  Abacus.timer = function( options ) {
     // options is expected to have optional
     // callback and element properties
 
-    var _lastTick = 0,
-        _lastStart = 0,
-        _until = 0,
-				isPaused = false,
-        importantStuff = {
-          delta: 0,
+    var loop, stop,
+      lastTick = 0,
+      lastStart = 0,
+      _until = 0,
+      isPaused = false,
+      importantStuff = {
+        delta: 0,
 
-          // how many times callback is called
-          ticks: 0
-        },
+        // how many times callback is called
+        ticks: 0
+      };
 
-    stop = function() {
-      var idx = callbackQueue.indexOf( loop );
-      callbackQueue.splice( idx, 1 );
-    },
 
     loop = function() {
       var now = Date.now();
-      importantStuff.delta = now - _lastTick;
-      _lastTick = now;
+      importantStuff.delta = now - lastTick;
+      lastTick = now;
 
       // Check to see if the timer is paused, or run over until time but ran
       // at least once
       if ( isPaused ||
-        ( _until != undefined && _lastTick - _lastStart > _until ) &&
-        importantStuff.ticks !== 0 )
-      {
+            ( _until != null && lastTick - lastStart > _until ) &&
+            importantStuff.ticks !== 0 ) {
+
         stop();
 
-        if( options.complete ){
+        if ( options.complete ) {
           options.complete( importantStuff );
         }
       } else {
@@ -81,11 +82,16 @@
 
     };
 
+    stop = function() {
+      callbackQueue.splice( callbackQueue.indexOf( loop || noop ), 1 );
+    };
+
+
     return {
       start: function( until ) {
-        _lastStart = Date.now();
+        lastStart = Date.now();
         _until = until;
-        _lastTick = _lastStart;
+        lastTick = lastStart;
         isPaused = false;
 
         if( !timerLoop.running ) {
@@ -98,8 +104,9 @@
       pause: function() {
         isPaused = true;
       }
-    }
+    };
   };
 
   window.Abacus = Abacus;
-})( window );
+
+})( this );
