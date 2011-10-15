@@ -73,6 +73,7 @@
             options.callback( importantStuff );
           }
           
+          // zero index, add after call
           importantStuff.ticks++;
         }
 
