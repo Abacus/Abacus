@@ -48,7 +48,8 @@ var // Program References
 					noempty: true,
 					evil: true,
 					forin: false,
-					maxerr: 100
+					maxerr: 100,
+					eqnull: true,
 					// "curly": true,
 					// "eqnull": true,
 					// "immed": true,
