@@ -22,18 +22,38 @@
 				}
 			}
 
-      var _lastTick,
+      var _lastTick = 0,
+          _lastStart = 0,
+          _until = 0,
+          pauseFlag = false,
 				  importantStuff = {
-				    delta: Date.now() - _lastTick
+				    delta: 0
 				  };
 
-				function _loop(){
-				  importantStuff.delta = Date.now() - _lastTick;
-					requestAnimFrame(_loop, options.element);
-				  options.callback( importantStuff );
-					_lastTick = Date.now();
-				}
-				_loop();
+      function _loop(){
+        var now = Date.now();
+        importantStuff.delta = now - _lastTick;
+        _lastTick = now;
+
+        options.callback( importantStuff );
+
+        if ( !pauseFlag && ( !_until || ( _until && _lastTick - _lastStart < _until ) ) ) {
+          requestAnimFrame(_loop, options.element);
+        }
+      }
+
+      return {
+        start: function( until ) {
+          _lastStart = Date.now();
+          _until = until;
+          _lastTick = _lastStart;
+          pauseFlag = false;
+          requestAnimFrame(_loop, options.element);
+        },
+        pause: function() {
+          pauseFlag = true;
+        },
+      };
 		}
 	}
   window.gc = gamecore;
