@@ -5,7 +5,7 @@ test("Test that the Abacus.timer exists", function() {
 
 test("Test that the timer exists, and that it can stop start", function() {
   
-	var timer = Abacus.timer();
+  var timer = Abacus.timer();
 
   equals( 'function', (typeof timer.start), "the timer instance has a start method" );
   equals( 'function', (typeof timer.pause), "the timer instance has a pause method" );
