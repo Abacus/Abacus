@@ -1,14 +1,14 @@
 module("Timer Module");
 test("Test that the Abacus.timer exists", function() {
-  ok( Abacus.timer, 'Abacus.timer exists' );
+  ok( Abacus.timer, "Abacus.timer exists" );
 });
 
 test("Test that the timer exists, and that it can stop start", function() {
   
   var timer = Abacus.timer();
 
-  equals( 'function', (typeof timer.start), "the timer instance has a start method" );
-  equals( 'function', (typeof timer.pause), "the timer instance has a pause method" );
+  equals( "function", (typeof timer.start), "the timer instance has a start method" );
+  equals( "function", (typeof timer.pause), "the timer instance has a pause method" );
 
 });
 
@@ -78,11 +78,11 @@ asyncTest("timer.complete callback after completion", 2, function() {
   
   Abacus.timer({
     callback: function() {
-      ok(!completed, 'options.callback is called');
+      ok(!completed, "options.callback is called");
     },
     complete: function() {
       completed = true;
-      ok(true, 'options.complete is called');
+      ok(true, "options.complete is called");
     }
   }).start(0);
   
@@ -94,7 +94,7 @@ asyncTest("timerData.tick increments with 0-index", 5, function() {
     timer = Abacus.timer({
       callback: function(timerData) {
         tick++;
-        equals(tick, timerData.ticks, 'tick count is correct');
+        equals(tick, timerData.ticks, "tick count is correct");
         if (tick >= 4) {
           timer.pause();
           start();
