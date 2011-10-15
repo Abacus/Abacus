@@ -34,16 +34,37 @@ asyncTest("timer.start(0) calls once", function() {
       callback: function( timerData ) {
         timesCalled++;
         
+        ok(timesCalled <= 1, "called time " + timesCalled);
         if (timesCalled > 1) {
-          ok(false, "called second time");
           timer.pause();
-        } else {  
-          ok("called once");
-          start();
         }
+        
+        setTimeout(function() {
+          start();
+        }, 100);
       }
     });
   
   timer.start(0);
 });
 
+asyncTest("timers do not get called twice in one frame", function() {
+  Abacus.timer({
+    callback: function( timerData ) {
+      var timesCalled = 0;
+      
+      // call in setTimeout to make sure timer count is 0
+      setTimeout(function() {
+        Abacus.timer({
+          callback: function( timerData ) {
+            ok(timesCalled++ <= 1, "called time " + timesCalled);
+          }
+        }).start(0);
+        
+        setTimeout(function() {
+          start();
+        }, 100);
+      }, 100);
+    }
+  }).start(0);
+});

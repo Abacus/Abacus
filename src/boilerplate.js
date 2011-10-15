@@ -16,6 +16,8 @@
         if ( __timerCallbacks.length > 0 ) {
           requestAnimFrame(__timerLoop);
         }
+        __timerLoop.running = __timerCallbacks.length > 0;
+        
         for( var i=__timerCallbacks.length-1; i>=0; --i ) {
           __timerCallbacks[ i ]();
         }
@@ -47,7 +49,7 @@
         _lastTick = now;
 				
 				// Check to see if the timer is paused
-        if ( pauseFlag || ( _until && _lastTick - _lastStart > _until ) ) {
+        if ( pauseFlag || ( _until != undefined && _lastTick - _lastStart > _until ) ) {
           stop();
           
           // return early so callback is not called again
@@ -68,8 +70,9 @@
           _lastTick = _lastStart;
           pauseFlag = false;
 
-          if( __timerCallbacks.length === 0 ) {
+          if( !__timerLoop.running ) {
             requestAnimFrame(__timerLoop);
+            __timerLoop.running = true;
           }
           __timerCallbacks.push( _loop );
 
