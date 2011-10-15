@@ -29,7 +29,7 @@ asyncTest("the timer runs for the correct period of time", 1, function(){
 
 }, false );
 
-asyncTest("timer.start(0) calls once", function() {
+asyncTest("timer.start(0) calls once", 1, function() {
   var timesCalled = 0,
     timer = Abacus.timer({
       callback: function( timerData ) {
@@ -52,7 +52,7 @@ asyncTest("timer.start(0) calls once", function() {
 /**
  * Test to make sure the timer loop is not running twice
  */
-asyncTest("timers do not get called twice in one frame", function() {
+asyncTest("timers do not get called twice in one frame", 1, function() {
   Abacus.timer({
     callback: function( timerData ) {
       var timesCalled = 0;
@@ -89,18 +89,17 @@ asyncTest("timer.complete callback after completion", 2, function() {
   setTimeout(start, 100);
 });
 
-asyncTest("timerData.tick increments with 0-index", function() {
+asyncTest("timerData.tick increments with 0-index", 5, function() {
   var tick = -1,
     timer = Abacus.timer({
       callback: function(timerData) {
         tick++;
         equals(tick, timerData.ticks, 'tick count is correct');
+        if (tick >= 4) {
+          timer.pause();
+          start();
+        }
       }
     });
   timer.start();
-  
-  setTimeout(function() {
-    timer.pause();
-    start();
-  }, 100);
 });
