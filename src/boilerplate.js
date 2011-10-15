@@ -11,13 +11,13 @@
     }
   })();
 
-  var __timerCallbacks = [],
-      __timerLoop = function() {
-        if ( __timerCallbacks.length > 0 ) {
-          requestAnimFrame(__timerLoop);
+  var _timerCallbacks = [],
+      _timerLoop = function() {
+        if ( _timerCallbacks.length > 0 ) {
+          requestAnimFrame(_timerLoop);
         }
         for( var i=__timerCallbacks.length-1; i>=0; --i ) {
-          __timerCallbacks[ i ]();
+          _timerCallbacks[ i ]();
         }
       };
 
@@ -37,8 +37,8 @@
           };
 
       function stop() {
-        var idx = __timerCallbacks.indexOf( _loop );
-        __timerCallbacks.splice( idx, 1 );
+        var idx = _timerCallbacks.indexOf( _loop );
+        _timerCallbacks.splice( idx, 1 );
       }
 
       function _loop(){
@@ -68,8 +68,8 @@
           _lastTick = _lastStart;
           pauseFlag = false;
 
-          if( __timerCallbacks.length === 0 ) {
-            requestAnimFrame(__timerLoop);
+          if( _timerCallbacks.length === 0 ) {
+            requestAnimFrame(_timerLoop);
           }
           __timerCallbacks.push( _loop );
 
