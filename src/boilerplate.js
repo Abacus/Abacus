@@ -16,7 +16,7 @@
         if ( _timerCallbacks.length > 0 ) {
           requestAnimFrame(_timerLoop);
         }
-        for( var i=__timerCallbacks.length-1; i>=0; --i ) {
+        for( var i=_timerCallbacks.length-1; i>=0; --i ) {
           _timerCallbacks[ i ]();
         }
       };
@@ -71,7 +71,7 @@
           if( _timerCallbacks.length === 0 ) {
             requestAnimFrame(_timerLoop);
           }
-          __timerCallbacks.push( _loop );
+          _timerCallbacks.push( _loop );
 
         },
         pause: function() {
