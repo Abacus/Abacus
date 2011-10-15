@@ -52,7 +52,7 @@
         },
         pause: function() {
           pauseFlag = true;
-        },
+        }
       };
 		}
 	}
