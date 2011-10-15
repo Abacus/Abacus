@@ -7,8 +7,8 @@ test("Test that the timer exists, and that it can stop start", function() {
   
   var timer = Abacus.timer();
 
-  equals( "function", (typeof timer.start), "the timer instance has a start method" );
-  equals( "function", (typeof timer.pause), "the timer instance has a pause method" );
+  equal( "function", (typeof timer.start), "the timer instance has a start method" );
+  equal( "function", (typeof timer.pause), "the timer instance has a pause method" );
 
 });
 
@@ -94,7 +94,7 @@ asyncTest("timerData.tick increments with 0-index", 5, function() {
     timer = Abacus.timer({
       callback: function(timerData) {
         tick++;
-        equals(tick, timerData.ticks, "tick count is correct");
+        equal(tick, timerData.ticks, "tick count is correct");
         if (tick >= 4) {
           timer.pause();
           start();
