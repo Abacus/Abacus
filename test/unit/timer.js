@@ -38,14 +38,14 @@ asyncTest("timer.start(0) calls once", function() {
         if (timesCalled > 1) {
           timer.pause();
         }
-        
-        setTimeout(function() {
-          start();
-        }, 100);
       }
     });
   
   timer.start(0);
+  
+  setTimeout(function() {
+    start();
+  }, 100);
 });
 
 asyncTest("timers do not get called twice in one frame", function() {

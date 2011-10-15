@@ -34,13 +34,16 @@
 				// Options is expected to have optional
 				// callback and element properties
 
-			_lastTick = 0,
-			_lastStart = 0,
-			_until = 0,
-			pauseFlag = false,
-			importantStuff = {
-				delta: 0
-			},
+      var _lastTick = 0,
+          _lastStart = 0,
+          _until = 0,
+          pauseFlag = false,
+				  importantStuff = {
+				    delta: 0,
+				    
+				    // how many times callback is called
+				    ticks: 0
+				  },
 
 			stop = function() {
 				var idx = _timerCallbacks.indexOf( _loop );
@@ -48,25 +51,30 @@
 			},
 
 			_loop = function() {
-				var now = Date.now();
-				importantStuff.delta = now - _lastTick;
-				_lastTick = now;
-				
-				// Check to see if the timer is paused
-        if ( pauseFlag || ( _until != undefined && _lastTick - _lastStart > _until ) ) {
+        var now = Date.now();
+        importantStuff.delta = now - _lastTick;
+        _lastTick = now;
+        
+        // Check to see if the timer is paused, or run over until time but ran
+        // at least once
+        if ( pauseFlag || 
+          ( _until != undefined && _lastTick - _lastStart > _until ) &&
+          importantStuff.ticks !== 0 ) 
+        {
           stop();
-  				if( options.complete ){
-						options.complete();
-					}
           
-          // return early so callback is not called again
-          return;
-        }
+          if( options.complete ){
+            options.complete();
+          }
+        } else {
 
-				// If there is a callback pass the importantStuff to it
-				if( options.callback ) {
-					options.callback( importantStuff );
-				}
+          // If there is a callback pass the importantStuff to it
+          if( options.callback ) {
+            options.callback( importantStuff );
+          }
+          
+          importantStuff.ticks++;
+        }
 
 			};
 
