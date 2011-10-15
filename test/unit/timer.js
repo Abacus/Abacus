@@ -12,27 +12,59 @@ test("Test that the timer exists, and that it can stop start", function() {
 
 });
 
-test("the timer runs for the correct period of time", function(){
-	
-  var timer = Abacus.timer({
+asyncTest("the timer runs for the correct period of time", 1, function(){
+  var totalTime = 0,
+    timer2 = Abacus.timer({
     callback: function( timerData ) {
-      console.log( "Timer A:", timerData.delta );
+      totalTime += timerData.delta;
     }
   });
-
-  timer.start();
-
+  timer2.start( 400 );
+  
   setTimeout( function() {
-    timer.pause();
+    ok(totalTime <= 400, "total time is less than 400");
+    start();
+  }, 500);
 
-    var timer2 = Abacus.timer({
+}, false );
+
+asyncTest("timer.start(0) calls once", function() {
+  var timesCalled = 0,
+    timer = Abacus.timer({
       callback: function( timerData ) {
-        console.log( "Timer B:", timerData.delta );
+        timesCalled++;
+        
+        ok(timesCalled <= 1, "called time " + timesCalled);
+        if (timesCalled > 1) {
+          timer.pause();
+        }
+        
+        setTimeout(function() {
+          start();
+        }, 100);
       }
     });
-    timer2.start( 400 );
+  
+  timer.start(0);
+});
 
-  }, 400 );
-
-
-})
+asyncTest("timers do not get called twice in one frame", function() {
+  Abacus.timer({
+    callback: function( timerData ) {
+      var timesCalled = 0;
+      
+      // call in setTimeout to make sure timer count is 0
+      setTimeout(function() {
+        Abacus.timer({
+          callback: function( timerData ) {
+            ok(timesCalled++ <= 1, "called time " + timesCalled);
+          }
+        }).start(0);
+        
+        setTimeout(function() {
+          start();
+        }, 100);
+      }, 100);
+    }
+  }).start(0);
+});
