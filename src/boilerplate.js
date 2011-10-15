@@ -51,21 +51,22 @@
         importantStuff.delta = now - _lastTick;
         _lastTick = now;
 				
-				// Check to see if the timer is paused
-        if ( pauseFlag || ( _until != undefined && _lastTick - _lastStart > _until ) ) {
+				// Check to see if the timer is paused, or run over until time but ran
+				// at least once
+        if ( pauseFlag || 
+          ( _until != undefined && _lastTick - _lastStart > _until ) &&
+          importantStuff.ticks !== 0 ) 
+        {
           stop();
-          
-          // return early so callback is not called again
-          if (importantStuff.ticks !== 0)
-            return;
-        }
+        } else {
 
-				// If there is a callback pass the importantStuff to it
-				if( options.callback ) {
-          options.callback( importantStuff );
-				}
-				
-        importantStuff.ticks++;
+  				// If there is a callback pass the importantStuff to it
+  				if( options.callback ) {
+            options.callback( importantStuff );
+  				}
+  				
+          importantStuff.ticks++;
+  			}
 
       }
 
