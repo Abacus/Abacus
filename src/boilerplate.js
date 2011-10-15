@@ -36,12 +36,10 @@
     // options is expected to have optional
     // callback and element properties
 
-		this.isPaused = false;
-
-
     var _lastTick = 0,
         _lastStart = 0,
         _until = 0,
+				isPaused = false,
         importantStuff = {
           delta: 0,
 
@@ -98,7 +96,7 @@
 
       },
       pause: function() {
-        this.isPaused = true;
+        isPaused = true;
       }
     }
   };
