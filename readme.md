@@ -1,8 +1,26 @@
 #Abacus.js
 ## The Open Source HTML5 Games Framework
 
-### Abacus.timer()
+## Current interfaces
+### Abacus.timer( { callback: fn } )
+Bind a callback to a mast ~60hz (or as fast as your screen refresh) loop that uses requestAnimationFrame where possible. Multiple callbacks will use the same requestAnimationFrame. If you save a reference callback, you can also start and pause it:
 
+```
+  var timer = Abacus.timer({
+		callback: function( data ) {
+			data.delta // time since the last tick
+			data.ticks // zero indexed number of ticks
+		}
+	});
+
+  // Start the timer with an optional kill time in miliseconds
+	// if no miliseconds are passed in, it wil run FOR EV AR, until you pause it
+	timer.start( 10000 )
+
+	// Stop the timer
+	timer.pause()
+
+```
 
 ##Platform goals
 * Provide a layer that allows game devs to focus on their core competency
