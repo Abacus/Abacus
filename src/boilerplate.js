@@ -19,6 +19,8 @@
         if ( _timerCallbacks.length > 0 ) {
           requestAnimFrame(_timerLoop);
         }
+        _timerLoop.running = _timerCallbacks.length > 0;
+				
 				// Call all the calbacks
         for( var i=_timerCallbacks.length-1; i>=0; --i ) {
           _timerCallbacks[ i ]();
@@ -51,12 +53,15 @@
 				_lastTick = now;
 				
 				// Check to see if the timer is paused
-				if ( pauseFlag || ( _until && _lastTick - _lastStart > _until ) ) {
-					stop();
-					if( options.complete ){
+        if ( pauseFlag || ( _until != undefined && _lastTick - _lastStart > _until ) ) {
+          stop();
+  				if( options.complete ){
 						options.complete();
 					}
-				}
+          
+          // return early so callback is not called again
+          return;
+        }
 
 				// If there is a callback pass the importantStuff to it
 				if( options.callback ) {
@@ -72,10 +77,11 @@
 					_lastTick = _lastStart;
 					pauseFlag = false;
 
-					if( _timerCallbacks.length === 0 ) {
-						requestAnimFrame(_timerLoop);
-					}
-					_timerCallbacks.push( _loop );
+          if( !_timerLoop.running ) {
+            requestAnimFrame(_timerLoop);
+            _timerLoop.running = true;
+          }
+          _timerCallbacks.push( _loop );
 
 				},
 				pause: function() {
