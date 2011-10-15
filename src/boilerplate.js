@@ -11,7 +11,7 @@
 		}
 	})(),
 
-  gamecore = {
+  Abacus = {
 		noop: function(){},
 
     timer: function( options ){
@@ -56,7 +56,7 @@
       };
 		}
 	}
-  window.gc = gamecore;
+  window.Abacus = Abacus;
 })( window );
 
 
