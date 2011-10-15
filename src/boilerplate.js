@@ -49,6 +49,9 @@
 				// Check to see if the timer is paused
         if ( pauseFlag || ( _until && _lastTick - _lastStart > _until ) ) {
           stop();
+          
+          // return early so callback is not called again
+          return;
         }
 
 				// If there is a callback pass the importantStuff to it

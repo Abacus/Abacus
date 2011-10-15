@@ -12,27 +12,19 @@ test("Test that the timer exists, and that it can stop start", function() {
 
 });
 
-test("the timer runs for the correct period of time", function(){
+asyncTest("the timer runs for the correct period of time", 1, function(){
+  var totalTime = 0,
+    timer2 = Abacus.timer({
+    callback: function( timerData ) {
+      totalTime += timerData.delta;
+    }
+  });
+  timer2.start( 400 );
   
-  var timer = Abacus.timer({
-      callback: function( timerData ) {
-        console.log( "Timer A:", timerData.delta );
-      }
-    });
-
-  timer.start();
-
   setTimeout( function() {
-    timer.pause();
-    
-    var timer2 = Abacus.timer({
-      callback: function( timerData ) {
-        console.log( "Timer B:", timerData.delta );
-      }
-    });
-    timer2.start( 400 );
-
-  }, 400 );
+    ok(totalTime <= 400, "total time is less than 400");
+    start();
+  }, 500);
 
 }, false );
 
