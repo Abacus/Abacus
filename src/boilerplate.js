@@ -11,11 +11,15 @@
     }
   })();
 
+  // An array of callbacks to call in our rAF
   var _timerCallbacks = [],
+	    // the function we call on each tick of the rAF
       _timerLoop = function() {
+				// If there are callbacks, then run the loop again
         if ( _timerCallbacks.length > 0 ) {
           requestAnimFrame(_timerLoop);
         }
+				// Call all the calbacks
         for( var i=_timerCallbacks.length-1; i>=0; --i ) {
           _timerCallbacks[ i ]();
         }
