@@ -64,7 +64,7 @@
           stop();
           
           if( options.complete ){
-            options.complete();
+            options.complete( importantStuff );
           }
         } else {
 
