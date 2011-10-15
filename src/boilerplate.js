@@ -9,9 +9,19 @@
 		function( callback, element ){
 			window.setTimeout( callback, 1000 / 60 );	
 		}
-	})(),
+	})();
 
-  Abacus = {
+  var __timerCallbacks = [],
+      __timerLoop = function() {
+        if ( __timerCallbacks.length > 0 ) {
+          requestAnimFrame(__timerLoop);
+        }
+        for( var i=__timerCallbacks.length-1; i>=0; --i ) {
+          __timerCallbacks[ i ]();
+        }
+      };
+
+  var Abacus = {
 		noop: function(){},
 
     timer: function( options ){
@@ -26,20 +36,26 @@
 				    delta: 0
 				  };
 
+      function stop() {
+        var idx = __timerCallbacks.indexOf( _loop );
+        __timerCallbacks.splice( idx, 1 );
+      }
+
       function _loop(){
         var now = Date.now();
         importantStuff.delta = now - _lastTick;
         _lastTick = now;
 				
+				// Check to see if the timer is paused
+        if ( pauseFlag || ( _until && _lastTick - _lastStart > _until ) ) {
+          stop();
+        }
+
 				// If there is a callback pass the importantStuff to it
 				if( options.callback ) {
           options.callback( importantStuff );
 				}
 
-				// Check to see if the timer is paused before calling RAF
-        if ( !pauseFlag && ( !_until || ( _until && _lastTick - _lastStart < _until ) ) ) {
-          requestAnimFrame(_loop, options.element);
-        }
       }
 
       return {
@@ -48,7 +64,12 @@
           _until = until;
           _lastTick = _lastStart;
           pauseFlag = false;
-          requestAnimFrame(_loop, options.element);
+
+          if( __timerCallbacks.length === 0 ) {
+            requestAnimFrame(__timerLoop);
+          }
+          __timerCallbacks.push( _loop );
+
         },
         pause: function() {
           pauseFlag = true;
@@ -58,5 +79,4 @@
 	}
   window.Abacus = Abacus;
 })( window );
-
 
