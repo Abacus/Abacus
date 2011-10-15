@@ -1,5 +1,23 @@
 #Abacus.js
-## The Open Source HTML5 Games Framework
+The Open Source HTML5 Game Framework
+
+## Dependencies
+### One time setup:
+* Node.js
+* NPM
+
+### Setup
+Once the dependencies are installed:
+	$ make setup
+
+Future re-builds require _only_:
+	
+	$ make
+
+	Or...
+
+	$ jake
+
 
 ## Current interfaces
 ### Abacus.timer( { callback: fn } )
@@ -21,23 +39,6 @@ Bind a callback to a mast ~60hz (or as fast as your screen refresh) loop that us
 	timer.pause()
 
 ```
-## Dependencies
-### One time setup:
-* Node.js
-* NPM
-
-### Setup
-Once the dependencies are installed:
-	$ make setup
-
-Future re-builds require _only_:
-	
-	$ make
-
-	Or...
-
-	$ jake
-
 
 ##Platform goals
 * Provide a layer that allows game devs to focus on their core competency
