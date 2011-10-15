@@ -127,7 +127,15 @@ Make sure to join the W3C Games Community Group [[http://www.w3.org/community/ga
 
 
 
-What we really want from browser vendors:
+## What we really want from browser vendors:
 * GPU profiling
 * GPU fingerprinting details 
 * Higher resolution timer (micros plz)
+
+
+## Style Guide
+We conform to the following conventions:
+* Two space soft tabs
+* Single quotes over double quotes
+* Use a single var statement for multiple vars when possible
+* Indent var lists by four spaces 
