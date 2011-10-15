@@ -7,21 +7,21 @@
     window.oRequestAnimationFrame       || 
     window.msRequestAnimationFrame      || 
     function( callback, element ){
-      window.setTimeout( callback, 1000 / 60 );	
+      window.setTimeout( callback, 1000 / 60 );  
     }
   })();
 
   // An array of callbacks to call in our rAF
   var _timerCallbacks = [],
-	    // the function we call on each tick of the rAF
+      // the function we call on each tick of the rAF
       _timerLoop = function() {
-				// If there are callbacks, then run the loop again
+        // If there are callbacks, then run the loop again
         if ( _timerCallbacks.length > 0 ) {
           requestAnimFrame(_timerLoop);
         }
         _timerLoop.running = _timerCallbacks.length > 0;
-				
-				// Call all the calbacks
+        
+        // Call all the calbacks
         for( var i=_timerCallbacks.length-1; i>=0; --i ) {
           _timerCallbacks[ i ]();
         }
@@ -31,26 +31,26 @@
     var noop = function(){},
 
     timer = function( options ){
-				// Options is expected to have optional
-				// callback and element properties
+        // Options is expected to have optional
+        // callback and element properties
 
       var _lastTick = 0,
           _lastStart = 0,
           _until = 0,
           pauseFlag = false,
-				  importantStuff = {
-				    delta: 0,
-				    
-				    // how many times callback is called
-				    ticks: 0
-				  },
+          importantStuff = {
+            delta: 0,
+            
+            // how many times callback is called
+            ticks: 0
+          },
 
-			stop = function() {
-				var idx = _timerCallbacks.indexOf( _loop );
-				_timerCallbacks.splice( idx, 1 );
-			},
+      stop = function() {
+        var idx = _timerCallbacks.indexOf( _loop );
+        _timerCallbacks.splice( idx, 1 );
+      },
 
-			_loop = function() {
+      _loop = function() {
         var now = Date.now();
         importantStuff.delta = now - _lastTick;
         _lastTick = now;
@@ -77,14 +77,14 @@
           importantStuff.ticks++;
         }
 
-			};
+      };
 
-			return {
-				start: function( until ) {
-					_lastStart = Date.now();
-					_until = until;
-					_lastTick = _lastStart;
-					pauseFlag = false;
+      return {
+        start: function( until ) {
+          _lastStart = Date.now();
+          _until = until;
+          _lastTick = _lastStart;
+          pauseFlag = false;
 
           if( !_timerLoop.running ) {
             requestAnimFrame(_timerLoop);
@@ -92,15 +92,15 @@
           }
           _timerCallbacks.push( _loop );
 
-				},
-				pause: function() {
-					pauseFlag = true;
-				}
-			}
-		};
+        },
+        pause: function() {
+          pauseFlag = true;
+        }
+      }
+    };
     return {
-		  timer: timer
-		}
-	})()
+      timer: timer
+    }
+  })()
   window.Abacus = Abacus;
 })( window );
