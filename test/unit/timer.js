@@ -4,7 +4,7 @@ test('Test that the Abacus.timer exists', function() {
 });
 
 test('Test that the timer exists, and that it can stop start', function() {
-  
+
   var timer = Abacus.timer();
 
   equal( 'function', (typeof timer.start), 'the timer instance has a start method' );
@@ -21,7 +21,7 @@ asyncTest('the timer runs for the correct period of time', 1, function(){
     }
   });
   timer2.start( amountOfTime );
-  
+
   setTimeout( function() {
     ok(totalTime <= amountOfTime, 'total time is less than the set amount of time');
     start();
@@ -34,16 +34,16 @@ asyncTest('timer.start(0) calls once', 1, function() {
     timer = Abacus.timer({
       callback: function( timerData ) {
         timesCalled++;
-        
+
         ok(timesCalled <= 1, 'called ' + timesCalled + ' time');
         if (timesCalled > 1) {
           timer.pause();
         }
       }
     });
-  
+
   timer.start(0);
-  
+
   setTimeout(function() {
     start();
   }, 100);
@@ -56,7 +56,7 @@ asyncTest('timers do not get called twice in one frame', 1, function() {
   Abacus.timer({
     callback: function( timerData ) {
       var timesCalled = 0;
-      
+
       // call in setTimeout to make sure timer count is 0
       setTimeout(function() {
         Abacus.timer({
@@ -64,7 +64,7 @@ asyncTest('timers do not get called twice in one frame', 1, function() {
             ok(timesCalled++ <= 1, 'called ' + timesCalled + ' time');
           }
         }).start(0);
-        
+
         setTimeout(function() {
           start();
         }, 100);
@@ -75,7 +75,7 @@ asyncTest('timers do not get called twice in one frame', 1, function() {
 
 asyncTest('timer.complete callback after completion', 2, function() {
   var completed = false;
-  
+
   Abacus.timer({
     callback: function() {
       ok(!completed, 'options.callback is called');
@@ -85,7 +85,7 @@ asyncTest('timer.complete callback after completion', 2, function() {
       ok(true, 'options.complete is called');
     }
   }).start(0);
-  
+
   setTimeout(start, 100);
 });
 
