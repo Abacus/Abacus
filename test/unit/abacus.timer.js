@@ -163,3 +163,17 @@ asyncTest('timerData.tick increments with 0-index', 5, function() {
     });
   timer.start();
 });
+
+asyncTest('timerData.sinceStart is time since start', 5, function() {
+  var startTime = Date.now(),
+      timer = Abacus.timer({
+        callback: function( timerData ) {
+          equal(timerData.sinceStart, Date.now() - startTime);
+          if (timerData.ticks == 4) {
+            this.stop();
+            start();
+          }
+        }
+      });
+  timer.start();
+});

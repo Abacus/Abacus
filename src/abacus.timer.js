@@ -50,6 +50,7 @@
     this.isPaused = false;
     this.timing = {
       delta: 0,
+      sinceStart: 0,
 
       // how many times callback is called
       ticks: 0
@@ -60,6 +61,7 @@
       var now = Date.now();
 
       this.timing.delta = now - this.lastTick;
+      this.timing.sinceStart = now - this.lastStart;
       this.lastTick = now;
 
       // Check to see if the timer is paused, or run over until time but ran
