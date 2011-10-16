@@ -48,7 +48,7 @@
     },
     // Animation.addLayer
     // add new layer. returns Animation
-    addLayer: function ( layer ) {
+    addLayer: function( layer ) {
       var index = this.layers.length;
       this.layers.push(layer);
       layer.index = index;
@@ -134,6 +134,40 @@
       }
       
       return this;
+    },
+    // Layer.getFrame( index )
+    // return the frame with the given index value
+    getFrame: function( index ) {
+      var frames = this.frames,
+          framesLength = frames.length,
+          i = 0;
+      
+      for ( ; i < framesLength; i++ ) {
+        if (frames[i].index == index) {
+          return frames[i];
+        }
+      }
+      
+      return null;
+    },
+    // Layer.removeFrame( index || animationFrame )
+    // remove an animationFrame either by its index value or by the frame itself
+    removeFrame: function( index ) {
+      var frames = this.frames,
+          framesLength = frames.length,
+          i = 0;
+      
+      if ( index instanceof Frame ) {
+        // access the index value from the frame
+        index = index.index;
+      }
+      
+      for ( ; i < framesLength; i++ ) {
+        if (frames[i].index == index) {
+          frames.splice(i, 1);
+          break;
+        }
+      }
     },
     // Layer.step( ... )
     // updates target and returns true if there are no further frames
