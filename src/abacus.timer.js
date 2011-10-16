@@ -46,7 +46,7 @@
     // Instance tracking properties
     this.lastTick = 0;
     this.lastStart = 0;
-    this._until = 0;
+    this.until = 0;
     this.isPaused = false;
     this.timing = {
       delta: 0,
@@ -67,7 +67,7 @@
       // Check to see if the timer is paused, or run over until time but ran
       // at least once
       if ( this.isPaused ||
-            ( this._until != null && this.lastTick - this.lastStart > this._until ) &&
+            ( this.until != null && this.lastTick - this.lastStart > this.until ) &&
             this.timing.ticks !== 0 ) {
 
         this.stop();
@@ -103,7 +103,7 @@
   Timer.prototype = {
     start: function( until ) {
       this.lastStart = Date.now();
-      this._until = until;
+      this.until = until;
       this.lastTick = this.lastStart;
       this.isPaused = false;
 
@@ -119,7 +119,7 @@
   };
 
   // Wrap new Timer() construction in Abacus.timer() API
-  window.Abacus.timer = function( options ) {
+  Abacus.timer = function( options ) {
     return new Timer( options );
   };
 
