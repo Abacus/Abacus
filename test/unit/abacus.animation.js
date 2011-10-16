@@ -1,14 +1,14 @@
 module('Animation');
 
 test('animation defined functions exists', 3, function() {
-  ok(Abacus.animation, 'animation exists');
-  ok(Abacus.animationLayer, 'animationLayer exists');
-  ok(Abacus.animationFrame, 'animationFrame exists');
+  ok( Abacus.animation, 'animation exists' );
+  ok( Abacus.animation.layer, 'animation.layer exists' );
+  ok( Abacus.animation.frame, 'animation.frame exists' );
 });
 
 test('layer.step updates values', 2, function() {
   var position = [0, 0],
-      layer = Abacus.animationLayer({
+      layer = Abacus.animation.layer({
         tween: 'linear'
       }).addFrame({
         index: 0,
@@ -26,7 +26,7 @@ test('layer.step updates values', 2, function() {
 
 test('layer.step moves to correct frame', 1, function() {
   var obj = {'a': 0},
-      layer = Abacus.animationLayer({
+      layer = Abacus.animation.layer({
         tween: 'linear'
       }).addFrame({
         index: 0,
@@ -45,7 +45,7 @@ test('layer.step moves to correct frame', 1, function() {
 });
 
 test('layer.step returns false after completion', function() {
-  var layer = Abacus.animationLayer({
+  var layer = Abacus.animation.layer({
         tween: 'linear'
       }).addFrame({
         index: 0,
@@ -60,7 +60,7 @@ test('layer.step returns false after completion', function() {
 });
 
 test('layer.step calls beforeTween and afterTween', 2, function() {
-  var layer = Abacus.animationLayer({
+  var layer = Abacus.animation.layer({
     tween: 'linear'
   }).addFrame({
     index: 10,

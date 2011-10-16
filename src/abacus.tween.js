@@ -28,7 +28,7 @@
     return Abacus.noop;
   }
 
-  // Declare Tween constructor
+  // Tween constructor (internal)
   // Mapped from calls to Abacus.tween( options )
   function Tween( options ) {
 
