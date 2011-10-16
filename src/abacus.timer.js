@@ -1,4 +1,4 @@
-(function( window ) {
+(function( window, Abacus ) {
 
   var requestAnimFrame = (function(){
     // thanks paul irish
@@ -121,4 +121,4 @@
     return new Timer( options );
   };
 
-})( this );
+})( this, this.Abacus );

@@ -1,4 +1,4 @@
-(function( window ) {
+(function( window, Abacus ) {
 
   var types = {
     // index - value between 0 and 1 inclusive
@@ -7,54 +7,55 @@
     }
   };
 
+  function tweenFn( tween ) {
+    var type;
+
+    if ( tween ) {
+
+      type = typeof tween;
+
+      // If tween is a string, return correct tweening method
+      // from stored tweening methods by type name
+      if ( type === 'string' ) {
+        return types[ tween ] || Abacus.noop;
+      }
+
+      // If type is a function, return as is
+      if ( type === 'function' ) {
+        return tween;
+      }
+    }
+    return Abacus.noop;
+  }
+
+
   function Tween( options ) {
 
     options = options || {};
-
-    var tweenFunction;
 
     this.index = options.index || 0;
     this.start = options.start || 0;
     this.stop = options.stop || 0;
 
-    function chooseTweenFunction( tween ) {
-      if ( tween ) {
-        var tweenParamType = typeof( tween );
-        if ( tweenParamType === "string" ) {
-          tweenFunction = types[ tween ] || Abacus.noop;
-        }
-        else if ( tweenParamType === 'function' ) {
-          tweenFunction = tween;
-        }
-        else {
-          tweenFunction = Abacus.noop;
-        }
-      }
-      else {
-        tweenFunction = Abacus.noop;
-      }
-    } //chooseTweenFunction
+    var tweening = tweenFn( options.type );
 
     this.get = function( preferredIndex ) {
       this.index = preferredIndex || this.index;
-      return tweenFunction( this.start, this.stop, this.index );
+      return tweening( this.start, this.stop, this.index );
     }; //step
 
     Object.defineProperty( this, 'type', {
       get: function() {
-        return tweenFunction;
+        return tweening;
       },
       set: function( val ) {
-        chooseTweenFunction( val );
+        tweenFn( val );
       }
     });
-
-    chooseTweenFunction( options.type );
-
   } //Tween
 
   window.Abacus.tween = function( options ) {
     return new Tween( options );
   };
 
-})( this );
+})( this, this.Abacus );
