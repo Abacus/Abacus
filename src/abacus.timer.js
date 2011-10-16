@@ -1,4 +1,4 @@
-(function( window ) {
+(function( window, Abacus ) {
 
   var requestAnimFrame = (function(){
     // thanks paul irish
@@ -31,13 +31,6 @@
         for ( ; i >= 0; --i ) {
           callbackQueue[ i ]();
         }
-      },
-      noop = function() {},
-      guid = function() {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-          var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-          return v.toString(16);
-        }).toUpperCase();
       };
 
   // Timer constructor (Internal)
@@ -48,7 +41,7 @@
     options = options || {};
 
     // Ensure an id is created for this Timer instance
-    this.id = options.id || guid();
+    this.id = options.id || Abacus.guid();
 
     // Instance tracking properties
     this.lastTick = 0;
@@ -98,7 +91,7 @@
     // Define own property stop() function closure
     this.stop = function() {
 
-      callbackQueue.splice( callbackQueue.indexOf( this.loop || noop ), 1 );
+      callbackQueue.splice( callbackQueue.indexOf( this.loop || Abacus.noop ), 1 );
 
     }.bind( this );
 
@@ -128,4 +121,4 @@
     return new Timer( options );
   };
 
-})( this );
+})( this, this.Abacus );
