@@ -37,13 +37,40 @@ test('Timer instances have an id property', 1, function() {
 test('Timer instances have a timing property', 3, function() {
 
   var timer = Abacus.timer();
-
-	console.log( timer );
   equal( typeof timer.timing, 'object', 'the timer instance has a timing property' );
   equal( typeof timer.timing.delta, 'number', 'the timing property has a delta property' );
   equal( typeof timer.timing.ticks, 'number', 'the timing property has a ticks property' );
 });
 
+asyncTest('Context inside of timer callbacks is timer instance itself', 12, function(){
+
+  Abacus.timer({
+    callback: function( timerData ) {
+
+      console.log( this );
+
+      equal( typeof this.start, 'function', 'the this instance has a start method' );
+      equal( typeof this.pause, 'function', 'the this instance has a pause method' );
+
+      ok( !this.hasOwnProperty('start'), 'start is a proto method' );
+      ok( !this.hasOwnProperty('pause'), 'pause is a proto method' );
+
+      equal( typeof this.stop, 'function', 'the this instance has a stop method' );
+      equal( typeof this.loop, 'function', 'the this instance has a loop method' );
+
+      ok( this.hasOwnProperty('stop'), 'stop is an own property method' );
+      ok( this.hasOwnProperty('loop'), 'loop is an own property method' );
+
+      equal( typeof this.id, 'string', 'the this instance has an id property' );
+
+      equal( typeof this.timing, 'object', 'the this instance has a timing property' );
+      equal( typeof this.timing.delta, 'number', 'the timing property has a delta property' );
+      equal( typeof this.timing.ticks, 'number', 'the timing property has a ticks property' );
+
+      start();
+    }
+  }).start(0);
+});
 
 asyncTest('the timer runs for the correct period of time', 1, function(){
   var totalTime = 0,

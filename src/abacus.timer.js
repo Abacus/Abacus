@@ -86,7 +86,7 @@
         // If there is a callback pass the timing to it
         if ( options.callback ) {
           // Set the callback's context to this Timer instance
-          options.callback( this.timing );
+          options.callback.call( this, this.timing );
         }
 
         // zero index, add after call
