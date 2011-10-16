@@ -36,10 +36,16 @@
       noop = function() {};
 
 
+	// Wrap new Timer() construction in Abacus.timer() API
   Abacus.timer = function( options ) {
     // options is expected to have optional
     // callback and element properties
 
+		return new Timer( options );
+	};
+
+	// Timer constructor
+	function Timer( options ) {
     var loop, stop,
       lastTick = 0,
       lastStart = 0,
@@ -72,7 +78,7 @@
       } else {
 
         // If there is a callback pass the importantStuff to it
-        if( options.callback ) {
+        if ( options.callback ) {
           options.callback( importantStuff );
         }
 
@@ -94,12 +100,11 @@
         lastTick = lastStart;
         isPaused = false;
 
-        if( !timerLoop.running ) {
-          requestAnimFrame(timerLoop);
+        if ( !timerLoop.running ) {
+          requestAnimFrame( timerLoop );
           timerLoop.running = true;
         }
         callbackQueue.push( loop );
-
       },
       pause: function() {
         isPaused = true;
