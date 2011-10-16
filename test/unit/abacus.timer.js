@@ -3,21 +3,45 @@ test('Test that the Abacus.timer exists', 1, function() {
   ok( Abacus.timer, 'Abacus.timer exists' );
 });
 
-test('Test that the timer exists, and that it can stop start', 2, function() {
+test('Timer instances have start and pause proto methods', 4, function() {
 
   var timer = Abacus.timer();
 
   equal( typeof timer.start, 'function', 'the timer instance has a start method' );
   equal( typeof timer.pause, 'function', 'the timer instance has a pause method' );
+
+  ok( !timer.hasOwnProperty('start'), 'start is a proto method' );
+  ok( !timer.hasOwnProperty('pause'), 'pause is a proto method' );
+
 });
 
+test('Timer instances have stop and loop own methods', 4, function() {
 
-test('Test that the timer exists, and that it can stop start', function() {
+  var timer = Abacus.timer();
+
+  equal( typeof timer.stop, 'function', 'the timer instance has a stop method' );
+  equal( typeof timer.loop, 'function', 'the timer instance has a loop method' );
+
+  ok( timer.hasOwnProperty('stop'), 'stop is an own property method' );
+  ok( timer.hasOwnProperty('loop'), 'loop is an own property method' );
+
+});
+
+test('Timer instances have an id property', 1, function() {
 
   var timer = Abacus.timer();
 
   equal( typeof timer.id, 'string', 'the timer instance has an id property' );
-  equal( typeof timer.pause, 'function', 'the timer instance has a pause method' );
+});
+
+test('Timer instances have a timing property', 3, function() {
+
+  var timer = Abacus.timer();
+
+	console.log( timer );
+  equal( typeof timer.timing, 'object', 'the timer instance has a timing property' );
+  equal( typeof timer.timing.delta, 'number', 'the timing property has a delta property' );
+  equal( typeof timer.timing.ticks, 'number', 'the timing property has a ticks property' );
 });
 
 
