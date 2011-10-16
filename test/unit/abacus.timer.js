@@ -168,7 +168,7 @@ asyncTest('timerData.sinceStart is time since start', 5, function() {
   var startTime = Date.now(),
       timer = Abacus.timer({
         callback: function( timerData ) {
-          equal(timerData.sinceStart, Date.now() - startTime);
+          ok(Math.abs(timerData.sinceStart - (Date.now() - startTime)) < 2, "" + timerData.sinceStart + " ~= " + (Date.now() - startTime));
           if (timerData.ticks == 4) {
             this.stop();
             start();
