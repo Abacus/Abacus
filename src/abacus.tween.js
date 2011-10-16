@@ -1,6 +1,7 @@
 (function( window ) {
 
   var types = {
+    // index - value between 0 and 1 inclusive
     'linear': function( start, stop, index ) {
       return ( stop - start ) * index + start;
     }
