@@ -7,6 +7,12 @@
   function Animation( options ) {
     Abacus.extend(this, options);
     
+    if ( this.tween ) {
+      this.tween = Abacus.tween({
+        type: this.tween
+      });
+    }
+    
     if (!this.layers) {
       this.layers = [];
     }
@@ -19,7 +25,7 @@
             allComplete = true;
       
         for (var idx = 0; idx < layers.length; idx++) {
-          allComplete = layers[idx].step(timerData, target, animation) && allComplete;
+          allComplete = layers[idx].step(animation, target, timerData) && allComplete;
         }
       
         if (allComplete) {
@@ -40,6 +46,8 @@
         this.timer.stop();
       }
     },
+    // Animation.addLayer
+    // add new layer. returns Animation
     addLayer: function ( layer ) {
       var index = this.layers.length;
       this.layers.push(layer);
@@ -47,6 +55,8 @@
     
       return this;
     },
+    // Animation.layer( number || {} )
+    // get layer or shortcut add and get layer
     layer: function( idx ) {
       if (idx == undefined) {
         return Abacus.animationLayer();
@@ -79,22 +89,34 @@
   
   // groups of frames
   function Layer( options ) {
+    options = options || {};
+    
     Abacus.extend(this, options);
+    
+    if ( this.tween ) {
+      this.tween = Abacus.tween({
+        type: this.tween
+      });
+    }
     
     if (!this.frames) {
       this.frames = [];
     }
     
     // stored index value to avoid constantly looking up the correct frame
-    this.frameIndex = 0;
+    this.frameIndex = -1;
   }
   Layer.prototype = {
     // Layer.addFrame(frame)
-    // insert animationFrame object according to frame.index
+    // insert animationFrame object according to frame.index. returns Layer
     addFrame: function( frame ) {
       var frameAdded = false,
           framesLength = this.frames.length,
           i = 0;
+      
+      if ( !(frame instanceof Frame) ) {
+        frame = Abacus.animationFrame(frame);
+      }
     
       for ( ; i < framesLength; i++ ) {
         if ( this.frames[i].index > frame.index ) {
@@ -107,8 +129,12 @@
       if (!frameAdded) {
         this.frames.push(frame);
       }
+      
+      return this;
     },
-    step: function( timerData, target, animation ) {
+    // Layer.step( ... )
+    // updates target and returns true if there are no further frames
+    step: function( animation, target, timerData ) {
       var frameIndex = this.frameIndex,
           lastFrame = this.frames[frameIndex],
           nextFrame = this.frames[frameIndex+1];
@@ -117,33 +143,59 @@
       if (nextFrame == undefined) {
         return false;
       }
-    
+      
+      if (lastFrame && lastFrame.index / animation.rate > timerData.sinceStart) {
+        return true;
+      }
+      
       // increment to the next usable frame
-      if (nextFrame.index * animation.rate <= timerData.sinceStart) {
+      if (nextFrame.index / animation.rate <= timerData.sinceStart) {
         for ( frameIndex++; frameIndex < this.frames.length; frameIndex++ ) {
-          if (this.frames[frameIndex+1].index * animation.rate > timerData.sinceStart) {
-            lastFrame = this.frames[frameIndex];
-            nextFrame = this.frames[frameIndex+1];
+          if (frameIndex == 0 && nextFrame.beforeTween) {
+            nextFrame.beforeTween();
+          }
+          
+          lastFrame = this.frames[frameIndex];
+          nextFrame = this.frames[frameIndex+1];
+          
+          if (nextFrame && nextFrame.beforeTween) {
+            nextFrame.beforeTween();
+          }
+          
+          if (lastFrame && lastFrame.afterTween) {
+            lastFrame.afterTween();
+          }
+          
+          if (this.frames[frameIndex+1] && 
+            this.frames[frameIndex+1].index / animation.rate > timerData.sinceStart ||
+            !this.frames[frameIndex+1]) 
+          {
             break;
           }
         }
-      
+        
+        this.frameIndex = frameIndex;
+        
         // at end of layer?
         if (nextFrame == undefined) {
           return false;
         }
       }
-    
-      // get and set the new value
-      doTween(
-        lastFrame.value, 
-        nextFrame.value, 
-        nextFrame.isTweenable, 
-        target,
-        nextFrame.tween || this.tween || animation.tween,
-        (timerData.sinceStart - lastFrame.index / animation.rate) * 
-          animation.rate / 
-          (nextFrame.index - lastFrame.index));
+      
+      if (lastFrame && nextFrame) {
+        doTween(
+          lastFrame.value, 
+          nextFrame.value, 
+          nextFrame.isTweenable, 
+          target,
+          (nextFrame.tween || this.tween || animation.tween).type,
+          (timerData.sinceStart - lastFrame.index / animation.rate) * 
+            animation.rate / 
+            (nextFrame.index - lastFrame.index));
+      }
+      
+      // this layer is not complete
+      return true;
     }
   };
   
@@ -161,9 +213,9 @@
         lastValue[key], 
         nextValue[key], 
         isTweenable[key], 
-        index, 
-        tween, 
-        target[key]);
+        target[key],
+        tween,
+        index);
     }
     return target;
   };
@@ -171,6 +223,12 @@
   // contains new target value and how to get there
   function Frame( options ) {
     Abacus.extend(this, options);
+    
+    if ( this.tween ) {
+      this.tween = Abacus.tween({
+        type: this.tween
+      });
+    }
     
     this.isTweenable = Abacus.clone(this.value);
     calculateIsTweenable(this.value, this.isTweenable);
