@@ -28,7 +28,8 @@
     return Abacus.noop;
   }
 
-
+  // Declare Tween constructor
+  // Mapped from calls to Abacus.tween( options )
   function Tween( options ) {
 
     options = options || {};
@@ -52,8 +53,10 @@
         tweenFn( val );
       }
     });
-  } //Tween
+  }
 
+  // Abacus.tween( options )
+  // Returns new Tween object instance
   Abacus.tween = function( options ) {
     return new Tween( options );
   };

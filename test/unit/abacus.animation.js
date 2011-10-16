@@ -17,9 +17,9 @@ test('layer.step updates values', 2, function() {
         index: 10,
         value: [1, 1]
       });
-  
+
   layer.step({rate: 5}, position, {sinceStart: 1000});
-  
+
   equal(position[0], 0.5);
   equal(position[1], 0.5);
 });
@@ -38,9 +38,9 @@ test('layer.step moves to correct frame', 1, function() {
         index: 10,
         value: {'a': 2}
       });
-  
+
   layer.step({rate: 5}, obj, {sinceStart: 1500});
-  
+
   equal(obj.a, 1.5);
 });
 
@@ -54,7 +54,7 @@ test('layer.step returns false after completion', function() {
         index: 10,
         value: []
       });
-  
+
   ok(!layer.step({rate: 5}, [], {sinceStart: 3000}));
   ok(!layer.step({rate: 5}, [], {sinceStart: 4000}));
 });
@@ -72,18 +72,18 @@ test('layer.step calls beforeTween and afterTween', 2, function() {
       ok(true, 'and after');
     }
   });
-  
+
   layer.step({rate: 5}, [], {sinceStart: 3000});
   layer.step({rate: 5}, [], {sinceStart: 4000});
 });
 
 asyncTest('animation stops timer after completion', 3, function() {
-  var timePlayed = 0, 
+  var timePlayed = 0,
       animation = Abacus.animation({
         rate: 60,
         tween: 'linear'
       });
-  
+
   animation.layer().addFrame({
     index: 0,
     value: []
@@ -94,9 +94,9 @@ asyncTest('animation stops timer after completion', 3, function() {
       timePlayed = animation.timer.timing.sinceStart;
     }
   });
-  
+
   animation.start([]);
-  
+
   setTimeout(function() {
     ok(timePlayed > 1000/6, 'timePlayed (' + timePlayed + ') > ' + Math.floor(1000/6));
     equal(animation.layers[0].frameIndex, 1, 'reached end of frames');
