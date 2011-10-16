@@ -8,7 +8,6 @@ var // Dependency References
 		zlib = require( "zlib" ),
 		dateFormat = require( "dateformat" ),
 		stats = require( "stats" ),
-		jsonlint = require( "jsonlint" ),
 		cp = require("child_process"),
 		exec = cp.exec,
 		spawn = cp.spawn,
@@ -205,7 +204,7 @@ function gzip( src ) {
 // Jake Tasks
 
 desc( "Hint & Minify" );
-task( "default", [ "hint", "min", "jsonlint", "deploy" ], function() {
+task( "default", [ "hint", "min", "deploy" ], function() {
 	// Nothing
 });
 
