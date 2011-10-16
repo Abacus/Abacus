@@ -38,17 +38,15 @@ test('Abacus.clone( obj )', 6, function() {
 
 test('Abacus.extend( ... )', 12, function() {
 
-  expect( 12 );
-
   var obj1 = {
-        'key11' : 'value',
-        'key12' : 9001,
-        'key13' : function() { return true; }
+        'key11': 'value',
+        'key12': 9001,
+        'key13': function() { return true; }
       },
       obj2 = {
-        'key21' : 'String',
-        'key22' : 9002,
-        'key23' : function() { return false; }
+        'key21': 'String',
+        'key22': 9002,
+        'key23': function() { return false; }
       },
       prop, dest;
 
@@ -73,7 +71,15 @@ test('Abacus.extend( ... )', 12, function() {
   }
 
   equal( typeof dest[ 'key13' ], 'function', 'dest[key13] is a function' );
-
   equal( typeof dest[ 'key23' ], 'function', 'dest[key23] is a function' );
+});
 
+test('Abacus.noop()', 2, function() {
+  equal( typeof Abacus.noop, 'function', 'Abacus.noop is a function' );
+  equal( Abacus.noop(), undefined, 'Abacus.noop() returns undefined' );
+});
+
+test('Abacus.identity( arg )', 2, function() {
+  equal( typeof Abacus.identity, 'function', 'Abacus.identity is a function' );
+  equal( Abacus.identity( Abacus.noop ), Abacus.noop, 'Abacus.identity(Abacus.noop) returns Abacus.noop' );
 });
