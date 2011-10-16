@@ -11,7 +11,7 @@ Once the dependencies are installed:
 	$ make setup
 
 Future re-builds require _only_:
-	
+
 	$ make
 
 	Or...
@@ -94,7 +94,7 @@ Make sure to join the W3C Games Community Group [[http://www.w3.org/community/ga
  * language
  * currency
  * geolocation based lang/currency
-* Input 
+* Input
  * abstractly map a single api to as many inuts as possible
  * Keyboard
  * Mouse
@@ -129,13 +129,16 @@ Make sure to join the W3C Games Community Group [[http://www.w3.org/community/ga
 
 ## What we really want from browser vendors:
 * GPU profiling
-* GPU fingerprinting details 
+* GPU fingerprinting details
 * Higher resolution timer (micros plz)
 
 
 ## Style Guide
 We conform to the following conventions:
+
 * Two space soft tabs
 * Single quotes over double quotes
 * Use a single var statement for multiple vars when possible
-* Indent var lists by four spaces 
+* Indent var lists by four spaces
+
+See Also: https://github.com/rwldrn/idiomatic.js
