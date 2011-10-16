@@ -20,17 +20,17 @@
       if ( tween ) {
         var tweenParamType = typeof( tween );
         if ( tweenParamType === "string" ) {
-          tweenFunction = types[ tween ] || function() {};
+          tweenFunction = types[ tween ] || Abacus.noop;
         }
         else if ( tweenParamType === "function" ) {
           tweenFunction = tween;
         }
         else {
-          tweenFunction = function(){};
+          tweenFunction = Abacus.noop;
         }
       }
       else {
-        tweenFunction = function(){};
+        tweenFunction = Abacus.noop;
       }
     } //chooseTweenFunction
 

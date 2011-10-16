@@ -31,8 +31,7 @@
         for ( ; i >= 0; --i ) {
           callbackQueue[ i ]();
         }
-      },
-      noop = function() {};
+      };
 
   // Timer constructor (Internal)
   function Timer( options ) {
@@ -92,7 +91,7 @@
     // Define own property stop() function closure
     this.stop = function() {
 
-      callbackQueue.splice( callbackQueue.indexOf( this.loop || noop ), 1 );
+      callbackQueue.splice( callbackQueue.indexOf( this.loop || Abacus.noop ), 1 );
 
     }.bind( this );
 
