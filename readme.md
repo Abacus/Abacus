@@ -3,7 +3,7 @@ Abacus is an Open Source HTML5 Game Framework. Abacus is currently in the early 
 
 
 ##W3 Games Community Group
-If you are interested in contributing to Open Web Standards connected to games, make sure to join the W3C Games Community Group [[http://www.w3.org/community/games]].
+If you are interested in contributing to Open Web Standards connected to games, make sure to join the W3C Games Community Group http://www.w3.org/community/games.
 
 ## Dependencies
 ### One time setup:
