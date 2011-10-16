@@ -2,7 +2,7 @@
 	"files": {
 		"dist/abacus": {
 			"src": [
-				"src/boilerplate.js"
+				"src/abacus.timer.js"
 			],
 			"prehint": true,
 			"posthint": false,
