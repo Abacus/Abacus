@@ -62,7 +62,7 @@ Issues are also really helpful, please head over to the issues for this project 
 ## Target Browsers
 * IE 9
 * Chrome latest -1
-* FF5 latest -1
+* FF latest -1
 * Safari latest -1
 * Opera latest -1
 * Mobile Firefox latest -1
