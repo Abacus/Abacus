@@ -1,7 +1,7 @@
 (function( window ) {
 
   var types = {
-    "linear": function( start, stop, index ) {
+    'linear': function( start, stop, index ) {
       return ( stop - start ) * index + start;
     }
   };
@@ -19,10 +19,10 @@
     function chooseTweenFunction( tween ) {
       if ( tween ) {
         var tweenParamType = typeof( tween );
-        if ( tweenParamType === "string" ) {
+        if ( tweenParamType === 'string' ) {
           tweenFunction = types[ tween ] || function() {};
         }
-        else if ( tweenParamType === "function" ) {
+        else if ( tweenParamType === 'function' ) {
           tweenFunction = tween;
         }
         else {
@@ -39,7 +39,7 @@
       return tweenFunction( this.start, this.stop, this.index );
     }; //step
 
-    Object.defineProperty( this, "type", {
+    Object.defineProperty( this, 'type', {
       get: function() {
         return tweenFunction;
       },
