@@ -1,5 +1,9 @@
 #Abacus.js
-The Open Source HTML5 Game Framework
+Abacus is an Open Source HTML5 Game Framework. Abacus is currently in the early pre 0.1 stage of development. We have implemented the simplest interface for managing a runloop ```Abacus.timer()```. Please see Dependancies, Documentation, Platform goals, Target User, Roadmap, W3C API requests, and Style Guide bellow.
+
+
+##W3 Games Community Group
+If you are interested in contributing to Open Web Standards connected to games, make sure to join the W3C Games Community Group [[http://www.w3.org/community/games]].
 
 ## Dependencies
 ### One time setup:
@@ -19,9 +23,10 @@ Future re-builds require _only_:
 	$ jake
 
 
-## Current interfaces
+## Documentation
+We currently have a single interface ```Abacus.timer()```, which allows you to schedule arbitrary callbacks to be fulfilled with requestAnimationFrame where available, and setTimeout everywhere else.
 ### Abacus.timer( { callback: fn } )
-Bind a callback to a mast ~60hz (or as fast as your screen refresh) loop that uses requestAnimationFrame where possible. Multiple callbacks will use the same requestAnimationFrame. If you save a reference callback, you can also start and pause it:
+Bind callbacks to a mast ~60hz (or as fast as your screen refresh) loop that uses requestAnimationFrame where possible. Multiple callbacks will use the same requestAnimationFrame. If you save a reference callback, you can also start and pause it:
 
 ```
   var timer = Abacus.timer({
@@ -52,11 +57,6 @@ Bind a callback to a mast ~60hz (or as fast as your screen refresh) loop that us
 * Games developers
 * Indie game developers
 * Large game studios
-
-##W3 Games Community Group
-Make sure to join the W3C Games Community Group [[http://www.w3.org/community/games]]
-
-
 
 ##Roadmap
 * Timeline management (step/interpolate (keyframing))
