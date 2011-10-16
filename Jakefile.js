@@ -204,7 +204,7 @@ function gzip( src ) {
 // Jake Tasks
 
 desc( "Hint & Minify" );
-task( "default", [ "hint", "min", "deploy" ], function() {
+task( "default", [ "hint", "min" ], function() {
 	// Nothing
 });
 
