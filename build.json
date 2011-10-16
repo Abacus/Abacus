@@ -2,7 +2,9 @@
 	"files": {
 		"dist/abacus": {
 			"src": [
-				"src/abacus.timer.js"
+				"src/abacus.js",
+				"src/abacus.timer.js",
+				"src/abacus.tween.js"
 			],
 			"prehint": true,
 			"posthint": false,

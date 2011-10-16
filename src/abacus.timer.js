@@ -12,9 +12,8 @@
     };
   })();
 
-  var Abacus = window.Abacus || {},
       // An array of callbacks to call in our rAF
-      callbackQueue = [],
+  var callbackQueue = [],
       // the function we call on each tick of the rAF
       timerLoop = function() {
 
@@ -125,11 +124,8 @@
   };
 
   // Wrap new Timer() construction in Abacus.timer() API
-  Abacus.timer = function( options ) {
+  window.Abacus.timer = function( options ) {
     return new Timer( options );
   };
-
-  // Re-expose Abacus object
-  window.Abacus = Abacus;
 
 })( this );
