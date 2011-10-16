@@ -24,26 +24,7 @@ Future re-builds require _only_:
 
 
 ## Documentation
-We currently have a single interface ```Abacus.timer()```, which allows you to schedule arbitrary callbacks to be fulfilled with requestAnimationFrame where available, and setTimeout everywhere else.
-### Abacus.timer( { callback: fn } )
-Bind callbacks to a mast ~60hz (or as fast as your screen refresh) loop that uses requestAnimationFrame where possible. Multiple callbacks will use the same requestAnimationFrame. If you save a reference callback, you can also start and pause it:
-
-```
-  var timer = Abacus.timer({
-		callback: function( data ) {
-			data.delta // time since the last tick
-			data.ticks // zero indexed number of ticks
-		}
-	});
-
-  // Start the timer with an optional kill time in miliseconds
-	// if no miliseconds are passed in, it wil run FOR EV AR, until you pause it
-	timer.start( 10000 )
-
-	// Stop the timer
-	timer.pause()
-
-```
+Documentation for the APIs we have implemented so far is available on our wiki: https://github.com/boazsender/Abacus/wiki
 
 ## Project goals
 * Provide a layer that allows game devs to focus on their core competency
