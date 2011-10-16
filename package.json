@@ -1,0 +1,25 @@
+{
+	"author": "",
+	"name": "Abacus",
+	"description": "Abacus",
+	"version": "0.0.1",
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:BoazSender/Abacus.git"
+	},
+	"engines": {
+		"node": ">=v0.4.8"
+	},
+	"devDependencies": {
+		"underscore": "*",
+		"jshint": "*",
+		"uglify-js": "*",
+		"express": "*",
+		"vows": "*",
+		"stats": "*",
+		"colors": "*",
+		"zlib": "*",
+		"dateformat": "*",
+		"jsonlint": "*"
+	}
+}
