@@ -229,7 +229,7 @@ task( "hint", function() {
 				}).join( "\n" );
 
 		if ( files.src.length ) {
-			write( "Hnting concatenated source: " + files.src.length + " scripts..." );
+			write( "Hinting concatenated source: " + files.src.length + " scripts..." );
 			ok();
 			if ( files.posthint ) {
 				hint( concat, "post" );
@@ -284,6 +284,43 @@ task( "min", function() {
 				ok( "Compressed size: " + (gzip( min ).length + "").yellow + " bytes gzipped (" + ( min.length + "" ).yellow + " bytes minified)." );
 			}
 		}
+	});
+});
+
+desc( "View static analysis of JavaScript program code" );
+task( "stats", [], function() {
+
+	header( "Statistics" );
+
+	var exts = [ ".js", ".min.js" ],
+		comp, stat, diff, color;
+
+	_.keys( config.files ).forEach(function( file ) {
+
+		exts.forEach(function( ext ) {
+
+			stat = stats.parse( readFile( file + ext ) );
+
+			_.keys( stat ).forEach( function( key, idx ) {
+
+				write( "    " + key + ": " + this[ key ] );
+
+				if ( comp ) {
+					diff = (comp[ key ] - this[ key ]);
+
+					color = Math.abs(diff) > 0 ? "red" : "grey";
+
+					write( " (-" + (diff + "")[ color ] + ")" );
+				}
+
+				write( "\n" );
+			}, stat );
+
+			if ( comp == null ) {
+				comp = stat;
+			}
+
+		});
 	});
 });
 
