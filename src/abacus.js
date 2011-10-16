@@ -84,8 +84,8 @@
     return arg;
   };
 
-  // Abacus.ua
-  // Object of globally valuable properties and values
+  // Abacus.prefix
+  // This user agent's vendor prefix
   Abacus.prefix = (function( window ) {
     return [ "webkit", "moz", "ms", "o" ].filter(function( val ) {
       return val + "RequestAnimationFrame" in window;
