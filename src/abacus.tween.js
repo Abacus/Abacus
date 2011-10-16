@@ -1,4 +1,4 @@
-(function( window ) {
+(function( window, Abacus ) {
 
   var types = {
     // index - value between 0 and 1 inclusive
@@ -58,4 +58,4 @@
     return new Tween( options );
   };
 
-})( this );
+})( this, this.Abacus );
