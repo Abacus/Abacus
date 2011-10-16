@@ -1,5 +1,9 @@
 #Abacus.js
-The Open Source HTML5 Game Framework
+Abacus is an Open Source HTML5 Game Framework. Abacus is currently in the early pre 0.1 stage of development. We have implemented the simplest interface for managing a runloop ```Abacus.timer()```. Please see Dependancies, Documentation, Project goals, Target User, Roadmap, W3C API requests, Style Guide and contributing guide below.
+
+
+##W3 Games Community Group
+If you are interested in contributing to Open Web Standards connected to games, make sure to join the W3C Games Community Group http://www.w3.org/community/games.
 
 ## Dependencies
 ### One time setup:
@@ -19,9 +23,10 @@ Future re-builds require _only_:
 	$ jake
 
 
-## Current interfaces
+## Documentation
+We currently have a single interface ```Abacus.timer()```, which allows you to schedule arbitrary callbacks to be fulfilled with requestAnimationFrame where available, and setTimeout everywhere else.
 ### Abacus.timer( { callback: fn } )
-Bind a callback to a mast ~60hz (or as fast as your screen refresh) loop that uses requestAnimationFrame where possible. Multiple callbacks will use the same requestAnimationFrame. If you save a reference callback, you can also start and pause it:
+Bind callbacks to a mast ~60hz (or as fast as your screen refresh) loop that uses requestAnimationFrame where possible. Multiple callbacks will use the same requestAnimationFrame. If you save a reference callback, you can also start and pause it:
 
 ```
   var timer = Abacus.timer({
@@ -40,7 +45,7 @@ Bind a callback to a mast ~60hz (or as fast as your screen refresh) loop that us
 
 ```
 
-##Platform goals
+## Project goals
 * Provide a layer that allows game devs to focus on their core competency
 * Easy hello world
 * Reduce barrier to entry for developing casual games with html5
@@ -48,20 +53,17 @@ Bind a callback to a mast ~60hz (or as fast as your screen refresh) loop that us
 * Create programming standards for games infrastructure
 * Ensure that all data interfaces are specified in our documentation
 
-##Target User
+## Target User
 * Games developers
 * Indie game developers
 * Large game studios
 
-##W3 Games Community Group
-Make sure to join the W3C Games Community Group [[http://www.w3.org/community/games]]
+## Roadmap
+These are the APIs we are planning to implement. We are actively seecing feedback and contributions on these APIs.
 
-
-
-##Roadmap
-* Timeline management (step/interpolate (keyframing))
 * Loops/timing/deltas
  * Nice syntactic sugar around RAF
+* Timeline management (step/interpolate (keyframing))
 * Identity Management
  * Authenticate with multiple identity providers
  * Manage syndication
@@ -142,3 +144,8 @@ We conform to the following conventions:
 * Indent var lists by four spaces
 
 See Also: https://github.com/rwldrn/idiomatic.js
+
+## Contributing Guide
+We encourage you to fork, branch and make pull requests!
+
+Issues are also really helpful, please head over to the issues for this project to give input on the project goals/scope, the API so far, or to submit a feature request or bug: https://github.com/boazsender/Abacus/issues
