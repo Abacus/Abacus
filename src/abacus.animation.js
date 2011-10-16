@@ -28,8 +28,8 @@
           allComplete = layers[idx].step(animation, target, timerData) && allComplete;
         }
       
-        if (allComplete) {
-          this.stop(); // timer is this function's context
+        if (!allComplete) {
+          this.pause(); // timer is this function's context
         }
       }
     
@@ -43,7 +43,7 @@
     },
     stop: function() {
       if (this.timer) {
-        this.timer.stop();
+        this.timer.pause();
       }
     },
     // Animation.addLayer
@@ -59,7 +59,10 @@
     // get layer or shortcut add and get layer
     layer: function( idx ) {
       if (idx == undefined) {
-        return Abacus.animationLayer();
+        var layer = Abacus.animationLayer();
+        this.addLayer(layer);
+        
+        return layer;
       } else if (typeof idx == 'number') {
         return this.layers[idx];
       } else if (typeof idx == 'object') {
@@ -135,7 +138,8 @@
     // Layer.step( ... )
     // updates target and returns true if there are no further frames
     step: function( animation, target, timerData ) {
-      var frameIndex = this.frameIndex,
+      var sinceStart = timerData.sinceStart / 1000,
+          frameIndex = this.frameIndex,
           lastFrame = this.frames[frameIndex],
           nextFrame = this.frames[frameIndex+1];
         
@@ -144,12 +148,12 @@
         return false;
       }
       
-      if (lastFrame && lastFrame.index / animation.rate > timerData.sinceStart) {
+      if (lastFrame && lastFrame.index / animation.rate > sinceStart) {
         return true;
       }
       
       // increment to the next usable frame
-      if (nextFrame.index / animation.rate <= timerData.sinceStart) {
+      if (nextFrame.index / animation.rate <= sinceStart) {
         for ( frameIndex++; frameIndex < this.frames.length; frameIndex++ ) {
           if (frameIndex == 0 && nextFrame.beforeTween) {
             nextFrame.beforeTween();
@@ -167,7 +171,7 @@
           }
           
           if (this.frames[frameIndex+1] && 
-            this.frames[frameIndex+1].index / animation.rate > timerData.sinceStart ||
+            this.frames[frameIndex+1].index / animation.rate > sinceStart ||
             !this.frames[frameIndex+1]) 
           {
             break;
@@ -189,7 +193,7 @@
           nextFrame.isTweenable, 
           target,
           (nextFrame.tween || this.tween || animation.tween).type,
-          (timerData.sinceStart - lastFrame.index / animation.rate) * 
+          (sinceStart - lastFrame.index / animation.rate) * 
             animation.rate / 
             (nextFrame.index - lastFrame.index));
       }
