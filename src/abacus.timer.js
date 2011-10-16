@@ -32,13 +32,7 @@
           callbackQueue[ i ]();
         }
       },
-      noop = function() {},
-      guid = function() {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-          var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-          return v.toString(16);
-        }).toUpperCase();
-      };
+      noop = function() {};
 
   // Timer constructor (Internal)
   function Timer( options ) {
@@ -48,7 +42,7 @@
     options = options || {};
 
     // Ensure an id is created for this Timer instance
-    this.id = options.id || guid();
+    this.id = options.id || Abacus.guid();
 
     // Instance tracking properties
     this.lastTick = 0;
