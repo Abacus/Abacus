@@ -59,9 +59,11 @@ Bind callbacks to a mast ~60hz (or as fast as your screen refresh) loop that use
 * Large game studios
 
 ## Roadmap
-* Timeline management (step/interpolate (keyframing))
+These are the APIs we are planning to implement. We are actively seecing feedback and contributions on these APIs.
+
 * Loops/timing/deltas
  * Nice syntactic sugar around RAF
+* Timeline management (step/interpolate (keyframing))
 * Identity Management
  * Authenticate with multiple identity providers
  * Manage syndication
