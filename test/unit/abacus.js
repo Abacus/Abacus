@@ -1,4 +1,4 @@
-module('Abacus Core');
+module('Core');
 test('Test that the Abacus object exists', 1, function() {
   ok( Abacus, 'Abacus exists' );
 });
