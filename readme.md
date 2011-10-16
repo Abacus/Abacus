@@ -60,10 +60,10 @@ We encourage you to fork, branch and make pull requests!
 Issues are also really helpful, please head over to the issues for this project to give input on the project goals/scope, the API so far, or to submit a feature request or bug: https://github.com/boazsender/Abacus/issues
 
 ## Target Browsers
-* Chrome 14+
-* FF5+
-* Safari 5+
-* IE 9+
-* Opera 9.5+
-* Mobile Firefox 6+
-* Mobile Safari 5+
+* IE 9
+* Chrome latest -1
+* FF5 latest -1
+* Safari latest -1
+* Opera latest -1
+* Mobile Firefox latest -1
+* Mobile Safari latest -1
