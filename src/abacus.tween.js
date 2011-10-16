@@ -54,7 +54,7 @@
     });
   } //Tween
 
-  window.Abacus.tween = function( options ) {
+  Abacus.tween = function( options ) {
     return new Tween( options );
   };
 

@@ -117,7 +117,7 @@
   };
 
   // Wrap new Timer() construction in Abacus.timer() API
-  window.Abacus.timer = function( options ) {
+  Abacus.timer = function( options ) {
     return new Timer( options );
   };
 
