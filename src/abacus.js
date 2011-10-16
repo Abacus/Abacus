@@ -74,6 +74,17 @@
     return dest;
   };
 
+  // Abacus.noop
+  // No operation function expression literal
+  Abacus.noop = function() {};
+
+  // Abacus.identity( arg )
+  // Returns the same value that was used as its argument
+  Abacus.identity = function( arg ) {
+    return arg;
+  };
+
+
   // Expose global Abacus object
   window.Abacus = Abacus;
 
