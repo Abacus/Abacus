@@ -18,6 +18,8 @@
     }
   }
   Animation.prototype = {
+    // Animation.start
+    // start the animation
     start: function( target ) {
       var animation = this;
       function timerCallback( timerData ) {
@@ -41,6 +43,8 @@
     
       this.timer.start();
     },
+    // Animation.stop
+    // stop the animation (by stopping its timer)
     stop: function() {
       if (this.timer) {
         this.timer.pause();
@@ -86,10 +90,12 @@
         }
       } else {
         // ERROR: throw an error ...
+        
       }
     }
   };
   
+  // Layer constructor
   // groups of frames
   function Layer( options ) {
     options = options || {};
@@ -189,6 +195,7 @@
       // increment to the next usable frame
       if (nextFrame.index / animation.rate <= sinceStart) {
         for ( frameIndex++; frameIndex < this.frames.length; frameIndex++ ) {
+          // special case for first frame
           if (frameIndex == 0 && nextFrame.beforeTween) {
             nextFrame.beforeTween();
           }
@@ -258,6 +265,7 @@
     return target;
   };
   
+  // Frame constructor
   // contains new target value and how to get there
   function Frame( options ) {
     Abacus.extend(this, options);
@@ -283,12 +291,27 @@
   }
   
   Abacus.animation = function( options ) {
+    // options
+    //   rate - indices per second
+    //   timer - Abacus.timer
+    //   tween - tween function or 'tweenName'
+    
     return new Animation(options);
   };
   Abacus.animationLayer = function( options ) {
+    // options
+    //   tween - tween function
+    
     return new Layer(options);
   };
   Abacus.animationFrame = function( options ) {
+    // options
+    //   index - integer
+    //   value - array or object, can be nested
+    //   tween - function(start, stop, t){} or 'tweenName'
+    //   beforeTween - function(frame){}
+    //   afterTween - function(frame){}
+    
     return new Frame(options);
   };
   
