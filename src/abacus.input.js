@@ -8,7 +8,7 @@
 			state: function ( keyCode, state ){
 
         if ( arguments.length > 1 ) {
-				
+
 				  this[ Abacus.inputsMap[ keyCode ] ] = state;
           
 					//console.log(this[ Abacus.inputs[ keyCode ] ], Abacus.inputs[ keyCode ], keyCode, this )
