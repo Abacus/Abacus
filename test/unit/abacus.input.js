@@ -1,24 +1,22 @@
-/*
-document.addEventListener('keydown', function( e ){
+module('Timer Module');
+test('Test that the Abacus.inputs exists', 1, function() {
+  ok( Abacus.inputs, 'Abacus.inputs exists' );
+});
+ 
 
-  // write some code to trigger an event
+test('Test that the Abacus.inputs for char code 0 is updating', 1, function() {
 
   document.addEventListener('keydown', function( e ){
-		Abacus.inputs.state( e.keyCode, 'active')
 
-		console.log( Abacus.inputs.state( Abacus.inputsLookup[ e.keyCode ] ) )
-	}, false);
+    equal( Abacus.inputs['0'], 'inActive', 'Abacus.inputs["0"] is active' );
+    console.log(Abacus.inputs['0'], 'its happening')
 
-}, false);
-*/
+  }, false);
 
-/*
-// Trigger a keyboard event, not yet sure how to get it
-// to fire a keyCode:
 
-var event = document.createEvent("KeyboardEvent");
-event.initKeyboardEvent('keydown', true, true, window, 1);
-event.keyCode = 67;
-document.dispatchEvent(event);
+var evt = document.createEvent( 'KeyboardEvent' );
+evt.initKeyboardEvent( 'keydown', true, false, null, 0, false, 0, false, 65, 0 );
+document.dispatchEvent(evt);
 
-*/
+
+});

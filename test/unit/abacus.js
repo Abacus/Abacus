@@ -1,4 +1,4 @@
-module('Abacus Core');
+module('Core');
 test('Test that the Abacus object exists', 1, function() {
   ok( Abacus, 'Abacus exists' );
 });
@@ -82,4 +82,8 @@ test('Abacus.noop()', 2, function() {
 test('Abacus.identity( arg )', 2, function() {
   equal( typeof Abacus.identity, 'function', 'Abacus.identity is a function' );
   equal( Abacus.identity( Abacus.noop ), Abacus.noop, 'Abacus.identity(Abacus.noop) returns Abacus.noop' );
+});
+
+test('Abacus.prefix (ua vendor prefix)', 1, function() {
+  equal( typeof Abacus.prefix, 'string', 'Abacus.prefix is a string' );
 });

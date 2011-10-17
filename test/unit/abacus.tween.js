@@ -1,4 +1,4 @@
-module('Tween Module');
+module('Tween');
 test('Test that the Abacus.tween exists', 1, function() {
   ok( Abacus.tween, 'Abacus.tween exists' );
 });
