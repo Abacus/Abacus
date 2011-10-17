@@ -1,10 +1,3 @@
-/*
-
-Abacus.inputs.a // true if pressed || false if not
-
-*/
-
-
 (function( window, Abacus ) {
 
   // Wait until the DOM is loaded
@@ -46,7 +39,7 @@ Abacus.inputs.a // true if pressed || false if not
 	  document.addEventListener('keydown', function( e ){
 			Abacus.inputs.state( e.keyCode, 'active')
 
-			console.log( Abacus.inputs.state( Abacus.inputsLookup[ e.keyCode ] ) )
+			console.log(e.keyCode, Abacus.inputs.state( Abacus.inputsLookup[ e.keyCode ] ) )
 		}, false);
 
     document.addEventListener('keyup', function( e ){

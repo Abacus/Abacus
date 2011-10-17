@@ -16,8 +16,9 @@ document.addEventListener('keydown', function( e ){
 // Trigger a keyboard event, not yet sure how to get it
 // to fire a keyCode:
 
-evt = document.createEvent("KeyboardEvent");
-evt.initEvent('keydown', true, true); // event type,bubbling,cancelable
-document.dispatchEvent(evt);
+var event = document.createEvent("KeyboardEvent");
+event.initKeyboardEvent('keydown', true, true, window, 1);
+event.keyCode = 67;
+document.dispatchEvent(event);
 
 */
