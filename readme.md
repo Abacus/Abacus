@@ -24,7 +24,7 @@ Future re-builds require _only_:
 
 
 ## Documentation
-Documentation for the APIs we have implemented so far is available on our wiki: https://github.com/boazsender/Abacus/wiki
+Documentation for the APIs we have implemented so far is available on our wiki: https://github.com/boazsender/Abacus/wiki/Documentation
 
 ## Project goals
 The project goals are available on our wiki: https://github.com/boazsender/Abacus/wiki/goals
