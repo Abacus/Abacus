@@ -107,3 +107,40 @@ asyncTest('animation stops timer after completion', 3, function() {
     start();
   }, 300);
 });
+
+test('layer works with typed arrays', 7, function() {
+  ok(window.Float32Array, 'browser supports Float32Array');
+  
+  var floatArray = new Float32Array([0,0]),
+      layer = Abacus.animationLayer({
+        tween: 'linear'
+      }).addFrame({
+        index: 0,
+        value: [0, 0]
+      }).addFrame({
+        index: 10,
+        value: [1, 1]
+      });
+  
+  layer.step({rate: 5}, floatArray, {sinceStart: 1000});
+  
+  ok(floatArray instanceof Float32Array);
+  equal(floatArray[0], 0.5);
+  equal(floatArray[1], 0.5);
+  
+  layer = Abacus.animationLayer({
+    tween: 'linear'
+  }).addFrame({
+    index: 0,
+    value: new Float32Array([0, 0])
+  }).addFrame({
+    index: 10,
+    value: new Float32Array([1, 1])
+  });
+  
+  layer.step({rate: 5}, floatArray, {sinceStart: 1000});
+  
+  ok(floatArray instanceof Float32Array);
+  equal(floatArray[0], 0.5);
+  equal(floatArray[1], 0.5);
+});
