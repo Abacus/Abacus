@@ -2,21 +2,25 @@
   
   var Abacus = window.Abacus || {};
   
-    
   // doTween( ... )
   // recursively tween values
   function doTween( 
-    lastValue, nextValue, isTweenable, target, tween, index ) 
+    lastValue, nextValue, isTweenable, keys, target, tween, index ) 
   {
     if (isTweenable === true) {
       return tween(lastValue, nextValue, index);
     }
     
-    for (var key in nextValue) {
+    var i = keys.length / 2,
+        halfKeys = keys.length / 2,
+        key;
+    while (i--) {
+      key = keys[i];
       target[key] = doTween(
-        lastValue[key], 
-        nextValue[key], 
-        isTweenable[key], 
+        lastValue[key],
+        nextValue[key],
+        isTweenable[key],
+        keys[halfKeys+i],
         target[key],
         tween,
         index);
@@ -34,6 +38,25 @@
     }
   }
   
+  function cacheKeys(values, keys) {
+    var key, _key;
+    for (key in values) {
+      try {
+        _key = parseInt(key, 10);
+        if (!isNaN(_key)) {
+          key = _key;
+        }
+      } catch (e) {}
+      keys.push(key);
+    }
+    
+    for (key in values) {
+      keys.push(cacheKeys(values[key], []));
+    }
+    
+    return keys;
+  }
+  
   // Frame constructor
   // contains new target value and how to get there
   function Frame( options ) {
@@ -47,9 +70,9 @@
     
     this.isTweenable = Abacus.clone(this.value);
     calculateIsTweenable(this.value, this.isTweenable);
+    
+    this.keys = cacheKeys(this.value, []);
   }
-  
-  
   
   // Layer constructor
   // groups of frames
@@ -188,6 +211,7 @@
           lastFrame.value, 
           nextFrame.value, 
           nextFrame.isTweenable, 
+          nextFrame.keys,
           target,
           (nextFrame.tween || this.tween || animation.tween).type,
           (sinceStart - lastFrame.index / animation.rate) * 
