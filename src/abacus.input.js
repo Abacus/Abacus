@@ -1,4 +1,4 @@
-(function( window, Abacus ) {
+  (function( window, Abacus ) {
 
   // Wait until the DOM is loaded
 	document.addEventListener('DOMContentLoaded', function(){
