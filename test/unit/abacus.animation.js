@@ -99,11 +99,68 @@ asyncTest('animation stops timer after completion', 3, function() {
 
   setTimeout(function() {
     ok(timePlayed > 1000/6, 'timePlayed (' + timePlayed + ') > ' + Math.floor(1000/6));
-    equal(animation.layers[0].frameIndex, 1, 'reached end of frames');
+    equal(animation.layers[0].frameIndex, -1, 'reached end of frames');
     ok(animation.timer.isPaused);
     if (!animation.timer.isPaused) {
       animation.timer.pause();
     }
     start();
   }, 300);
+});
+
+test('layer works with typed arrays', 7, function() {
+  ok(window.Float32Array, 'browser supports Float32Array');
+  
+  var floatArray = new Float32Array([0,0]),
+      layer = Abacus.animation.layer({
+        tween: 'linear'
+      }).addFrame({
+        index: 0,
+        value: [0, 0]
+      }).addFrame({
+        index: 10,
+        value: [1, 1]
+      });
+  
+  layer.step({rate: 5}, floatArray, {sinceStart: 1000});
+  
+  ok(floatArray instanceof Float32Array);
+  equal(floatArray[0], 0.5);
+  equal(floatArray[1], 0.5);
+  
+  layer = Abacus.animation.layer({
+    tween: 'linear'
+  }).addFrame({
+    index: 0,
+    value: new Float32Array([0, 0])
+  }).addFrame({
+    index: 10,
+    value: new Float32Array([1, 1])
+  });
+  
+  layer.step({rate: 5}, floatArray, {sinceStart: 1000});
+  
+  ok(floatArray instanceof Float32Array);
+  equal(floatArray[0], 0.5);
+  equal(floatArray[1], 0.5);
+});
+
+test('animation{instance}.layer throws errors for bad arguments', 2, function() {
+  var animation = Abacus.animation({}),
+      options = {
+        index: 0,
+        tween: 'linear'
+      };
+  
+  raises(function() {
+    animation.layer(options);
+  }, function(e) {
+    return e.hasOwnProperty('argument') && e.argument == options;
+  }, 'exception on specifying options with index of a layer that doesn\'t exist');
+  
+  raises(function() {
+    animation.layer(true);
+  }, function(e) {
+    return e.hasOwnProperty('argument') && e.argument === true;
+  }, 'exception on specifying option as something other than undefined, integer, or object')
 });
