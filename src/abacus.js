@@ -7,10 +7,7 @@
   // Localize references to commonly used methods
   slice = [].slice,
   toString = {}.toString,
-  hasOwn = {}.hasOwnProperty,
-
-  // Core Internal References
-  classTypes = {};
+  hasOwn = {}.hasOwnProperty;
 
   // Declare global Abacus methods
 
@@ -29,7 +26,7 @@
   Abacus.clone = function( obj ) {
 
     var temp = [],
-        val, length, i;
+        ctorName, val, length, i;
 
     if ( Array.isArray( obj ) ) {
 
@@ -45,6 +42,14 @@
         temp[ i ] = val;
       }
       return temp;
+    }
+
+    // Determine constructor name from obj prototype
+    ctorName = Object.getPrototypeOf( obj ).constructor.name;
+
+    // Copy ArrayBufferView objects
+    if ( /(.+)Array$/.test( ctorName ) ) {
+      return new window[ ctorName ]( obj );
     }
 
     // Create a new object whose prototype is a new, empty object,
@@ -111,19 +116,6 @@
       return val + "RequestAnimationFrame" in window;
     })[ 0 ] || "";
   })( window );
-
-  "Boolean Number String Function Array Date RegExp Object Float32Array Float64Array".split(" ").forEach(function( name ) {
-    classTypes[ "[object " + name + "]" ] = name.toLowerCase();
-  });
-
-  // Abacus.type( obj )
-  // Returns object type
-  Abacus.type = function( obj ) {
-    return obj == null ?
-      String( obj ) :
-      classTypes[ toString.call(obj) ] || "object";
-  };
-
 
   // Expose global Abacus object
   window.Abacus = Abacus;
