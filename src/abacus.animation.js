@@ -27,7 +27,7 @@
 
   function cacheTweenable( values ) {
     var tweenable = {},
-				key, parsedKey;
+        key, parsedKey;
 
     for ( key in values ) {
       parsedKey = parseInt( key, 10 );
@@ -340,16 +340,16 @@
         layer = Abacus.animation.layer();
 
         // Add to current layers
-        this.addLayer(layer);
+        this.addLayer( layer );
 
         return layer;
       }
 
       if ( this.layers[ idx ] ) {
-        return this.layers[idx];
+        return this.layers[ idx ];
       }
 
-      if ( typeof idx == 'object' ) {
+      if ( typeof idx === 'object' ) {
 
         options = idx;
 
@@ -359,14 +359,16 @@
             Abacus.extend( layer, options );
 
             return layer;
-          } else {
-            // error, layer must already exist for index to be specified
-            throw {
-              type: 'ArgumentException',
-              message: 'layer with given index (' + options.index + ') must exist before calling layer(...) with object',
-              argument: options
-            };
           }
+
+          // Reaching this block implies an error,
+          // layer must already exist for index to be specified
+          throw {
+            type: 'ArgumentException',
+            message: 'layer with given index (' + options.index + ') must exist before calling layer(...) with object',
+            argument: options
+          };
+
         } else {
           // shortcut for Abacus.animation.layer
           layer = Abacus.animation.layer( options );
@@ -379,7 +381,7 @@
 
       throw {
         type: 'ArgumentException',
-        message: 'layer must be called with undefined, an integer, or an object',
+        message: 'layer must be called with undefined, a number, or an object',
         argument: idx
       };
     }
