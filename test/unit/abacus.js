@@ -8,13 +8,14 @@ test('Abacus.guid()', 2, function() {
   equal( Abacus.guid().length, 36, 'Abacus.guid() returns a 36 charachter string' )
 });
 
-test('Abacus.clone( obj )', 6, function() {
+test('Abacus.clone( obj )', 7, function() {
   var orig = {
         foo: 'bar',
         inner: {
           prop: false,
           array: [ 1, 2, 3, 4, 5 ]
-        }
+        },
+        deepArray: [ 0, 1, 2, 3, [ 4, 5, 6 ]]
       },
       cloned = Abacus.clone( orig );
 
@@ -25,9 +26,12 @@ test('Abacus.clone( obj )', 6, function() {
 
   // Change a value of the original `inner.array`
   cloned.inner.array[0] = 'a';
+  cloned.deepArray[4][0] = 7;
 
   notEqual( orig.inner.array[0], cloned.inner.array[0],
     '(notEqual) Changing an array property value of the cloned object doesn\'t effect the original' );
+  notEqual( cloned.deepArray[4][0], orig.deepArray[4][0], 
+    '(notEqual) Changing an array property value in an array of the cloned object doesn\'t effect the original' );
 
   cloned.foo = 'qux';
 
