@@ -111,6 +111,12 @@
     this.frameIndex = -1;
   }
   Layer.prototype = {
+    // Layer.reset
+    // reset internal values to the start of the layer
+    reset: function() {
+      this.frameIndex = -1;
+    },
+    
     // Layer.addFrame(frame)
     // insert animationFrame object according to frame.index. returns Layer
     addFrame: function( frame ) {
@@ -269,7 +275,8 @@
         }
       
         if (!allComplete) {
-          this.pause(); // timer is this function's context
+          // stop the timer and reset values to the beginning
+          animation.stop();
         }
       }
     
@@ -287,6 +294,14 @@
       if (this.timer) {
         this.timer.pause();
       }
+      this.reset();
+    },
+    // Animation.reset
+    // reset values to the start of the animation
+    reset: function() {
+      this.layers.forEach(function(layer) {
+        layer.reset();
+      });
     },
     // Animation.addLayer
     // add new layer. returns Animation
