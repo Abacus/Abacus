@@ -8,7 +8,7 @@
 				"src/abacus.animation.js"
 			],
 			"prehint": true,
-			"posthint": false,
+			"posthint": true,
 			"debug": true,
 
 			"meta": {

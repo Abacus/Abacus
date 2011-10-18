@@ -2,8 +2,8 @@
 
   // doTween( ... )
   // recursively tween values
-  function doTween( lastValue, nextValue, isTweenable, keys, target, tween, index ) {
-    if ( isTweenable === true ) {
+  function doTween( lastValue, nextValue, tweenable, keys, target, tween, index ) {
+    if ( tweenable === true ) {
       return tween( lastValue, nextValue, index );
     }
 
@@ -15,7 +15,7 @@
       target[ key ] = doTween(
         lastValue[ key ],
         nextValue[ key ],
-        isTweenable[ key ],
+        tweenable[ key ],
         keys[ halfKeys+i ],
         target[ key ],
         tween,
@@ -25,23 +25,24 @@
     return target;
   }
 
-  function cacheIsTweenable( values ) {
-    var isTweenable = {}, key, parsedKey;
+  function cacheTweenable( values ) {
+    var tweenable = {},
+				key, parsedKey;
 
     for ( key in values ) {
       parsedKey = parseInt( key, 10 );
       if ( !isNaN( parsedKey ) ) {
         key = parsedKey;
       }
-      
+
       if ( typeof values[ key ] == 'number' ) {
-        isTweenable[ key ] = true;
+        tweenable[ key ] = true;
       } else {
-        isTweenable[ key ] = cacheIsTweenable( values[ key ] );
+        tweenable[ key ] = cacheTweenable( values[ key ] );
       }
     }
 
-    return isTweenable;
+    return tweenable;
   }
 
   function cacheKeys(values, keys) {
@@ -73,7 +74,7 @@
       });
     }
 
-    this.isTweenable = cacheIsTweenable( this.value );
+    this.tweenable = cacheTweenable( this.value );
 
     this.keys = cacheKeys( this.value, [] );
   }
@@ -141,7 +142,7 @@
           i = 0;
 
       for ( ; i < framesLength; i++ ) {
-        if ( frames[i].index == index ) {
+        if ( frames[i].index === index ) {
           return frames[i];
         }
       }
@@ -162,7 +163,7 @@
       }
 
       for ( ; i < framesLength; i++ ) {
-        if (frames[i].index == index) {
+        if ( frames[i].index === index ) {
           frames.splice( i, 1 );
           break;
         }
@@ -209,9 +210,9 @@
             lastFrame.afterTween();
           }
 
-          if ( this.frames[ framePlus ] && 
+          if ( this.frames[ framePlus ] &&
             this.frames[ framePlus ].index / animation.rate > sinceStart ||
-            !this.frames[ framePlus ] ) 
+            !this.frames[ framePlus ] )
           {
             break;
           }
@@ -229,7 +230,7 @@
         doTween(
           lastFrame.value,
           nextFrame.value,
-          nextFrame.isTweenable,
+          nextFrame.tweenable,
           nextFrame.keys,
           target,
           ( nextFrame.tween || this.tween || animation.tween ).type,
@@ -259,7 +260,7 @@
       this.layers = [];
     }
   }
-  
+
   Animation.prototype = {
 
     // Animation.start()
@@ -270,7 +271,7 @@
       // timerCallback context |this| is Timer instance
       function timerCallback( timerData ) {
 
-        var layers = animation.layers, 
+        var layers = animation.layers,
             allComplete = true,
             idx;
 
@@ -306,7 +307,7 @@
 
       return this;
     },
-    
+
     // Animation.reset()
     // Returns Animation
     reset: function() {
@@ -316,7 +317,7 @@
 
       return this;
     },
-    
+
     // Animation.addLayer
     // Add new layer. Returns Animation
     addLayer: function( layer ) {
@@ -375,7 +376,7 @@
           return layer;
         }
       }
-      
+
       throw {
         type: 'ArgumentException',
         message: 'layer must be called with undefined, an integer, or an object',
