@@ -20,12 +20,12 @@ test('layer.step updates values', 2, function() {
 
   layer.step({rate: 5}, position, {sinceStart: 1000});
 
-  equal(position[0], 0.5);
-  equal(position[1], 0.5);
+  equal( position[0], 0.5 );
+  equal( position[1], 0.5 );
 });
 
 test('layer.step moves to correct frame', 1, function() {
-  var obj = {'a': 0},
+  var obj = { 'a': 0 },
       layer = Abacus.animation.layer({
         tween: 'linear'
       }).addFrame({
@@ -39,9 +39,9 @@ test('layer.step moves to correct frame', 1, function() {
         value: {'a': 2}
       });
 
-  layer.step({rate: 5}, obj, {sinceStart: 1500});
+  layer.step({ rate: 5 }, obj, { sinceStart: 1500 });
 
-  equal(obj.a, 1.5);
+  equal( obj.a, 1.5 );
 });
 
 test('layer.step returns false after completion', function() {
@@ -55,8 +55,8 @@ test('layer.step returns false after completion', function() {
         value: []
       });
 
-  ok(!layer.step({rate: 5}, [], {sinceStart: 3000}));
-  ok(!layer.step({rate: 5}, [], {sinceStart: 4000}));
+  ok( !layer.step({ rate: 5 }, [], { sinceStart: 3000 }) );
+  ok( !layer.step({ rate: 5 }, [], { sinceStart: 4000 }) );
 });
 
 test('layer.step calls beforeTween and afterTween', 2, function() {
@@ -66,15 +66,15 @@ test('layer.step calls beforeTween and afterTween', 2, function() {
     index: 10,
     value: [],
     beforeTween: function() {
-      ok(true, 'before');
+      ok( true, 'before' );
     },
     afterTween: function() {
-      ok(true, 'and after');
+      ok( true, 'and after' );
     }
   });
 
-  layer.step({rate: 5}, [], {sinceStart: 3000});
-  layer.step({rate: 5}, [], {sinceStart: 4000});
+  layer.step({ rate: 5 }, [], { sinceStart: 3000 });
+  layer.step({ rate: 5 }, [], { sinceStart: 4000 });
 });
 
 asyncTest('animation stops timer after completion', 3, function() {
@@ -98,10 +98,10 @@ asyncTest('animation stops timer after completion', 3, function() {
   animation.start([]);
 
   setTimeout(function() {
-    ok(timePlayed > 1000/6, 'timePlayed (' + timePlayed + ') > ' + Math.floor(1000/6));
-    equal(animation.layers[0].frameIndex, -1, 'reached end of frames');
-    ok(animation.timer.isPaused);
-    if (!animation.timer.isPaused) {
+    ok( timePlayed > 1000/6, 'timePlayed (' + timePlayed + ') > ' + Math.floor(1000/6) );
+    equal( animation.layers[0].frameIndex, -1, 'reached end of frames' );
+    ok( animation.timer.isPaused );
+    if ( !animation.timer.isPaused ) {
       animation.timer.pause();
     }
     start();
@@ -109,8 +109,8 @@ asyncTest('animation stops timer after completion', 3, function() {
 });
 
 test('layer works with typed arrays', 7, function() {
-  ok(window.Float32Array, 'browser supports Float32Array');
-  
+  ok( window.Float32Array, 'browser supports Float32Array' );
+
   var floatArray = new Float32Array([0,0]),
       layer = Abacus.animation.layer({
         tween: 'linear'
@@ -121,13 +121,13 @@ test('layer works with typed arrays', 7, function() {
         index: 10,
         value: [1, 1]
       });
-  
-  layer.step({rate: 5}, floatArray, {sinceStart: 1000});
-  
-  ok(floatArray instanceof Float32Array);
-  equal(floatArray[0], 0.5);
-  equal(floatArray[1], 0.5);
-  
+
+  layer.step({ rate: 5 }, floatArray, { sinceStart: 1000 });
+
+  ok( floatArray instanceof Float32Array );
+  equal( floatArray[0], 0.5 );
+  equal( floatArray[1], 0.5 );
+
   layer = Abacus.animation.layer({
     tween: 'linear'
   }).addFrame({
@@ -137,12 +137,12 @@ test('layer works with typed arrays', 7, function() {
     index: 10,
     value: new Float32Array([1, 1])
   });
-  
-  layer.step({rate: 5}, floatArray, {sinceStart: 1000});
-  
-  ok(floatArray instanceof Float32Array);
-  equal(floatArray[0], 0.5);
-  equal(floatArray[1], 0.5);
+
+  layer.step({ rate: 5 }, floatArray, { sinceStart: 1000 });
+
+  ok( floatArray instanceof Float32Array );
+  equal( floatArray[0], 0.5 );
+  equal( floatArray[1], 0.5 );
 });
 
 test('animation{instance}.layer throws errors for bad arguments', 2, function() {
@@ -151,16 +151,16 @@ test('animation{instance}.layer throws errors for bad arguments', 2, function() 
         index: 0,
         tween: 'linear'
       };
-  
+
   raises(function() {
-    animation.layer(options);
-  }, function(e) {
+    animation.layer( options );
+  }, function( e ) {
     return e.hasOwnProperty('argument') && e.argument == options;
-  }, 'exception on specifying options with index of a layer that doesn\'t exist');
-  
+  }, 'exception on specifying options with index of a layer that doesn\'t exist' );
+
   raises(function() {
     animation.layer(true);
-  }, function(e) {
+  }, function( e ) {
     return e.hasOwnProperty('argument') && e.argument === true;
-  }, 'exception on specifying option as something other than undefined, integer, or object')
+  }, 'exception on specifying option as something other than undefined, integer, or object' );
 });

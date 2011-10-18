@@ -45,8 +45,9 @@
     return tweenable;
   }
 
-  function cacheKeys(values, keys) {
+  function cacheKeys( values, keys ) {
     var key, _key;
+
     for ( key in values ) {
       _key = parseInt( key, 10 );
       if ( !isNaN(_key) ) {
