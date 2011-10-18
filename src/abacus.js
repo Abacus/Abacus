@@ -29,10 +29,10 @@
     if ( Array.isArray( obj ) ) {
 
       for ( i = 0, length = obj.length; i < length; i++ ) {
-        // Store reference to this array item
+        // Store reference to this array item's value
         val = obj[ i ];
 
-        // If array item is an object, derive new value by cloning
+        // If array item is an object (including arrays), derive new value by cloning
         if ( typeof val === "object" ) {
           val = Abacus.clone( val );
         }

@@ -58,7 +58,7 @@ test('Abacus.clone() mega deep', 5, function() {
       cloned = Abacus.clone( orig );
 
   equal( orig[0], cloned[0], 'orig[0] === cloned[0]' );
-  
+
   orig[3][0] = 'throat';
   orig[3][2].holy = 'moly';
   orig[4].foo = 'qux';
@@ -69,9 +69,6 @@ test('Abacus.clone() mega deep', 5, function() {
   equal( cloned[4].foo, 'bar', 'Deep array, object item property clones' );
   equal( cloned[4].deeper.prop, 'stuff', 'Deep array, object property value clones' );
 });
-
-
-
 
 test('Abacus.extend( ... )', 12, function() {
 
