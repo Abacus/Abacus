@@ -24,10 +24,10 @@ test('Abacus.clone( obj )', 6, function() {
   ok( cloned.inner.hasOwnProperty('array'), 'cloned.inner.hasOwnProperty("array")' );
 
   // Change a value of the original `inner.array`
-  cloned.inner.array[0] = 'a';
+  orig.inner.array[0] = 'a';
 
-  notEqual( orig.inner.array[0], cloned.inner.array[0],
-    '(notEqual) Changing an array property value of the cloned object doesn\'t effect the original' );
+  notEqual( cloned.inner.array[0], orig.inner.array[0],
+    '(notEqual) Changing an array property value of the original object doesn\'t effect the clone' );
 
   cloned.foo = 'qux';
 
@@ -35,6 +35,20 @@ test('Abacus.clone( obj )', 6, function() {
     '(notEqual) Changing a property value of the cloned object doesn\'t effect the original' );
 
 });
+
+test('Abacus.clone( array )', 2, function() {
+  var orig = [ 1, 2, 3, 4, 5 ],
+      cloned = Abacus.clone( orig );
+
+  equal( orig[0], cloned[0], 'orig[0] === cloned[0]' );
+
+  // Change value of orig[0]
+  orig[0] = 'a';
+
+  notEqual( cloned[0], orig[0],
+    '(notEqual) Changing an array property value doesn\'t effect the clone' );
+});
+
 
 test('Abacus.extend( ... )', 12, function() {
 
