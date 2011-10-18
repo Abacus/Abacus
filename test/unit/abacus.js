@@ -70,6 +70,13 @@ test('Abacus.clone() mega deep', 5, function() {
   equal( cloned[4].deeper.prop, 'stuff', 'Deep array, object property value clones' );
 });
 
+test('Abacus.clone( ArrayBufferView )', 1, function() {
+  var orig = new Float32Array([ 1, 2 ]),
+      cloned = Abacus.clone( orig );
+
+  equal( Abacus.type( cloned ), 'Float32Array', 'cloned "type" is Float32Array' );
+});
+
 test('Abacus.extend( ... )', 12, function() {
 
   var obj1 = {
@@ -120,4 +127,31 @@ test('Abacus.identity( arg )', 2, function() {
 
 test('Abacus.prefix (ua vendor prefix)', 1, function() {
   equal( typeof Abacus.prefix, 'string', 'Abacus.prefix is a string' );
+});
+
+test('Abacus.type()', 24, function() {
+  equals( Abacus.type(null), 'null', 'null' );
+  equals( Abacus.type(undefined), 'undefined', 'undefined' );
+  equals( Abacus.type(true), 'boolean', 'Boolean' );
+  equals( Abacus.type(false), 'boolean', 'Boolean' );
+  equals( Abacus.type(Boolean(true)), 'boolean', 'Boolean' );
+  equals( Abacus.type(0), 'number', 'Number' );
+  equals( Abacus.type(1), 'number', 'Number' );
+  equals( Abacus.type(Number(1)), 'number', 'Number' );
+  equals( Abacus.type(''), 'string', 'String' );
+  equals( Abacus.type('a'), 'string', 'String' );
+  equals( Abacus.type(String('a')), 'string', 'String' );
+  equals( Abacus.type({}), 'object', 'Object' );
+  equals( Abacus.type(/foo/), 'regexp', 'RegExp' );
+  equals( Abacus.type(new RegExp('asdf')), 'regexp', 'RegExp' );
+  equals( Abacus.type([1]), 'array', 'Array' );
+  equals( Abacus.type(new Float32Array([ 1, 2 ])), 'Float32Array', 'Float32Array' );
+  equals( Abacus.type(new Date()), 'date', 'Date' );
+  equals( Abacus.type(new Function('return;')), 'function', 'Function' );
+  equals( Abacus.type(function(){}), 'function', 'Function' );
+  equals( Abacus.type(window), 'object', 'Window' );
+  equals( Abacus.type(document), 'object', 'Document' );
+  equals( Abacus.type(document.body), 'object', 'Element' );
+  equals( Abacus.type(document.createTextNode('foo')), 'object', 'TextNode' );
+  equals( Abacus.type(document.getElementsByTagName('*')), 'object', 'NodeList' );
 });

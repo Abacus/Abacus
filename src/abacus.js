@@ -5,7 +5,12 @@
   var Abacus = {},
 
   // Localize references to commonly used methods
-  slice = [].slice;
+  slice = [].slice,
+  toString = {}.toString,
+  hasOwn = {}.hasOwnProperty,
+
+  // Core Internal References
+  classTypes = {};
 
   // Declare global Abacus methods
 
@@ -106,6 +111,18 @@
       return val + "RequestAnimationFrame" in window;
     })[ 0 ] || "";
   })( window );
+
+  "Boolean Number String Function Array Date RegExp Object Float32Array Float64Array".split(" ").forEach(function( name ) {
+    classTypes[ "[object " + name + "]" ] = name.toLowerCase();
+  });
+
+  // Abacus.type( obj )
+  // Returns object type
+  Abacus.type = function( obj ) {
+    return obj == null ?
+      String( obj ) :
+      classTypes[ toString.call(obj) ] || "object";
+  };
 
 
   // Expose global Abacus object
