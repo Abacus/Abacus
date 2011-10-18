@@ -23,8 +23,23 @@
   // Returns deep copy of obj
   Abacus.clone = function( obj ) {
 
+    var temp = [],
+        val, length, i;
+
     if ( Array.isArray( obj ) ) {
-      return slice.call( obj, 0 );
+
+      for ( i = 0, length = obj.length; i < length; i++ ) {
+        // Store reference to this array item's value
+        val = obj[ i ];
+
+        // If array item is an object (including arrays), derive new value by cloning
+        if ( typeof val === "object" ) {
+          val = Abacus.clone( val );
+        }
+
+        temp[ i ] = val;
+      }
+      return temp;
     }
 
     // Create a new object whose prototype is a new, empty object,
