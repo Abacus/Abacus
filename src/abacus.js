@@ -84,6 +84,14 @@
     return arg;
   };
 
+  // Abacus.prefix
+  // This user agent's vendor prefix
+  Abacus.prefix = (function( window ) {
+    return [ "webkit", "moz", "ms", "o" ].filter(function( val ) {
+      return val + "RequestAnimationFrame" in window;
+    })[ 0 ] || "";
+  })( window );
+
 
   // Expose global Abacus object
   window.Abacus = Abacus;
