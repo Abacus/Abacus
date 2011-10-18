@@ -144,3 +144,23 @@ test('layer works with typed arrays', 7, function() {
   equal(floatArray[0], 0.5);
   equal(floatArray[1], 0.5);
 });
+
+test('animation{instance}.layer throws errors for bad arguments', 2, function() {
+  var animation = Abacus.animation({}),
+      options = {
+        index: 0,
+        tween: 'linear'
+      };
+  
+  raises(function() {
+    animation.layer(options);
+  }, function(e) {
+    return e.hasOwnProperty('argument') && e.argument == options;
+  }, 'exception on specifying options with index of a layer that doesn\'t exist');
+  
+  raises(function() {
+    animation.layer(true);
+  }, function(e) {
+    return e.hasOwnProperty('argument') && e.argument === true;
+  }, 'exception on specifying option as something other than undefined, integer, or object')
+});

@@ -1,4 +1,4 @@
-(function( window ) {
+(function( window, Abacus ) {
 
   // doTween( ... )
   // recursively tween values
@@ -362,8 +362,8 @@
             // error, layer must already exist for index to be specified
             throw {
               type: 'ArgumentException',
-              message: 'layer with given index (' + layerOptions.index + ') must exist before calling layer(...) with object',
-              argument: idx
+              message: 'layer with given index (' + options.index + ') must exist before calling layer(...) with object',
+              argument: options
             };
           }
         } else {
@@ -374,14 +374,13 @@
 
           return layer;
         }
-      } else {
-        // throw an error ...
-        throw {
-          type: 'ArgumentException',
-          message: 'layer must be called with undefined, an integer, or an object',
-          argument: idx
-        };
       }
+      
+      throw {
+        type: 'ArgumentException',
+        message: 'layer must be called with undefined, an integer, or an object',
+        argument: idx
+      };
     }
   };
 
@@ -397,4 +396,4 @@
     return new Frame(options);
   };
 
-})( this );
+})( this, this.Abacus );
