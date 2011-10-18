@@ -38,6 +38,23 @@
     }
   }
   
+  function cacheIsTweenable(values) {
+    var isTweenable = {}, key, parsedKey;
+    for (key in values) {
+      parsedKey = parseInt(key, 10);
+      if (!isNaN(parsedKey)) {
+        key = parsedKey;
+      }
+      
+      if (typeof values[key] == 'number') {
+        isTweenable[key] = true;
+      } else {
+        isTweenable[key] = cacheIsTweenable(values[key]);
+      }
+    }
+    return isTweenable;
+  }
+  
   function cacheKeys(values, keys) {
     var key, _key;
     for (key in values) {
@@ -68,8 +85,7 @@
       });
     }
     
-    this.isTweenable = Abacus.clone(this.value);
-    calculateIsTweenable(this.value, this.isTweenable);
+    this.isTweenable = cacheIsTweenable(this.value);
     
     this.keys = cacheKeys(this.value, []);
   }
