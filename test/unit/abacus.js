@@ -15,7 +15,7 @@ test('Abacus.clone( obj )', 7, function() {
           prop: false,
           array: [ 1, 2, 3, 4, 5 ]
         },
-        deepArray: [ 0, 1, 2, 3, [ 4, 5, 6 ]]
+        deepArray: [ 0, 1, 2, 3, [ 4, 5, 6 ] ]
       },
       cloned = Abacus.clone( orig );
 
@@ -25,20 +25,53 @@ test('Abacus.clone( obj )', 7, function() {
   ok( cloned.inner.hasOwnProperty('array'), 'cloned.inner.hasOwnProperty("array")' );
 
   // Change a value of the original `inner.array`
-  cloned.inner.array[0] = 'a';
+  orig.inner.array[0] = 'a';
   cloned.deepArray[4][0] = 7;
 
   notEqual( orig.inner.array[0], cloned.inner.array[0],
-    '(notEqual) Changing an array property value of the cloned object doesn\'t effect the original' );
-  notEqual( cloned.deepArray[4][0], orig.deepArray[4][0], 
+    '(notEqual) Changing an array property value of the original object doesn\'t effect the clone' );
+
+  notEqual( cloned.deepArray[4][0], orig.deepArray[4][0],
     '(notEqual) Changing an array property value in an array of the cloned object doesn\'t effect the original' );
 
-  cloned.foo = 'qux';
+  orig.foo = 'qux';
 
   notEqual( orig.foo, cloned.foo,
     '(notEqual) Changing a property value of the cloned object doesn\'t effect the original' );
-
 });
+
+test('Abacus.clone( array )', 2, function() {
+  var orig = [ 1, 2, 3, 4, 5 ],
+      cloned = Abacus.clone( orig );
+
+  equal( orig[0], cloned[0], 'orig[0] === cloned[0]' );
+
+  // Change value of orig[0]
+  orig[0] = 'a';
+
+  notEqual( cloned[0], orig[0],
+    '(notEqual) Changing an array property value doesn\'t effect the clone' );
+});
+
+test('Abacus.clone() mega deep', 5, function() {
+  var orig = [ 1, 2, 3, [ 'deep', 'array', { holy: 'cow' } ], { foo: 'bar', deeper: { prop: 'stuff' } } ],
+      cloned = Abacus.clone( orig );
+
+  equal( orig[0], cloned[0], 'orig[0] === cloned[0]' );
+  
+  orig[3][0] = 'throat';
+  orig[3][2].holy = 'moly';
+  orig[4].foo = 'qux';
+  orig[4].deeper.prop = 'yikes!';
+
+  equal( cloned[3][0], 'deep', 'Deep array clones' );
+  equal( cloned[3][2].holy, 'cow', 'Deep array, object item clones' );
+  equal( cloned[4].foo, 'bar', 'Deep array, object item property clones' );
+  equal( cloned[4].deeper.prop, 'stuff', 'Deep array, object property value clones' );
+});
+
+
+
 
 test('Abacus.extend( ... )', 12, function() {
 
