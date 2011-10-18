@@ -5,7 +5,9 @@
   var Abacus = {},
 
   // Localize references to commonly used methods
-  slice = [].slice;
+  slice = [].slice,
+  toString = {}.toString,
+  hasOwn = {}.hasOwnProperty;
 
   // Declare global Abacus methods
 
@@ -24,7 +26,7 @@
   Abacus.clone = function( obj ) {
 
     var temp = [],
-        val, length, i;
+        ctorName, val, length, i;
 
     if ( Array.isArray( obj ) ) {
 
@@ -40,6 +42,14 @@
         temp[ i ] = val;
       }
       return temp;
+    }
+
+    // Determine constructor name from obj prototype
+    ctorName = Object.getPrototypeOf( obj ).constructor.name;
+
+    // Copy ArrayBufferView objects
+    if ( /(.+)Array$/.test( ctorName ) ) {
+      return new window[ ctorName ]( obj );
     }
 
     // Create a new object whose prototype is a new, empty object,
@@ -106,7 +116,6 @@
       return val + "RequestAnimationFrame" in window;
     })[ 0 ] || "";
   })( window );
-
 
   // Expose global Abacus object
   window.Abacus = Abacus;

@@ -70,6 +70,13 @@ test('Abacus.clone() mega deep', 5, function() {
   equal( cloned[4].deeper.prop, 'stuff', 'Deep array, object property value clones' );
 });
 
+test('Abacus.clone( ArrayBufferView )', 1, function() {
+  var orig = new Float32Array([ 1, 2 ]),
+      cloned = Abacus.clone( orig );
+
+  equal( Object.getPrototypeOf(cloned).constructor.name, 'Float32Array', 'cloned "type" is Float32Array' );
+});
+
 test('Abacus.extend( ... )', 12, function() {
 
   var obj1 = {
