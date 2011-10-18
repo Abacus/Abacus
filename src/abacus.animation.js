@@ -1,336 +1,362 @@
 (function( window ) {
-  
-  var Abacus = window.Abacus || {};
-  
+
   // doTween( ... )
   // recursively tween values
-  function doTween( 
-    lastValue, nextValue, isTweenable, keys, target, tween, index ) 
-  {
-    if (isTweenable === true) {
-      return tween(lastValue, nextValue, index);
+  function doTween( lastValue, nextValue, isTweenable, keys, target, tween, index ) {
+    if ( isTweenable === true ) {
+      return tween( lastValue, nextValue, index );
     }
-    
+
     var i = keys.length / 2,
         halfKeys = keys.length / 2,
         key;
-    while (i--) {
-      key = keys[i];
-      target[key] = doTween(
-        lastValue[key],
-        nextValue[key],
-        isTweenable[key],
-        keys[halfKeys+i],
-        target[key],
+    while ( i-- ) {
+      key = keys[ i ];
+      target[ key ] = doTween(
+        lastValue[ key ],
+        nextValue[ key ],
+        isTweenable[ key ],
+        keys[ halfKeys+i ],
+        target[ key ],
         tween,
-        index);
+        index
+      );
     }
     return target;
   }
-  
-  function calculateIsTweenable(values, isTweenable) {
-    for (var key in values) {
-      if (typeof values[key] == 'number') {
-        isTweenable[key] = true;
-      } else {
-        calculateIsTweenable(values[key], isTweenable[key]);
-      }
-    }
-  }
-  
-  function cacheIsTweenable(values) {
+
+  function cacheIsTweenable( values ) {
     var isTweenable = {}, key, parsedKey;
-    for (key in values) {
-      parsedKey = parseInt(key, 10);
-      if (!isNaN(parsedKey)) {
+
+    for ( key in values ) {
+      parsedKey = parseInt( key, 10 );
+      if ( !isNaN( parsedKey ) ) {
         key = parsedKey;
       }
       
-      if (typeof values[key] == 'number') {
-        isTweenable[key] = true;
+      if ( typeof values[ key ] == 'number' ) {
+        isTweenable[ key ] = true;
       } else {
-        isTweenable[key] = cacheIsTweenable(values[key]);
+        isTweenable[ key ] = cacheIsTweenable( values[ key ] );
       }
     }
+
     return isTweenable;
   }
-  
+
   function cacheKeys(values, keys) {
     var key, _key;
-    for (key in values) {
-      try {
-        _key = parseInt(key, 10);
-        if (!isNaN(_key)) {
-          key = _key;
-        }
-      } catch (e) {}
-      keys.push(key);
+    for ( key in values ) {
+      _key = parseInt( key, 10 );
+      if ( !isNaN(_key) ) {
+        key = _key;
+      }
+
+      keys.push( key );
     }
-    
-    for (key in values) {
-      keys.push(cacheKeys(values[key], []));
+
+    for ( key in values ) {
+      keys.push( cacheKeys( values[ key ], [] ) );
     }
-    
+
     return keys;
   }
-  
-  // Frame constructor
+
+  // Frame constructor (internal)
   // contains new target value and how to get there
   function Frame( options ) {
-    Abacus.extend(this, options);
-    
+    Abacus.extend( this, options );
+
     if ( this.tween ) {
       this.tween = Abacus.tween({
         type: this.tween
       });
     }
-    
-    this.isTweenable = cacheIsTweenable(this.value);
-    
-    this.keys = cacheKeys(this.value, []);
+
+    this.isTweenable = cacheIsTweenable( this.value );
+
+    this.keys = cacheKeys( this.value, [] );
   }
-  
-  // Layer constructor
-  // groups of frames
+
+  // Layer constructor (internal)
+  // Returns Layer
   function Layer( options ) {
     options = options || {};
-    
-    Abacus.extend(this, options);
-    
+
+    Abacus.extend( this, options );
+
     if ( this.tween ) {
       this.tween = Abacus.tween({
         type: this.tween
       });
     }
-    
-    if (!this.frames) {
+
+    if ( !this.frames ) {
       this.frames = [];
     }
-    
+
     // stored index value to avoid constantly looking up the correct frame
     this.frameIndex = -1;
   }
+
   Layer.prototype = {
+
     // Layer.reset
     // reset internal values to the start of the layer
     reset: function() {
       this.frameIndex = -1;
     },
-    
+
     // Layer.addFrame(frame)
     // insert animationFrame object according to frame.index. returns Layer
     addFrame: function( frame ) {
       var frameAdded = false,
           framesLength = this.frames.length,
           i = 0;
-      
+
       if ( !(frame instanceof Frame) ) {
         frame = Abacus.animationFrame(frame);
       }
-    
+
       for ( ; i < framesLength; i++ ) {
         if ( this.frames[i].index > frame.index ) {
-          this.frames.splice(i, 0, frame);
+          this.frames.splice( i, 0, frame );
           frameAdded = true;
           break;
         }
       }
-    
-      if (!frameAdded) {
+
+      if ( !frameAdded ) {
         this.frames.push(frame);
       }
-      
+
       return this;
     },
+
     // Layer.getFrame( index )
     // return the frame with the given index value
     getFrame: function( index ) {
       var frames = this.frames,
           framesLength = frames.length,
           i = 0;
-      
+
       for ( ; i < framesLength; i++ ) {
-        if (frames[i].index == index) {
+        if ( frames[i].index == index ) {
           return frames[i];
         }
       }
-      
+
       return null;
     },
+
     // Layer.removeFrame( index || animationFrame )
     // remove an animationFrame either by its index value or by the frame itself
     removeFrame: function( index ) {
       var frames = this.frames,
           framesLength = frames.length,
           i = 0;
-      
+
       if ( index instanceof Frame ) {
         // access the index value from the frame
         index = index.index;
       }
-      
+
       for ( ; i < framesLength; i++ ) {
         if (frames[i].index == index) {
-          frames.splice(i, 1);
+          frames.splice( i, 1 );
           break;
         }
       }
     },
+
     // Layer.step( ... )
     // updates target and returns true if there are no further frames
     step: function( animation, target, timerData ) {
       var sinceStart = timerData.sinceStart / 1000,
           frameIndex = this.frameIndex,
-          lastFrame = this.frames[frameIndex],
-          nextFrame = this.frames[frameIndex+1];
-        
+          lastFrame = this.frames[ frameIndex ],
+          nextFrame = this.frames[ frameIndex + 1 ],
+          framePlus;
+
       // at end of layer?
-      if (nextFrame === undefined) {
+      if ( nextFrame == null ) {
         return false;
       }
-      
-      if (lastFrame && lastFrame.index / animation.rate > sinceStart) {
+
+      if ( lastFrame && lastFrame.index / animation.rate > sinceStart ) {
         return true;
       }
-      
+
       // increment to the next usable frame
-      if (nextFrame.index / animation.rate <= sinceStart) {
+      if ( nextFrame.index / animation.rate <= sinceStart ) {
         for ( frameIndex++; frameIndex < this.frames.length; frameIndex++ ) {
+
+          framePlus = frameIndex + 1;
+
           // special case for first frame
-          if (frameIndex === 0 && nextFrame.beforeTween) {
+          if ( frameIndex === 0 && nextFrame.beforeTween ) {
             nextFrame.beforeTween();
           }
-          
-          lastFrame = this.frames[frameIndex];
-          nextFrame = this.frames[frameIndex+1];
-          
-          if (nextFrame && nextFrame.beforeTween) {
+
+          lastFrame = this.frames[ frameIndex ];
+          nextFrame = this.frames[ framePlus ];
+
+          if ( nextFrame && nextFrame.beforeTween ) {
             nextFrame.beforeTween();
           }
-          
-          if (lastFrame && lastFrame.afterTween) {
+
+          if ( lastFrame && lastFrame.afterTween ) {
             lastFrame.afterTween();
           }
-          
-          if (this.frames[frameIndex+1] && 
-            this.frames[frameIndex+1].index / animation.rate > sinceStart ||
-            !this.frames[frameIndex+1]) 
+
+          if ( this.frames[ framePlus ] && 
+            this.frames[ framePlus ].index / animation.rate > sinceStart ||
+            !this.frames[ framePlus ] ) 
           {
             break;
           }
         }
-        
+
         this.frameIndex = frameIndex;
-        
+
         // at end of layer?
-        if (nextFrame === undefined) {
+        if ( nextFrame == null ) {
           return false;
         }
       }
-      
-      if (lastFrame && nextFrame) {
+
+      if ( lastFrame && nextFrame ) {
         doTween(
-          lastFrame.value, 
-          nextFrame.value, 
-          nextFrame.isTweenable, 
+          lastFrame.value,
+          nextFrame.value,
+          nextFrame.isTweenable,
           nextFrame.keys,
           target,
-          (nextFrame.tween || this.tween || animation.tween).type,
-          (sinceStart - lastFrame.index / animation.rate) * 
-            animation.rate / 
-            (nextFrame.index - lastFrame.index));
+          ( nextFrame.tween || this.tween || animation.tween ).type,
+          ( sinceStart - lastFrame.index / animation.rate ) *
+            animation.rate /
+            ( nextFrame.index - lastFrame.index )
+        );
       }
-      
+
       // this layer is not complete
       return true;
     }
   };
-  
-  // new Animation()
-  // groups of animated layers
+
+  // Animation constructor (internal)
+  // Mapped from calls to Abacus.animation( options )
   function Animation( options ) {
     Abacus.extend(this, options);
-    
+
     if ( this.tween ) {
       this.tween = Abacus.tween({
         type: this.tween
       });
     }
-    
-    if (!this.layers) {
+
+    if ( !this.layers ) {
       this.layers = [];
     }
   }
+  
   Animation.prototype = {
-    // Animation.start
-    // start the animation
+
+    // Animation.start()
+    // Returns Animation
     start: function( target ) {
       var animation = this;
+
+      // timerCallback context |this| is Timer instance
       function timerCallback( timerData ) {
+
         var layers = animation.layers, 
-            allComplete = true;
-      
-        for (var idx = 0; idx < layers.length; idx++) {
-          allComplete = layers[idx].step(animation, target, timerData) && allComplete;
+            allComplete = true,
+            idx;
+
+        for ( idx = 0; idx < layers.length; idx++ ) {
+          allComplete = layers[ idx ].step( animation, target, timerData ) && allComplete;
         }
-      
-        if (!allComplete) {
+
+        if ( !allComplete ) {
           // stop the timer and reset values to the beginning
           animation.stop();
         }
       }
-    
-      if (!this.timer) {
+
+      if ( !this.timer ) {
         this.timer = Abacus.timer({
           callback: timerCallback
         });
       }
-    
+
       this.timer.start();
+
+      return this;
     },
-    // Animation.stop
-    // stop the animation (by stopping its timer)
+
+    // Animation.stop()
+    // Returns Animation
     stop: function() {
-      if (this.timer) {
+      if ( this.timer ) {
         this.timer.pause();
       }
+
       this.reset();
+
+      return this;
     },
-    // Animation.reset
-    // reset values to the start of the animation
+    
+    // Animation.reset()
+    // Returns Animation
     reset: function() {
       this.layers.forEach(function(layer) {
         layer.reset();
       });
-    },
-    // Animation.addLayer
-    // add new layer. returns Animation
-    addLayer: function( layer ) {
-      var index = this.layers.length;
-      this.layers.push(layer);
-      layer.index = index;
-    
+
       return this;
     },
+    
+    // Animation.addLayer
+    // Add new layer. Returns Animation
+    addLayer: function( layer ) {
+      var index = this.layers.length;
+
+      this.layers.push(layer);
+      layer.index = index;
+
+      return this;
+    },
+
     // Animation.layer( number || {} )
     // get layer or shortcut add and get layer
     layer: function( idx ) {
-      var layer;
-      if (idx === undefined) {
+
+      var layer, options;
+
+      if ( idx == null ) {
+        // Create a new layer
         layer = Abacus.animationLayer();
+
+        // Add to current layers
         this.addLayer(layer);
-        
+
         return layer;
-      } else if (typeof idx == 'number') {
+      }
+
+      if ( this.layers[ idx ] ) {
         return this.layers[idx];
-      } else if (typeof idx == 'object') {
-        var layerOptions = idx;
-      
-        if (layerOptions.index !== undefined) {
-          if (layerOptions.index < this.layers.length) {
-            layer = this.layers[layerOptions.index];
-            Abacus.extend(layer, layerOptions);
-          
+      }
+
+      if ( typeof idx == 'object' ) {
+
+        options = idx;
+
+        if ( options.index != null ) {
+          if ( options.index < this.layers.length ) {
+            layer = this.layers[ options.index ];
+            Abacus.extend( layer, options );
+
             return layer;
           } else {
             // error, layer must already exist for index to be specified
@@ -342,9 +368,10 @@
           }
         } else {
           // shortcut for Abacus.animationLayer
-          layer = Abacus.animationLayer(layerOptions);
+          layer = Abacus.animationLayer( options );
+
           this.addLayer(layer);
-        
+
           return layer;
         }
       } else {
@@ -357,33 +384,17 @@
       }
     }
   };
-  
+
   Abacus.animation = function( options ) {
-    // options
-    //   rate - indices per second
-    //   timer - Abacus.timer
-    //   tween - tween function or 'tweenName'
-    
     return new Animation(options);
   };
+
   Abacus.animationLayer = function( options ) {
-    // options
-    //   tween - tween function
-    
     return new Layer(options);
   };
+
   Abacus.animationFrame = function( options ) {
-    // options
-    //   index - integer
-    //   value - array or object, can be nested
-    //   tween - function(start, stop, t){} or 'tweenName'
-    //   beforeTween - function(frame){}
-    //   afterTween - function(frame){}
-    
     return new Frame(options);
   };
-  
-  // Re-expose Abacus object
-  window.Abacus = Abacus;
-  
-})( this ); 
+
+})( this );

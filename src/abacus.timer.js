@@ -33,7 +33,8 @@
         }
       };
 
-  // Timer constructor (Internal)
+  // Timer constructor (internal)
+  // Mapped from calls to Abacus.timer( options )
   function Timer( options ) {
     // options is expected to have optional
     // callback and element properties

@@ -1,4 +1,4 @@
-module('Timer Module');
+module('Timer');
 test('Test that the Abacus.timer exists', 1, function() {
   ok( Abacus.timer, 'Abacus.timer exists' );
 });
