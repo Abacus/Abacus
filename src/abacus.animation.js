@@ -108,14 +108,14 @@
     },
 
     // Layer.addFrame(frame)
-    // insert animationFrame object according to frame.index. returns Layer
+    // insert animation.frame object according to frame.index. returns Layer
     addFrame: function( frame ) {
       var frameAdded = false,
           framesLength = this.frames.length,
           i = 0;
 
       if ( !(frame instanceof Frame) ) {
-        frame = Abacus.animationFrame(frame);
+        frame = Abacus.animation.frame(frame);
       }
 
       for ( ; i < framesLength; i++ ) {
@@ -149,8 +149,8 @@
       return null;
     },
 
-    // Layer.removeFrame( index || animationFrame )
-    // remove an animationFrame either by its index value or by the frame itself
+    // Layer.removeFrame( index || animation.frame )
+    // remove an animation.frame either by its index value or by the frame itself
     removeFrame: function( index ) {
       var frames = this.frames,
           framesLength = frames.length,
@@ -336,7 +336,7 @@
 
       if ( idx == null ) {
         // Create a new layer
-        layer = Abacus.animationLayer();
+        layer = Abacus.animation.layer();
 
         // Add to current layers
         this.addLayer(layer);
@@ -367,8 +367,8 @@
             };
           }
         } else {
-          // shortcut for Abacus.animationLayer
-          layer = Abacus.animationLayer( options );
+          // shortcut for Abacus.animation.layer
+          layer = Abacus.animation.layer( options );
 
           this.addLayer(layer);
 
@@ -389,11 +389,11 @@
     return new Animation(options);
   };
 
-  Abacus.animationLayer = function( options ) {
+  Abacus.animation.layer = function( options ) {
     return new Layer(options);
   };
 
-  Abacus.animationFrame = function( options ) {
+  Abacus.animation.frame = function( options ) {
     return new Frame(options);
   };
 

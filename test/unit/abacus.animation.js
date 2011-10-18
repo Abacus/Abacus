@@ -99,7 +99,7 @@ asyncTest('animation stops timer after completion', 3, function() {
 
   setTimeout(function() {
     ok(timePlayed > 1000/6, 'timePlayed (' + timePlayed + ') > ' + Math.floor(1000/6));
-    equal(animation.layers[0].frameIndex, 1, 'reached end of frames');
+    equal(animation.layers[0].frameIndex, -1, 'reached end of frames');
     ok(animation.timer.isPaused);
     if (!animation.timer.isPaused) {
       animation.timer.pause();
@@ -112,7 +112,7 @@ test('layer works with typed arrays', 7, function() {
   ok(window.Float32Array, 'browser supports Float32Array');
   
   var floatArray = new Float32Array([0,0]),
-      layer = Abacus.animationLayer({
+      layer = Abacus.animation.layer({
         tween: 'linear'
       }).addFrame({
         index: 0,
@@ -128,7 +128,7 @@ test('layer works with typed arrays', 7, function() {
   equal(floatArray[0], 0.5);
   equal(floatArray[1], 0.5);
   
-  layer = Abacus.animationLayer({
+  layer = Abacus.animation.layer({
     tween: 'linear'
   }).addFrame({
     index: 0,
