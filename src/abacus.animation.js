@@ -67,7 +67,6 @@
           'NotObject';
 
     if ( Array.isArray( values ) || /(.+)Array$/.test( ctorName ) ) {
-      // store that the values object is an array
       for ( key = 0, length = values.length; key < length; key++ ) {
         keys.push( key );
       }
