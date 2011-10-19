@@ -1,5 +1,22 @@
 (function( window, Abacus ) {
 
+  function getConstructorName( obj ) {
+    var ctorName = typeof obj == 'object' ?
+      Object.getPrototypeOf( obj ).constructor.name :
+      'NotObject';
+
+    return ctorName;
+  }
+
+  function isTypedArray( arr ) {
+    var ctorName = getConstructorName( arr );
+
+    if ( /(.+)Array$/.test( ctorName ) ) {
+      return true;
+    }
+    return false;
+  }
+
   // doTween( ... )
   // recursively tween values
   function doTween( lastValue, nextValue, tweenable, keys, target, tween, index ) {
@@ -12,7 +29,7 @@
       key = keys[ i ];
       tweenableElement = tweenable[ i ];
 
-      if (tweenableElement === true) {
+      if ( tweenableElement === true ) {
         target[ key ] = tween(
           lastValue[ key ],
           nextValue[ key ],
@@ -32,22 +49,19 @@
     }
   }
 
-  function cacheTweenable( values ) {
-    var tweenable = [],
-        key, length,
-        ctorName = typeof values == 'object' ? 
-          Object.getPrototypeOf( values ).constructor.name : 
-          'NotObject';
-
-    function testTweenable( value ) {
-      if ( typeof value == 'number' ) {
-        return true;
-      } else {
-        return cacheTweenable( value );
-      }
+  function testTweenable( value ) {
+    if ( typeof value == 'number' ) {
+      return true;
     }
 
-    if ( Array.isArray( values ) || /(.+)Array$/.test( ctorName ) ) {
+    return cacheTweenable( value );
+  }
+
+  function cacheTweenable( values ) {
+    var tweenable = [],
+        key, length;
+
+    if ( Array.isArray( values ) || isTypedArray( values ) ) {
       for ( key = 0, length = values.length; key < length; key++ ) {
         tweenable.push( testTweenable( values[ key ] ) );
       }
@@ -61,12 +75,9 @@
   }
 
   function cacheKeys( values, keys ) {
-    var key, length,
-        ctorName = typeof values == 'object' ? 
-          Object.getPrototypeOf( values ).constructor.name : 
-          'NotObject';
+    var key, length;
 
-    if ( Array.isArray( values ) || /(.+)Array$/.test( ctorName ) ) {
+    if ( Array.isArray( values ) || isTypedArray( values ) ) {
       for ( key = 0, length = values.length; key < length; key++ ) {
         keys.push( key );
       }
