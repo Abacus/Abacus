@@ -41,7 +41,9 @@
     var tweening = tweenFn( options.type );
 
     this.get = function( preferredIndex ) {
-      this.index = preferredIndex || this.index;
+      if(arguments.length){
+        this.index = preferredIndex;
+      }
       return tweening( this.start, this.stop, this.index );
     }; //step
 
