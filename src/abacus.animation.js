@@ -7,38 +7,84 @@
       return tween( lastValue, nextValue, index );
     }
 
-    var i = keys.length / 2,
-        halfKeys = keys.length / 2,
-        key;
-    while ( i-- ) {
-      key = keys[ i ];
-      target[ key ] = doTween(
-        lastValue[ key ],
-        nextValue[ key ],
-        tweenable[ key ],
-        keys[ halfKeys+i ],
-        target[ key ],
-        tween,
-        index
-      );
+    var isArray = keys[ 0 ] === true,
+        isTypedArray = keys.length === 0 && nextValue.length !== 0,
+        i = -1,
+        halfKeys = isArray || isTypedArray ? nextValue.length : keys.length / 2,
+        key,
+        tweenableElement;
+    if ( isArray ) {
+      while ( ++i < halfKeys ) {
+        tweenableElement = tweenable[ i ];
+        if (tweenableElement === true) {
+          target[ i ] = tween(
+            lastValue[ i ],
+            nextValue[ i ],
+            index
+          );
+        } else {
+          doTween(
+            lastValue[ i ],
+            nextValue[ i ],
+            tweenableElement,
+            keys[ 1 + i ],
+            target[ i ],
+            tween,
+            index
+          );
+        }
+      }
+    } else if ( isTypedArray ) {
+      while ( ++i < halfKeys ) {
+        target[ i ] = tween( lastValue[ i ], nextValue[ i ], index );
+      }
+    } else {
+      while ( ++i < halfKeys ) {
+        key = keys[ i ];
+        tweenableElement = tweenable[ i ];
+        if (tweenableElement === true) {
+          target[ key ] = tween(
+            lastValue[ key ],
+            nextValue[ key ],
+            index
+          );
+        } else {
+          doTween(
+            lastValue[ key ],
+            nextValue[ key ],
+            tweenableElement,
+            keys[ halfKeys + i ],
+            target[ key ],
+            tween,
+            index
+          );
+        }
+      }
     }
-    return target;
   }
 
   function cacheTweenable( values ) {
-    var tweenable = {},
-        key, parsedKey;
+    var tweenable = [],
+        key, length,
+        ctorName = typeof values == 'object' ? 
+          Object.getPrototypeOf( values ).constructor.name : 
+          'NotObject';
 
-    for ( key in values ) {
-      parsedKey = parseInt( key, 10 );
-      if ( !isNaN( parsedKey ) ) {
-        key = parsedKey;
-      }
-
-      if ( typeof values[ key ] == 'number' ) {
-        tweenable[ key ] = true;
+    function testTweenable( value ) {
+      if ( typeof value == 'number' ) {
+        return true;
       } else {
-        tweenable[ key ] = cacheTweenable( values[ key ] );
+        return cacheTweenable( value );
+      }
+    }
+
+    if ( Array.isArray( values ) || /(.+)Array$/.test( ctorName ) ) {
+      for ( key = 0, length = values.length; key < length; key++ ) {
+        tweenable.push( testTweenable( values[ key ] ) );
+      }
+    } else {
+      for ( key in values ) {
+        tweenable.push( testTweenable( values[ key ] ) );
       }
     }
 
@@ -46,19 +92,27 @@
   }
 
   function cacheKeys( values, keys ) {
-    var key, _key;
+    var key, length,
+        ctorName = typeof values == 'object' ? 
+          Object.getPrototypeOf( values ).constructor.name : 
+          'NotObject';
 
-    for ( key in values ) {
-      _key = parseInt( key, 10 );
-      if ( !isNaN(_key) ) {
-        key = _key;
+    if ( Array.isArray( values ) ) {
+      // store that the values object is an array
+      keys.push( true );
+      
+      // store deeper keys
+      for ( key = 0, length = values.length; key < length; key++ ) {
+        keys.push( cacheKeys( values[ key ] , [] ) );
       }
-
-      keys.push( key );
-    }
-
-    for ( key in values ) {
-      keys.push( cacheKeys( values[ key ], [] ) );
+    } else if ( !/(.+)Array$/.test( ctorName ) ) {
+      for ( key in values ) {
+        keys.push( key );
+      }
+      
+      for ( key = 0, length = keys.length; key < length; key++ ) {
+        keys.push( cacheKeys( values[ keys[ key ] ], [] ) );
+      }
     }
 
     return keys;

@@ -24,24 +24,25 @@ test('layer.step updates values', 2, function() {
   equal( position[1], 0.5 );
 });
 
-test('layer.step moves to correct frame', 1, function() {
-  var obj = { 'a': 0 },
+test('layer.step moves to correct frame', 2, function() {
+  var obj = { 'x': 0, 'y': 0 },
       layer = Abacus.animation.layer({
         tween: 'linear'
       }).addFrame({
         index: 0,
-        value: {'a': 0}
+        value: {'x': 0, 'y': 0}
       }).addFrame({
         index: 5,
-        value: {'a': 1}
+        value: {'x': 1, 'y': 1}
       }).addFrame({
         index: 10,
-        value: {'a': 2}
+        value: {'x': 3, 'y': 2}
       });
 
   layer.step({ rate: 5 }, obj, { sinceStart: 1500 });
 
-  equal( obj.a, 1.5 );
+  equal( obj.x, 2 );
+  equal( obj.y, 1.5 );
 });
 
 test('layer.step returns false after completion', function() {
