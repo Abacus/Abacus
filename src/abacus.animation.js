@@ -3,62 +3,31 @@
   // doTween( ... )
   // recursively tween values
   function doTween( lastValue, nextValue, tweenable, keys, target, tween, index ) {
-    if ( tweenable === true ) {
-      return tween( lastValue, nextValue, index );
-    }
-
-    var isArray = keys[ 0 ] === true,
-        isTypedArray = keys.length === 0 && nextValue.length !== 0,
-        i = -1,
-        halfKeys = isArray || isTypedArray ? nextValue.length : keys.length / 2,
+    var i = -1,
+        halfKeys = keys.length / 2,
         key,
         tweenableElement;
-    if ( isArray ) {
-      while ( ++i < halfKeys ) {
-        tweenableElement = tweenable[ i ];
-        if (tweenableElement === true) {
-          target[ i ] = tween(
-            lastValue[ i ],
-            nextValue[ i ],
-            index
-          );
-        } else {
-          doTween(
-            lastValue[ i ],
-            nextValue[ i ],
-            tweenableElement,
-            keys[ 1 + i ],
-            target[ i ],
-            tween,
-            index
-          );
-        }
-      }
-    } else if ( isTypedArray ) {
-      while ( ++i < halfKeys ) {
-        target[ i ] = tween( lastValue[ i ], nextValue[ i ], index );
-      }
-    } else {
-      while ( ++i < halfKeys ) {
-        key = keys[ i ];
-        tweenableElement = tweenable[ i ];
-        if (tweenableElement === true) {
-          target[ key ] = tween(
-            lastValue[ key ],
-            nextValue[ key ],
-            index
-          );
-        } else {
-          doTween(
-            lastValue[ key ],
-            nextValue[ key ],
-            tweenableElement,
-            keys[ halfKeys + i ],
-            target[ key ],
-            tween,
-            index
-          );
-        }
+
+    while ( ++i < halfKeys ) {
+      key = keys[ i ];
+      tweenableElement = tweenable[ i ];
+
+      if (tweenableElement === true) {
+        target[ key ] = tween(
+          lastValue[ key ],
+          nextValue[ key ],
+          index
+        );
+      } else {
+        doTween(
+          lastValue[ key ],
+          nextValue[ key ],
+          tweenableElement,
+          keys[ halfKeys + i ],
+          target[ key ],
+          tween,
+          index
+        );
       }
     }
   }
@@ -97,22 +66,19 @@
           Object.getPrototypeOf( values ).constructor.name : 
           'NotObject';
 
-    if ( Array.isArray( values ) ) {
+    if ( Array.isArray( values ) || /(.+)Array$/.test( ctorName ) ) {
       // store that the values object is an array
-      keys.push( true );
-      
-      // store deeper keys
       for ( key = 0, length = values.length; key < length; key++ ) {
-        keys.push( cacheKeys( values[ key ] , [] ) );
+        keys.push( key );
       }
-    } else if ( !/(.+)Array$/.test( ctorName ) ) {
+    } else {
       for ( key in values ) {
         keys.push( key );
       }
-      
-      for ( key = 0, length = keys.length; key < length; key++ ) {
-        keys.push( cacheKeys( values[ keys[ key ] ], [] ) );
-      }
+    }
+
+    for ( key = 0, length = keys.length; key < length; key++ ) {
+      keys.push( cacheKeys( values[ key ] , [] ) );
     }
 
     return keys;
