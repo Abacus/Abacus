@@ -6,6 +6,32 @@ test('animation defined functions exists', 3, function() {
   ok( Abacus.animation.frame, 'animation.frame exists' );
 });
 
+test('animation methods', 5, function() {
+  var animation = Abacus.animation({});
+  
+  ok( animation.reset, 'animation.reset exists' );
+  ok( animation.start, 'animation.start exists' );
+  ok( animation.stop, 'animation.stop exists' );
+  ok( animation.addLayer, 'animation.addLayer exists' );
+  ok( animation.layer, 'animation.layer exists' );
+});
+
+test('layer methods', 5, function() {
+  var layer = Abacus.animation.layer();
+  
+  ok( layer.reset, 'layer.reset exists' );
+  ok( layer.step, 'layer.step exists' );
+  ok( layer.addFrame, 'layer.addFrame exists' );
+  ok( layer.removeFrame, 'layer.removeFrame exists' );
+  ok( layer.getFrame, 'layer.getFrame exists' );
+});
+
+test('animation() fails', 1, function() {
+  raises(function() {
+    Abacus.animation();
+  }, 'animation() cannot be called without options object');
+});
+
 test('layer.step updates values', 2, function() {
   var position = [0, 0],
       layer = Abacus.animation.layer({
@@ -100,7 +126,7 @@ asyncTest('animation stops timer after completion', 3, function() {
 
   setTimeout(function() {
     ok( timePlayed > 1000/6, 'timePlayed (' + timePlayed + ') > ' + Math.floor(1000/6) );
-    equal( animation.layers[0].frameIndex, -1, 'reached end of frames' );
+    equal( animation.layers[0].frameIndex, -1, 'auto-reset to start of animatio' );
     ok( animation.timer.isPaused );
     if ( !animation.timer.isPaused ) {
       animation.timer.pause();
