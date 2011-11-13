@@ -57,14 +57,11 @@
     return Object.create({}, (function( src ) {
 
       // Store reference to non-inherited properties,
-      // Initialize
-      var ownPropertyNames = Object.getOwnPropertyNames( src ),
-        properties = {};
+      var properties = {};
 
-      ownPropertyNames.forEach(function( name ) {
+      Object.getOwnPropertyNames( src ).forEach(function( name ) {
 
-        var descriptor = Object.getOwnPropertyDescriptor( src, name ),
-          tmp;
+        var descriptor = Object.getOwnPropertyDescriptor( src, name );
 
         // Recurse on properties whose value is an object or array
         if ( typeof src[ name ] === "object" ) {
