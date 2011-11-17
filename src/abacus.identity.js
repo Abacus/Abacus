@@ -11,7 +11,11 @@
   }
   
   function addPlayer( options ){
+    
+    options = options || {};
+
     return new Player( options );
+
   }
 
   
