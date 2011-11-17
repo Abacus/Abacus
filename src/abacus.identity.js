@@ -4,13 +4,20 @@
 
   function Player( options ){
   
-    this.addAcheivement = function( key, value ){
-      Abacus.store( key, value );
-    }
+    var _player = Abacus.extend( options, {
+    
+      id: Abacus.guid()
+
+    
+    });
+
+    players.push( _player )
+
+    return _player;
 
   }
   
-  function addPlayer( options ){
+  Abacus.addPlayer = function( options ){
     
     options = options || {};
 
