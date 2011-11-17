@@ -1,15 +1,17 @@
 (function( window, Abacus ) {
 
-  Abacus.store = function ( options ) {
-  
-    this.get = function( key ){
-      return localStorage.getItem( value );
-    }
+  function Store(){};
 
-    this.set = function( key, value ){
+  Abacus.store = {
+  
+    get: function( key ){
+      return localStorage.getItem( key );
+    },
+    set: function( key, value ){
       localStorage.setItem( key, value );
-    };
+    }
   
   }
+
 
 })( this, this.Abacus );
