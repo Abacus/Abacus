@@ -6,7 +6,7 @@
 
   // Express the Achievement function which will be used by
   // player.addAchievement to add an achievement to a player
-  function Achievement( options ){
+  function Achievement( options ) {
     // Return the achievement
     // wich is an extension of arbitrary options passed in and
     // the props we need to manage achievements
@@ -20,14 +20,14 @@
 
   // Express the Player function which is used by addPlayer
   // to add a player to Abacus
-  function Player( options ){
+  function Player( options ) {
     // Create a temporary variable to hold the player
     // wich is an extension of arbitrary options passed in and
     // the props we need to manage players
     var _player = Abacus.extend( options, {
       id: Abacus.guid(),
       achievements: [],
-      addAchievement: function( options ){
+      addAchievement: function( options ) {
 
         options = options || {};
         
@@ -50,7 +50,7 @@
 
   // Nice sugar to create a new player
   Abacus.player = {
-    add: function( options ){
+    add: function( options ) {
       options = options || {};
       return new Player( options );
     }

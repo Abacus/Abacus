@@ -1,12 +1,12 @@
 module('Animation');
 
 test('identity api exists', 2, function() {
-  ok( Abacus.addPlayer, 'addPlayer exists' );
+  ok( Abacus.player.add, 'addPlayer exists' );
   ok( Abacus.players, 'players exists' );
 });
 
 test('addPlayer constructs a player correctly', 4, function() {
-  var boaz = Abacus.addPlayer({name: 'boaz'});
+  var boaz = Abacus.player.add({name: 'boaz'});
 
   equal( typeof boaz.achievements, 'object', 'achievements exists on player and is an object' )
   equal( typeof boaz.addAchievement, 'function' , 'addAchievements exists on player and is a function' )
@@ -15,7 +15,7 @@ test('addPlayer constructs a player correctly', 4, function() {
 });
 
 test('addAcheivemnt constructs an acheivement properly and stores it on a player', 4, function() {
-  var boaz = Abacus.addPlayer({name: 'boaz'});                                    
+  var boaz = Abacus.player.add({name: 'boaz'});                                    
 
   boaz.addAchievement({ points: 10 })
 
