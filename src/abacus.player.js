@@ -24,7 +24,7 @@
     // Create a temporary variable to hold the player
     // wich is an extension of arbitrary options passed in and
     // the props we need to manage players
-    var _player = Abacus.extend( options, {
+    var player = Abacus.extend( options, {
       id: Abacus.guid(),
       achievements: [],
       addAchievement: function( options ) {
@@ -32,20 +32,20 @@
         options = options || {};
         
         // Create a new achievement
-        var _achievement = new Achievement( options );
+        var achievement = new Achievement( options );
 
         // Add the achievement to the current player
-        this.achievements.push( _achievement );
+        this.achievements.push( achievement );
         // Return the current player
         return this;
       }
     });
 
     // Push the player onto Abacus.players
-    Abacus.players.push( _player );
+    Abacus.players.push( player );
 
     // Return the player
-    return _player;
+    return player;
   }
 
   // Nice sugar to create a new player
