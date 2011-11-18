@@ -49,9 +49,10 @@
   }
 
   // Nice sugar to create a new player
-  Abacus.addPlayer = function( options ){
-    options = options || {};
-    return new Player( options );
+  Abacus.player = {
+    add: function( options ){
+      options = options || {};
+      return new Player( options );
+    }
   };
-
 })( this, this.Abacus );
