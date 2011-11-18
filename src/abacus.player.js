@@ -9,18 +9,15 @@
   // player.addAchievement to add an achievement to a player
   function Achievement( options ){
   
-    // Create a temporary variable to hold the achievemtn
+    // Return the achievement
     // wich is an extension of arbitrary options passed in and
     // the props we need to manage achievements
-    var _achievement = Abacus.extend( options, {
+    return Abacus.extend( options, {
 
       id: Abacus.guid(),
       date: Date.now()
 
     });
- 
-    // Return the achievement
-    return _achievement;
   }
 
   // Express the Player function which is used by addPlayer
