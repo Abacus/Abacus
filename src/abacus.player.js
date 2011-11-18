@@ -5,6 +5,24 @@
   // Abacus.store.players
   Abacus.players = [];
 
+  // Express the Achievement function which will be used by
+  // player.addAchievement to add an achievement to a player
+  function Achievement( options ){
+  
+    // Create a temporary variable to hold the achievemtn
+    // wich is an extension of arbitrary options passed in and
+    // the props we need to manage achievements
+    var _achievement = Abacus.extend( options, {
+
+      id: Abacus.guid(),
+      date: Date.now()
+
+    });
+ 
+    // Return the achievement
+    return _achievement;
+  }
+
   // Express the Player function which is used by addPlayer
   // to add a player to Abacus
   function Player( options ){
@@ -23,39 +41,20 @@
         var _achievement = new Achievement( options );
 
         // Add the achievement to the current player
-        this.achievements.push( _achievement )
+        this.achievements.push( _achievement );
         // Return the current player
         return this;
       }
     });
 
     // Push the player onto Abacus.players
-    Abacus.players.push( _player )
+    Abacus.players.push( _player );
 
     // Return the player
     return _player;
 
   }
 
-
-  // Express the Achievement function which will be used by
-  // player.addAchievement to add an achievement to a player
-  function Achievement( options ){
-  
-    // Create a temporary variable to hold the achievemtn
-    // wich is an extension of arbitrary options passed in and
-    // the props we need to manage achievements
-    var _achievement = Abacus.extend( options, {
-
-      id: Abacus.guid(),
-      date: Date.now()
-
-    });
- 
-    // Return the achievement
-    return _achievement;
-  }
-  
   // Nice sugar to create a new player
   Abacus.addPlayer = function( options ){
     
@@ -63,7 +62,7 @@
     
     return new Player( options );
 
-  }
+  };
 
   
 
