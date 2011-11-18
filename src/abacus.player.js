@@ -1,5 +1,4 @@
 (function( window, Abacus ) {
-
   // Setup a players cache
   // Eventually this should pull from something like
   // Abacus.store.players
@@ -8,7 +7,6 @@
   // Express the Achievement function which will be used by
   // player.addAchievement to add an achievement to a player
   function Achievement( options ){
-  
     // Return the achievement
     // wich is an extension of arbitrary options passed in and
     // the props we need to manage achievements
@@ -23,7 +21,6 @@
   // Express the Player function which is used by addPlayer
   // to add a player to Abacus
   function Player( options ){
-  
     // Create a temporary variable to hold the player
     // wich is an extension of arbitrary options passed in and
     // the props we need to manage players
@@ -53,9 +50,7 @@
 
   // Nice sugar to create a new player
   Abacus.addPlayer = function( options ){
-    
     options = options || {};
-    
     return new Player( options );
   };
 
