@@ -52,7 +52,6 @@
 
     // Return the player
     return _player;
-
   }
 
   // Nice sugar to create a new player
@@ -61,9 +60,6 @@
     options = options || {};
     
     return new Player( options );
-
   };
-
-  
 
 })( this, this.Abacus );
