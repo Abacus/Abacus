@@ -1,7 +1,7 @@
 (function( window, Abacus ) {
   // Express the Player function which is used by addPlayer
   // to add a player to Abacus
-  function Entity() {};
+  function Entity() {}
   Entity.prototype = {
     addAchievement : function( options ) {
       options = options || {};
@@ -42,7 +42,7 @@
       delete this.attributes[prop];
       return this;
     }
-  }
+  };
 
   // Nice sugar to create a new player
   Abacus.entity = {
@@ -55,7 +55,7 @@
         id: Abacus.guid(),
         cid: '',
         type: 'player',
-        achievements: [],
+        achievements: []
       }, options);
       
       this.entities.push( entity );
@@ -68,7 +68,7 @@
     set: function( id ) {
       // TODO
     },
-    delete: function( id ) {
+    destroy: function( id ) {
       // TODO
     }    
   };

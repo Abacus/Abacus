@@ -6,7 +6,7 @@
 				"src/abacus.timer.js",
 				"src/abacus.tween.js",
 				"src/abacus.animation.js",
-				"src/abacus.player.js"
+				"src/abacus.entity.js"
 			],
 			"prehint": true,
 			"posthint": true,
