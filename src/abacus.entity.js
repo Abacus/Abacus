@@ -63,14 +63,12 @@
       return entity;
     },
     get: function( id ) {
-      // TODO
-    },
-    set: function( id ) {
-      // TODO
-    },
-    destroy: function( id ) {
-      // TODO
-    }    
+      for( var i in this.entities ) {
+        if( this.entities[i].get('id') == id ){
+          return this.entities[i];
+        }
+      }
+    }
   };
 })( this, this.Abacus );
 

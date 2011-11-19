@@ -1,12 +1,16 @@
 module('Animation');
 
-test('identity api exists', 6, function() {
+test('entity api exists and works properly', 7, function() {
   ok( Abacus.entity, 'entity exists' );
   ok( Abacus.entity.entities, 'entity.entities exists' );
   ok( Abacus.entity.create, 'entity.create exists' );
   ok( Abacus.entity.get, 'entity.get exists' );
   ok( Abacus.entity.set, 'entity.set exists' );
   ok( Abacus.entity.destroy, 'entity.destroy exists' );
+  
+  var boaz = Abacus.entity.create({name: 'boaz', type: 'enemy', id: 'asd'})
+
+  equal( Abacus.entity.get('asd').get('name'), 'boaz', 'getting an entity by id, and accessing its custom name prop returns the right name val');
 });
 
 test('Abacus.entity.create constructs a player correctly', 18, function() {
