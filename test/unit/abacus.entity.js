@@ -1,13 +1,11 @@
 module('Animation');
 
-test('entity api exists and works properly', 7, function() {
+test('entity api exists and works properly', 5, function() {
   ok( Abacus.entity, 'entity exists' );
   ok( Abacus.entity.entities, 'entity.entities exists' );
   ok( Abacus.entity.create, 'entity.create exists' );
   ok( Abacus.entity.get, 'entity.get exists' );
-  ok( Abacus.entity.set, 'entity.set exists' );
-  ok( Abacus.entity.destroy, 'entity.destroy exists' );
-  
+    
   var boaz = Abacus.entity.create({name: 'boaz', type: 'enemy', id: 'asd'})
 
   equal( Abacus.entity.get('asd').get('name'), 'boaz', 'getting an entity by id, and accessing its custom name prop returns the right name val');
@@ -43,10 +41,10 @@ test('addAcheivemnt constructs an acheivement properly and stores it on a player
 
   boaz.addAchievement({ points: 10 })
 
-  ok( boaz.attributes.achievements[0], 'achievement exist' )
-  ok( boaz.attributes.achievements[0].date, 'achievement has date property' )
-  equal( boaz.attributes.achievements[0].id.length, 36, 'achievement has an id property that is 36 characters long' )
-  equal( boaz.attributes.achievements[0].points, 10, 'achievement has points property that has been properddly merged on' )
+  ok( boaz.get('achievements')[0], 'achievement exist' )
+  ok( boaz.get('achievements')[0].date, 'achievement has date property' )
+  equal( boaz.get('achievements')[0].id.length, 36, 'achievement has an id property that is 36 characters long' )
+  equal( boaz.get('achievements')[0].points, 10, 'achievement has points property that has been properddly merged on' )
  
 });
 

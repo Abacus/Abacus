@@ -71,4 +71,3 @@
     }
   };
 })( this, this.Abacus );
-
