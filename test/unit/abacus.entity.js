@@ -1,11 +1,15 @@
 module('Animation');
 
-test('identity api exists', 2, function() {
-  ok( Abacus.entity.create, 'addPlayer exists' );
-  ok( Abacus.entity, 'players exists' );
+test('identity api exists', 6, function() {
+  ok( Abacus.entity, 'entity exists' );
+  ok( Abacus.entity.entities, 'entity.entities exists' );
+  ok( Abacus.entity.create, 'entity.create exists' );
+  ok( Abacus.entity.get, 'entity.get exists' );
+  ok( Abacus.entity.set, 'entity.set exists' );
+  ok( Abacus.entity.delete, 'entity.delete exists' );
 });
 
-test('addPlayer constructs a player correctly', 4, function() {
+test('Abacus.entity.create constructs a player correctly', 4, function() {
   var boaz = Abacus.entity.create({name: 'boaz'});
 
   equal( typeof boaz.attributes.achievements, 'object', 'achievements exists on player and is an object' )

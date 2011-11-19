@@ -1,35 +1,18 @@
 (function( window, Abacus ) {
-  // Setup a players cache
-  // Eventually this should pull from something like
-  // Abacus.store.players
-
-  // Express the Achievement function which will be used by
-  // player.addAchievement to add an achievement to a player
-  function Achievement( options ) {
-    // Return the achievement
-    // wich is an extension of arbitrary options passed in and
-    // the props we need to manage achievements
-    return Abacus.extend({
-
-      id: Abacus.guid(),
-      date: Date.now()
-
-    }, options);
-  }
-
   // Express the Player function which is used by addPlayer
   // to add a player to Abacus
   function Entity() {};
   Entity.prototype = {
-    // The default name for the JSON `id` attribute is `"id"`. MongoDB and
-    // CouchDB users may want to set this to `"_id"`.
-    idAttribute : 'id',
-    addAchievement: function( options ) {
-
+    addAchievement : function( options ) {
       options = options || {};
-      
+
       // Create a new achievement
-      var achievement = new Achievement( options );
+      var achievement = Abacus.extend({
+
+        id: Abacus.guid(),
+        date: Date.now()
+
+      }, options);
 
       // Add the achievement to the current entity
       this.attributes.achievements.push( achievement );
@@ -50,8 +33,8 @@
       return this.attributes[prop] != null;
     },
     // Set a property on an entity's attributes
-    set : function( prop ) {
-      this.attributes[prop] = prop;
+    set : function( prop, value ) {
+      this.attributes[ prop ] = value;
       return this;
     },
     // Remove a property from the entity
@@ -75,16 +58,18 @@
         achievements: [],
       }, options);
       
+      this.entities.push( entity );
+      
       return entity;
     },
     get: function( id ) {
-      
+      // TODO
     },
     set: function( id ) {
-      
+      // TODO
     },
     delete: function( id ) {
-      
+      // TODO
     }    
   };
 })( this, this.Abacus );
