@@ -9,7 +9,7 @@ test('identity api exists', 6, function() {
   ok( Abacus.entity.destroy, 'entity.destroy exists' );
 });
 
-test('Abacus.entity.create constructs a player correctly', 17, function() {
+test('Abacus.entity.create constructs a player correctly', 18, function() {
   var boaz = Abacus.entity.create({name: 'boaz'});
 
   equal( typeof boaz.attributes.achievements, 'object', 'achievements exists on player and is an object' );
@@ -30,6 +30,8 @@ test('Abacus.entity.create constructs a player correctly', 17, function() {
   equal( boaz.get('foo'), 'bar', 'check that get foo returns bar' );
   equal( boaz.unset('foo').has('foo'), false, 'check that unset foo and then has foo is false' );
   equal( boaz.has('foo'), false, 'check that has foo is false' );
+  equal( boaz.toJSON().length, 102, 'check that toJSON returns a string with the expected length' );
+  
 });
 
 test('addAcheivemnt constructs an acheivement properly and stores it on a player', 4, function() {
