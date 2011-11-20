@@ -10,7 +10,6 @@
   Entity.prototype = {
     attributes: {
       id: Abacus.guid(),
-      cid: '',
       type: 'player',
       achievements: []
     },
