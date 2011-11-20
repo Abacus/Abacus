@@ -4,6 +4,7 @@
   
   // Express the Entity function
   function Entity() {}
+  
   // Setup the Entity prototype with methods for opperating
   // on entity instances
   Entity.prototype = {
@@ -59,7 +60,7 @@
     create: function( options ) {
       options = options || {};
       var entity = new Entity();
-      Abacus.extend( new Entity().attributes, options )
+      Abacus.extend( new Entity().attributes, options );
       entities[ entity.get('id') ] = entity;
       
       return entity;
