@@ -1,4 +1,6 @@
 (function( window, Abacus ) {
+  
+  var abacusCache = {};
 
   // Local cache for Abacus
   var abacusCache = {};
