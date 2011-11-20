@@ -1,9 +1,10 @@
 (function( window, Abacus ) {
-  // Express the Player function which is used by addPlayer
-  // to add a player to Abacus
+  // Express the Entity function
   function Entity() {}
+  // Setup the Entity prototype with methods for opperating
+  // on entity instances
   Entity.prototype = {
-    addAchievement : function( options ) {
+    addAchievement: function( options ) {
       options = options || {};
 
       // Create a new achievement
@@ -20,25 +21,25 @@
       return this;
     },
     // Serialize the entity
-    toJSON : function() {
+    toJSON: function() {
       return JSON.stringify( this.attributes );
     },
     // Get the value of an entity's property.
-    get : function( prop ) {
+    get: function( prop ) {
       return this.attributes[prop];
     },
     // Returns `true` if the property contains a value that is not null
     // or undefined.
-    has : function( prop ) {
+    has: function( prop ) {
       return this.attributes[prop] != null;
     },
     // Set a property on an entity's attributes
-    set : function( prop, value ) {
+    set: function( prop, value ) {
       this.attributes[ prop ] = value;
       return this;
     },
     // Remove a property from the entity
-    unset : function( prop ) {
+    unset: function( prop ) {
       delete this.attributes[prop];
       return this;
     }
