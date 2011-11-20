@@ -3,7 +3,8 @@
   // Local cache for Abacus
   var abacusCache = {};
 
-  // Abacus store API for storing arbitrary objects in localStorage
+  // Abacus store API for storing arbitrary objects
+  // Store defaults to using localStorage
   // Overwrite these methods to introduce your own persistance layer
   // TODO: introduce strategy for different Abacus entities to persist
   // at different endpoints
