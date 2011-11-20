@@ -1,7 +1,12 @@
 (function( window, Abacus ) {
   
+  // Local cache for Abacus
   var abacusCache = {};
 
+  // Abacus store API for storing arbitrary objects in localStorage
+  // Overwrite these methods to introduce your own persistance layer
+  // TODO: introduce strategy for different Abacus entities to persist
+  // at different endpoints
   Abacus.store = {
     create: function( id, value ){
       abacusCache[ id ] = value;
@@ -26,5 +31,4 @@
       return JSON.parse( window.localStorage.getItem( 'Abacus') );      
     }
   };
-
 })( this, this.Abacus );
