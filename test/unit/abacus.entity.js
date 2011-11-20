@@ -1,8 +1,7 @@
-module('Animation');
+module('Entity');
 
-test('entity api exists and works properly', 5, function() {
+test('entity api exists and works properly', 4, function() {
   ok( Abacus.entity, 'entity exists' );
-  ok( Abacus.entity.entities, 'entity.entities exists' );
   ok( Abacus.entity.create, 'entity.create exists' );
   ok( Abacus.entity.get, 'entity.get exists' );
     

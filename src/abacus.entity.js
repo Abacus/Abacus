@@ -1,9 +1,18 @@
 (function( window, Abacus ) {
+  
+  var entities = {};
+  
   // Express the Entity function
   function Entity() {}
   // Setup the Entity prototype with methods for opperating
   // on entity instances
   Entity.prototype = {
+    attributes: {
+      id: Abacus.guid(),
+      cid: '',
+      type: 'player',
+      achievements: []
+    },
     addAchievement: function( options ) {
       options = options || {};
 
@@ -47,28 +56,16 @@
 
   // Nice sugar to create a new player
   Abacus.entity = {
-    entities: [],
     create: function( options ) {
       options = options || {};
       var entity = new Entity();
-      
-      entity.attributes = Abacus.extend({
-        id: Abacus.guid(),
-        cid: '',
-        type: 'player',
-        achievements: []
-      }, options);
-      
-      this.entities.push( entity );
+      Abacus.extend( new Entity().attributes, options )
+      entities[ entity.get('id') ] = entity;
       
       return entity;
     },
     get: function( id ) {
-      for( var i in this.entities ) {
-        if( this.entities[i].get('id') == id ){
-          return this.entities[i];
-        }
-      }
+      return entities[ id ];
     }
   };
 })( this, this.Abacus );
