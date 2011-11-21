@@ -31,7 +31,7 @@ test('Abacus.entity.create constructs a player correctly', 18, function() {
   equal( boaz.get('foo'), 'bar', 'check that get foo returns bar' );
   equal( boaz.unset('foo').has('foo'), false, 'check that unset foo and then has foo is false' );
   equal( boaz.has('foo'), false, 'check that has foo is false' );
-  equal( boaz.toJSON().length, 102, 'check that toJSON returns a string with the expected length' );
+  equal( boaz.toJSON().length, 93, 'check that toJSON returns a string with the expected length' );
   
 });
 
