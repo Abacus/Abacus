@@ -33,7 +33,7 @@ test('Test that Abacus.event APIs call relevant callbacks on a global basis', 2,
 
 test('Test that Abacus.event APIs call relevant callbacks on an instance basis', 4, function() {
 
-  var obj = Abacus.extend( {}, Abacus.event)
+  var obj = Abacus.extend( {}, Abacus.event);
   obj.bind('a', function(){ obj[''] = 'a' });
   obj.bind('b', function(){ obj['testprop'] = 'b' });
   obj.bind('c', function(){ obj['testprop'] = 'c' });

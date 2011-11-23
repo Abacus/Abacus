@@ -33,8 +33,8 @@
       } else {
         var callbacks = this._callbacks[ name ];
         for (var i = 0, c = callbacks.length; i < c; i++ ) {
-          if ( callbacks[ i ] && callback === callbacks[ i ][ 0 ] ) {
-            callbacks[ i ] = null;
+          if ( callbacks[ i ] && callback === callbacks[ i ] ) {
+            delete callbacks[ i ];
             break;
           }
         }
