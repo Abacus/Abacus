@@ -9,12 +9,13 @@
       return this;
     },
     unbind: function ( name, callback ) {
-      var calls;
       if ( !name ) {
         // If no name is passed, unbind all callbacks
         this._callbacks = {};
       } else if ( !callback ) {
-        calls[ name ] = [];
+        // If a name is passed, but no callback,
+        // unbind all callbacks for that name
+        this._callbacks[ name ] = [];
       } else {
         var callbacks = _callbacks[ name ];
         for (var i = 0, c = callbacks.length; i < c; i++ ) {
@@ -28,8 +29,8 @@
     },
     trigger: function ( name ) {
       if ( this._callbacks[ name ] ) {
-        Abacus.forEach( this._callbacks[ name ], function ( ) {
-          this.apply(d, args || [] ) ;
+        this._callbacks[ name ].forEach(function( element, index, array ) {
+          element();
         });
       }
       return this;
