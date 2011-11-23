@@ -29,9 +29,16 @@ test('Test that Abacus.event APIs call relevant callbacks on a global basis', 2,
 });
 
 test('Test that Abacus.event APIs call relevant callbacks on an instance basis', 5, function() {
+<<<<<<< HEAD
   var myfn = function(){ obj['testpropthree'] = 'this shouldnt happen' },
     obj = Abacus.extend( {}, Abacus.event);
 
+=======
+
+  var myfn = function(){ obj['testpropthree'] = 'this shouldnt happen' },
+    obj = Abacus.extend( {}, Abacus.event);
+  
+>>>>>>> fdb3161465527c0f3b157e673727e8e2f89ff12e
   obj.bind('a', function(){ obj[''] = 'a' });
   obj.bind('b', function(){ obj['testprop'] = 'b' });
   obj.bind('c', function(){ obj['testprop'] = 'c' });
@@ -42,10 +49,20 @@ test('Test that Abacus.event APIs call relevant callbacks on an instance basis',
   equal( obj.trigger('b').testprop, 'b', 'Abacus.extend( {}, Abacus.event) bind and trigger works on two channels for this instance');
   equal( obj.trigger('c').testprop, 'c', 'Abacus.extend( {}, Abacus.event) bind and trigger works on three channels for this instance');
   equal( obj.unbind('d', myfn).trigger('d').testpropthree, undefined, 'Abacus.extend( {}, Abacus.event) unbind named function works');
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> fdb3161465527c0f3b157e673727e8e2f89ff12e
   obj.unbind('a')
   obj.bind('a', function(){ Abacus.event['testproptwo'] = 'b' });
   obj.trigger( 'a' );
 
   equal( obj.trigger('c').testproptwo, 'b', 'Abacus.extend( {}, Abacus.event).unbind, and rebind and trigger works' );
+<<<<<<< HEAD
+=======
+  
+  
+  
+>>>>>>> fdb3161465527c0f3b157e673727e8e2f89ff12e
 });
