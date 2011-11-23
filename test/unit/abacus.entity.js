@@ -1,50 +1,68 @@
 module('Entity');
 
-test('entity api exists and works properly', 4, function() {
-  ok( Abacus.entity, 'entity exists' );
-  ok( Abacus.entity.create, 'entity.create exists' );
-  ok( Abacus.entity.get, 'entity.get exists' );
-    
-  var boaz = Abacus.entity.create({name: 'boaz', type: 'enemy', id: 'asd'})
-
-  equal( Abacus.entity.get('asd').get('name'), 'boaz', 'getting an entity by id, and accessing its custom name prop returns the right name val');
+test('Abacus.entity() exists and is a function', 2, function() {
+  ok( Abacus.entity, 'Abacus.entity exists' );
+	equal( typeof Abacus.entity, 'function', 'Abacus.entity is a function' );
 });
 
-test('Abacus.entity.create constructs a player correctly', 18, function() {
-  var boaz = Abacus.entity.create({name: 'boaz'});
+test('Abacus.entity() creates entities', 4, function() {
 
-  equal( typeof boaz.attributes.achievements, 'object', 'achievements exists on player and is an object' );
-  equal( typeof boaz.addAchievement, 'function', 'addAchievements exists on player and is a function' );
-  equal( typeof boaz.get, 'function', 'get exists on player and is a function' );
-  equal( typeof boaz.has, 'function', 'has exists on player and is a function' );
-  equal( typeof boaz.set, 'function', 'set exists on player and is a function' );
-  equal( typeof boaz.toJSON, 'function', 'toJSON exists on player and is a function' );
-  equal( typeof boaz.unset, 'function', 'unset exists on player and is a function' );
-  equal( boaz.attributes.id.length, 36, 'id exists on player and is 36 characters long' );
-  ok( boaz.attributes.name, 'the name property was properly merged onto the player object' );
-  
-  equal( boaz.get('name'), 'boaz', 'Test get method to return correct value' );
-  equal( boaz.get('id').length, 36, 'test that get id returns a 36 char string' );
-  equal( boaz.has('name'), true, 'check that has method returns true for prop that is expected to exist' );
-  equal( boaz.set('foo', 'bar').get('foo'), 'bar', 'check that setting foo as bar and then getting foo returns bar' );
-  equal( boaz.has('foo'), true, 'check that has foo is true' );
-  equal( boaz.get('foo'), 'bar', 'check that get foo returns bar' );
-  equal( boaz.unset('foo').has('foo'), false, 'check that unset foo and then has foo is false' );
-  equal( boaz.has('foo'), false, 'check that has foo is false' );
-  equal( boaz.toJSON().length, 93, 'check that toJSON returns a string with the expected length' );
-  
+  var attributes = { name: 'player', type: 'enemy', id: 'asd' },
+			player = Abacus.entity(attributes);
+
+	ok( player, 'Abacus.entity({}) does not return null/undefined' );
+
+	Object.keys( attributes ).forEach(function( key ) {
+		equal( player.get( key ), attributes[ key ], 'Instance has correct value per key' );
+	});
 });
 
-test('addAcheivemnt constructs an acheivement properly and stores it on a player', 4, function() {
-  var boaz = Abacus.entity.create({name: 'boaz'});                                    
+test('Abacus.entity constructs a player correctly', 18, function() {
+  var player = Abacus.entity({ name: 'player' });
 
-  boaz.addAchievement({ points: 10 })
+  equal( typeof player.attributes.achievements, 'object', 'achievements exists on player and is an object' );
+  equal( typeof player.get, 'function', 'get exists on player and is a function' );
+  equal( typeof player.has, 'function', 'has exists on player and is a function' );
+  equal( typeof player.set, 'function', 'set exists on player and is a function' );
+  equal( typeof player.toJSON, 'function', 'toJSON exists on player and is a function' );
+  equal( typeof player.unset, 'function', 'unset exists on player and is a function' );
+  equal( player.attributes.id.length, 36, 'id exists on player and is 36 characters long' );
+  ok( player.attributes.name, 'the name property was properly merged onto the player object' );
 
-  ok( boaz.get('achievements')[0], 'achievement exist' )
-  ok( boaz.get('achievements')[0].date, 'achievement has date property' )
-  equal( boaz.get('achievements')[0].id.length, 36, 'achievement has an id property that is 36 characters long' )
-  equal( boaz.get('achievements')[0].points, 10, 'achievement has points property that has been properddly merged on' )
- 
+  equal( player.get('name'), 'player', 'Test get method to return correct value' );
+  equal( player.get('id').length, 36, 'test that get id returns a 36 char string' );
+  equal( player.has('name'), true, 'check that has method returns true for prop that is expected to exist' );
+  equal( player.set('foo', 'bar').get('foo'), 'bar', 'check that setting foo as bar and then getting foo returns bar' );
+  equal( player.has('foo'), true, 'check that has foo is true' );
+  equal( player.get('foo'), 'bar', 'check that get foo returns bar' );
+  equal( player.unset('foo').has('foo'), false, 'check that unset foo and then has foo is false' );
+  equal( player.has('foo'), false, 'check that has foo is false' );
+  equal( typeof player.toJSON(), 'string', 'check that toJSON returns a string' );
+
+	deepEqual( JSON.parse( player.toJSON() ), player.attributes, 'JSON roundstrip' );
 });
 
+test('Abacus.entity extended', 18, function() {
+  var player = Abacus.entity({ name: 'player' });
 
+  equal( typeof player.attributes.achievements, 'object', 'achievements exists on player and is an object' );
+  equal( typeof player.get, 'function', 'get exists on player and is a function' );
+  equal( typeof player.has, 'function', 'has exists on player and is a function' );
+  equal( typeof player.set, 'function', 'set exists on player and is a function' );
+  equal( typeof player.toJSON, 'function', 'toJSON exists on player and is a function' );
+  equal( typeof player.unset, 'function', 'unset exists on player and is a function' );
+  equal( player.attributes.id.length, 36, 'id exists on player and is 36 characters long' );
+  ok( player.attributes.name, 'the name property was properly merged onto the player object' );
+
+  equal( player.get('name'), 'player', 'Test get method to return correct value' );
+  equal( player.get('id').length, 36, 'test that get id returns a 36 char string' );
+  equal( player.has('name'), true, 'check that has method returns true for prop that is expected to exist' );
+  equal( player.set('foo', 'bar').get('foo'), 'bar', 'check that setting foo as bar and then getting foo returns bar' );
+  equal( player.has('foo'), true, 'check that has foo is true' );
+  equal( player.get('foo'), 'bar', 'check that get foo returns bar' );
+  equal( player.unset('foo').has('foo'), false, 'check that unset foo and then has foo is false' );
+  equal( player.has('foo'), false, 'check that has foo is false' );
+  equal( typeof player.toJSON(), 'string', 'check that toJSON returns a string' );
+
+	deepEqual( JSON.parse( player.toJSON() ), player.attributes, 'JSON roundstrip' );
+});
