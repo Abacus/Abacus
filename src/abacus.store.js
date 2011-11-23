@@ -15,12 +15,12 @@
       return this;
     },
     read: function( id ){
-      var abacusCache = JSON.parse( window.localStorage.getItem( 'Abacus') );      
+      var abacusCache = JSON.parse( window.localStorage.getItem( 'Abacus') );
       return abacusCache[ id ];
     },
     update: function( id, value ){
       Abacus.extend( abacusCache[ id ], value );
-      window.localStorage.setItem( 'Abacus', JSON.stringify( abacusCache ) );      
+      window.localStorage.setItem( 'Abacus', JSON.stringify( abacusCache ) );
       return this;
     },
     destroy: function( id ){
@@ -29,7 +29,7 @@
       return this;
     },
     readAll: function() {
-      return JSON.parse( window.localStorage.getItem( 'Abacus') );      
+      return JSON.parse( window.localStorage.getItem( 'Abacus') );
     }
   };
 })( this, this.Abacus );
