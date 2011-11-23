@@ -9,21 +9,21 @@
   // TODO: introduce strategy for different Abacus entities to persist
   // at different endpoints
   Abacus.store = {
-    create: function( id, value ){
+    create: function( id, value ) {
       abacusCache[ id ] = value;
       window.localStorage.setItem( 'Abacus', JSON.stringify( abacusCache ) );
       return this;
     },
-    read: function( id ){
+    read: function( id ) {
       var abacusCache = JSON.parse( window.localStorage.getItem( 'Abacus') );
       return abacusCache[ id ];
     },
-    update: function( id, value ){
+    update: function( id, value ) {
       Abacus.extend( abacusCache[ id ], value );
       window.localStorage.setItem( 'Abacus', JSON.stringify( abacusCache ) );
       return this;
     },
-    destroy: function( id ){
+    destroy: function( id ) {
       delete abacusCache[ id ];
       window.localStorage.setItem( 'Abacus', JSON.stringify( abacusCache ) );
       return this;
