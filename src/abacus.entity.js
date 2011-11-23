@@ -95,7 +95,7 @@
 
   // Removes all instances from cache
   Abacus.entity.flush = function() {
-    return entities = [];
+    entities = [];
   };
 
 })( this, this.Abacus );
