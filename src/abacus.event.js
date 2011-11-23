@@ -52,12 +52,15 @@
     
     // Trigger a named event on the current scope
     trigger: function( name ) {
+      var args = Array.prototype.slice.call(arguments, 1);
+      
       if ( this._callbacks[ name ] ) {
         this._callbacks[ name ].forEach(function( element, index, array ) {
-          element();
+          element.apply( this, args );
         });
       }
       return this;
     }
+    
   };
 })( this, this.Abacus  );

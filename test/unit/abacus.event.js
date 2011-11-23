@@ -28,8 +28,9 @@ test('Test that Abacus.event APIs call relevant callbacks on a global basis', 2,
   equal( Abacus.event.testproptwo, 'b', 'Abacus.event.unbind unbound the callbacks correctly' );
 });
 
-test('Test that Abacus.event APIs call relevant callbacks on an instance basis', 5, function() {
+test('Test that Abacus.event APIs call relevant callbacks on an instance basis', 6, function() {
   var myfn = function(){ obj['testpropthree'] = 'this shouldnt happen' },
+    myfn2 = function( arg ){ obj['testpropfour'] = arg },
     obj = Abacus.extend( {}, Abacus.event);
 
   obj.bind('a', function(){ obj[''] = 'a' });
@@ -37,6 +38,7 @@ test('Test that Abacus.event APIs call relevant callbacks on an instance basis',
   obj.bind('c', function(){ obj['testprop'] = 'c' });
   obj.bind('d', function(){ obj['testprop'] = 'd' });
   obj.bind('d', myfn);
+  obj.bind('e', myfn2);
 
   equal( obj.trigger('a').testprop, 'a', 'Abacus.extend( {}, Abacus.event) bind and trigger works on one channel for this instance');
   equal( obj.trigger('b').testprop, 'b', 'Abacus.extend( {}, Abacus.event) bind and trigger works on two channels for this instance');
@@ -48,4 +50,11 @@ test('Test that Abacus.event APIs call relevant callbacks on an instance basis',
   obj.trigger( 'a' );
 
   equal( obj.trigger('c').testproptwo, 'b', 'Abacus.extend( {}, Abacus.event).unbind, and rebind and trigger works' );
+
+  
+  
+  equal( obj.trigger('e', 'arg got passed').testpropfour, 'arg got passed', 'passing arguments to trigger calls them on the callback funcs' );
+  
+  
+  
 });
