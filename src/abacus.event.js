@@ -31,7 +31,7 @@
       // Otherwise run through all the callbacks for that name
       // and unbind the right one
       } else {
-        var callbacks = _callbacks[ name ];
+        var callbacks = this._callbacks[ name ];
         for (var i = 0, c = callbacks.length; i < c; i++ ) {
           if ( callbacks[ i ] && callback === callbacks[ i ][ 0 ] ) {
             callbacks[ i ] = null;
