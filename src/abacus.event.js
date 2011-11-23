@@ -42,7 +42,7 @@
       return this;
     },
     
-    // Trigger an event on the current scope
+    // Trigger a named event on the current scope
     trigger: function ( name ) {
       if ( this._callbacks[ name ] ) {
         this._callbacks[ name ].forEach(function( element, index, array ) {
