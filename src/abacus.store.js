@@ -5,34 +5,61 @@
   // Overwrite these methods to introduce your own persistance layer
   // TODO: introduce strategy for different Abacus entities to persist
   // at different endpoints
-  Abacus.store = function( id, value) {
-    this._id = 'Abacus';
-    this._cache = JSON.parse( window.localStorage.getItem( ( this.get ? this.get('id') : this._id ) ) ) || {};
-    
-    console.log( this._cache )
-    
-    // If there is an id and a value
-    // then we are setting
-    if ( id && value ) {
-      this._cache[ id ] = value;
+  Abacus.store = {
+    storageId: 'Abacus',
+    _cache: {},
+    save: function() {
+      // Make sure the cache is up to date
+      this._cache = JSON.parse( window.localStorage.getItem( this.storageId ) ) || {};
 
-    // If there is just an id then we are getting
-    } else if ( id ){      
-      return this._cache[ id ];
+      // If this is an entity
+      if ( this.get ) {
+        // Put the entity in the cache
+        this._cache[ this.get('id') ] = this.attributes;
+        
+      // Otherwise, we are being called from Abacus.store.save()
+      } else {
+        // Loop over all the entities and put them in the _cache
+        for( var i in Abacus.entity.entities ) {
+          this._cache[ Abacus.entity.entities[ i ].get('id') ] = Abacus.entity.entities[ i ].attributes;
+        }
+        
+      }
 
-    // Otherwise, we are reading all props
-    } else {
-      return JSON.parse( window.localStorage.getItem( ( this.get ? this.get('id') : this._id ) ) );
+      // Serialize the _cache and put it in local storage
+      window.localStorage.setItem( this.storageId, JSON.stringify( this._cache ) );
 
+    },
+    read: function() {
+      // Make sure the cache is up to date
+      this._cache = JSON.parse( window.localStorage.getItem( this.storageId ) ) || {};
+
+      // If this is an entity
+      if ( this.get ) {
+        // Return the entity's state
+        return this._cache[ this.get('id') ]
+
+      // Otherwise, we are being called from Abacus.store.read()
+      } else {
+        // Return the entire _cache
+        return this._cache;
+      }
+    },
+    destroy: function() {
+
+      // If this is an entity
+      if ( this.get ) {
+        // Delete the current entity from the cache
+        delete this._cache[ this._id() ];
+
+      // Otherwise, we are being called from Abacus.store.save()
+      } else {
+        // Empty the cache
+        this._cache = {};
+      }
+
+      window.localStorage.removeItem( this.storageId );
     }
-
-    window.localStorage.setItem( ( this.get ? this.get('id') : this._id ), JSON.stringify( this._cache ) );
-    return this;
-  };
-  
-  // Define a destroy method
-  Abacus.store.destroy = function( id ) {
-    delete this._cache[ id ];
   };
 
 })( this, this.Abacus );

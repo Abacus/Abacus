@@ -97,5 +97,7 @@
   Abacus.entity.flush = function() {
     entities = [];
   };
+  
+  Abacus.entity.entities = entities;
 
 })( this, this.Abacus );
