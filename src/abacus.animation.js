@@ -252,6 +252,16 @@
 
         // at end of layer?
         if ( nextFrame == null ) {
+          doTween(
+            lastFrame.value,
+            lastFrame.value,
+            lastFrame.tweenable,
+            lastFrame.keys,
+            target,
+            ( lastFrame.tween || this.tween || animation.tween ).type,
+            0
+          );
+
           return false;
         }
       }
