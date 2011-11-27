@@ -49,17 +49,16 @@
     }
   }
 
-  function testTweenable( value ) {
-    if ( typeof value == 'number' ) {
-      return true;
-    }
-
-    return cacheTweenable( value );
-  }
-
   function cacheTweenable( values ) {
     var tweenable = [],
         key, length;
+
+    function testTweenable( value ) {
+      if ( typeof value == 'number' ) {
+        return true;
+      }
+      return cacheTweenable( value );
+    }
 
     if ( Array.isArray( values ) || isTypedArray( values ) ) {
       for ( key = 0, length = values.length; key < length; key++ ) {

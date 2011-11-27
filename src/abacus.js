@@ -35,7 +35,7 @@
         val = obj[ i ];
 
         // If array item is an object (including arrays), derive new value by cloning
-        if ( typeof val === "object" ) {
+        if ( typeof val === 'object' ) {
           val = Abacus.clone( val );
         }
 
@@ -57,17 +57,14 @@
     return Object.create({}, (function( src ) {
 
       // Store reference to non-inherited properties,
-      // Initialize
-      var ownPropertyNames = Object.getOwnPropertyNames( src ),
-        properties = {};
+      var properties = {};
 
-      ownPropertyNames.forEach(function( name ) {
+      Object.getOwnPropertyNames( src ).forEach(function( name ) {
 
-        var descriptor = Object.getOwnPropertyDescriptor( src, name ),
-          tmp;
+        var descriptor = Object.getOwnPropertyDescriptor( src, name );
 
         // Recurse on properties whose value is an object or array
-        if ( typeof src[ name ] === "object" ) {
+        if ( typeof src[ name ] === 'object' ) {
           descriptor.value = Abacus.clone( src[ name ] );
         }
 
@@ -112,9 +109,9 @@
   // Abacus.prefix
   // This user agent's vendor prefix
   Abacus.prefix = (function( window ) {
-    return [ "webkit", "moz", "ms", "o" ].filter(function( val ) {
-      return val + "RequestAnimationFrame" in window;
-    })[ 0 ] || "";
+    return [ 'webkit', 'moz', 'ms', 'o' ].filter(function( val ) {
+      return val + 'RequestAnimationFrame' in window;
+    })[ 0 ] || '';
   })( window );
 
   // Expose global Abacus object
