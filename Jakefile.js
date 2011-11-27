@@ -48,8 +48,10 @@ var // Program References
 					evil: true,
 					forin: false,
 					maxerr: 100,
-					eqnull: true
-					// "curly": true,
+					eqnull: true,
+					curly: true,
+					browser: true
+          // onevar: true,
 					// "eqnull": true,
 					// "immed": true,
 					// "newcap": true,
@@ -198,7 +200,14 @@ function uglify( src ) {
 
 // Return deflated src input.
 function gzip( src ) {
-	return zlib.deflate( new Buffer( src ) );
+
+	if ( zlib.Deflate ) {
+		return zlib.gzip( src, function( err, buffer ) {
+			ok( "Compressed size: " + (buffer.length + "").yellow + " bytes gzipped (" + ( src.length + "" ).yellow + " bytes minified)." );
+		});
+	}
+
+	ok( "Compressed size: " + (zlib.deflate( src ).length + "").yellow + " bytes gzipped (" + ( src.length + "" ).yellow + " bytes minified)." );
 }
 
 // Jake Tasks
@@ -281,7 +290,7 @@ task( "min", function() {
 			min = intro + min;
 
 			if ( writeFile( minpath, min, false ) ) {
-				ok( "Compressed size: " + (gzip( min ).length + "").yellow + " bytes gzipped (" + ( min.length + "" ).yellow + " bytes minified)." );
+				gzip( min );
 			}
 		}
 	});
