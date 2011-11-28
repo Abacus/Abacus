@@ -85,8 +85,24 @@ test('layer.removeFrame', 8, function() {
   equal( obj.y, 4 );
 });
 
-test('layer sets values after hitting end of last frame', 0, function(){});
+test('layer sets values after hitting end of last frame', 2, function(){
+  var obj = {'x': 0, 'y': 0},
+      layer = Abacus.animation.layer({
+        tween: 'linear'
+      }).addFrame({
+        index: 0,
+        value: {'x': 1, 'y': 1}
+      });
+
+  layer.step({rate: 5}, obj, {sinceStart: 1000});
+
+  equal( obj.x, 1 );
+  equal( obj.y, 1 );
+});
+
 test('layer initializes values with first frame (aka non-zero index )', 0, function(){});
+
+test('animation.stop stops animation early', 0, function(){});
 
 test('layer.step updates values', 2, function() {
   var position = [0, 0],
