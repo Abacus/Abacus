@@ -258,8 +258,59 @@ asyncTest('animation stops timer after completion', 3, function() {
   }, 300);
 });
 
-asyncTest('deep object animation', 0, function() {
-  start();
+test('deep object animation', 2, function() {
+  var obj = {
+        x: 0,
+        ary: [ 0, 0, 0 ],
+        deep: {
+          ary: [{x: 0, y: 0}, {x: 0, y: 0}]
+        }
+      },
+      layer = Abacus.animation.layer({
+        tween: 'linear'
+      }).addFrame({
+        index: 0,
+        value: {
+          x: 0,
+          ary: [ 0, 0, 0 ],
+          deep: {
+            ary: [{}, {
+                x: 0, 
+                y: 0
+              }]
+          }
+        }
+      }).addFrame({
+        index: 10,
+        value: {
+          x: 6,
+          ary: [ 1, 2, 3 ],
+          deep: {
+            ary: [{}, {
+                x: 4, 
+                y: 5
+              }]
+          }
+        }
+      });
+  
+  layer.step({ rate: 5 }, obj, { sinceStart: 2000 });
+  
+  equal( obj.x, 6 );
+  
+  deepEqual( obj, {
+    x: 6,
+    ary: [ 1, 2, 3 ],
+    deep: {
+      ary: [{
+          x: 0,
+          y: 0
+        }, {
+          x: 4, 
+          y: 5
+        }]
+    }
+  });
 });
 
 test('layer works with typed arrays', 7, function() {
