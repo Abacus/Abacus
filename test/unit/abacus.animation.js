@@ -100,7 +100,20 @@ test('layer sets values after hitting end of last frame', 2, function(){
   equal( obj.y, 1 );
 });
 
-test('layer initializes values with first frame (aka non-zero index )', 0, function(){});
+test('layer does not set values before first frame (aka non-zero index )', 2, function(){
+  var obj = {'x': 0, 'y': 0},
+      layer = Abacus.animation.layer({
+        tween: 'linear'
+      }).addFrame({
+        index: 10,
+        value: {'x': 1, 'y': 1}
+      });
+
+  layer.step({rate: 5}, obj, {sinceStart: 1000});
+
+  notEqual( obj.x, 1 );
+  notEqual( obj.y, 1 );
+});
 
 test('animation.stop stops animation early', 0, function(){});
 
