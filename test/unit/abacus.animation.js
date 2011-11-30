@@ -115,7 +115,45 @@ test('layer does not set values before first frame (aka non-zero index )', 2, fu
   notEqual( obj.y, 1 );
 });
 
-test('animation.stop stops animation early', 0, function(){});
+asyncTest('animation.stop stops animation', 6, function(){
+  var obj = {'x': 0, 'y': 0},
+      animation = Abacus.animation({
+        rate: 50,
+        tween: 'linear'
+      }).addLayer(Abacus.animation.layer().addFrame({
+        index: 0,
+        value: {'x': 0, 'y': 0}
+      }).addFrame({
+        index: 10,
+        value: {'x': 1, 'y': 1}
+      })),
+      x,
+      y;
+
+  animation.start( obj );
+
+  setTimeout(function(){
+    animation.stop();
+
+    // not equal to the start of the animation
+    notEqual( obj.x, 0 );
+    notEqual( obj.y, 0 );
+
+    x = obj.x;
+    y = obj.y;
+
+    setTimeout(function(){
+      // not equal to the end of the animation
+      notEqual( obj.x, 1 );
+      notEqual( obj.y, 1 );
+
+      equal( obj.x, x );
+      equal( obj.y, y );
+
+      start();
+    }, 200);
+  }, 100);
+});
 
 test('layer.step updates values', 2, function() {
   var position = [0, 0],
@@ -218,6 +256,10 @@ asyncTest('animation stops timer after completion', 3, function() {
     }
     start();
   }, 300);
+});
+
+asyncTest('deep object animation', 0, function() {
+  start();
 });
 
 test('layer works with typed arrays', 7, function() {
