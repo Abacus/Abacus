@@ -294,6 +294,8 @@ test('deep object animation', 2, function() {
         }
       });
   
+  console.log( layer );
+  
   layer.step({ rate: 5 }, obj, { sinceStart: 2000 });
   
   equal( obj.x, 6 );
