@@ -61,28 +61,28 @@ test('layer.removeFrame', 8, function() {
   
   layer.step( {rate: 5}, obj, {sinceStart: 1000} );
   
-  equal( obj.x, 0.5 );
-  equal( obj.y, 0.5 );
+  equal( obj.x, 0.5, 'x value in between first two frames' );
+  equal( obj.y, 0.5, 'y value in between first two frames' );
   
   layer.removeFrame( 10 );
   
   layer.step( {rate: 5}, obj, {sinceStart: 1000} );
   
-  equal( obj.x, 1 );
-  equal( obj.y, 1 );
+  equal( obj.x, 1, 'x value in between first and third frames (after removal of second frame)' );
+  equal( obj.y, 1, 'y value in between first and third frames (after removal of second frame)' );
   
   layer.step( {rate: 5}, obj, {sinceStart: 8000} );
   
-  equal( obj.x, 8 );
-  equal( obj.y, 8 );
+  equal( obj.x, 8, 'x value at end of fourth frame' );
+  equal( obj.y, 8, 'y value at end of fourth frame' );
   
   layer.removeFrame( fourthFrame );
   
   layer.reset();
   layer.step( {rate: 5}, obj, {sinceStart: 8000} );
   
-  equal( obj.x, 4 );
-  equal( obj.y, 4 );
+  equal( obj.x, 4, 'x value at end of third frame (after removal of third)' );
+  equal( obj.y, 4, 'y value at end of third frame (after removal of third)' );
 });
 
 test('layer sets values after hitting end of last frame', 2, function(){
@@ -293,13 +293,11 @@ test('deep object animation', 2, function() {
           }
         }
       });
-  
-  console.log( layer );
-  
+
   layer.step({ rate: 5 }, obj, { sinceStart: 2000 });
-  
+
   equal( obj.x, 6 );
-  
+
   deepEqual( obj, {
     x: 6,
     ary: [ 1, 2, 3 ],
@@ -312,7 +310,7 @@ test('deep object animation', 2, function() {
           y: 5
         }]
     }
-  });
+  }, 'deep object animation set all appropriate values' );
 });
 
 test('layer works with typed arrays', 7, function() {
