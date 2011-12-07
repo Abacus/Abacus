@@ -5,6 +5,10 @@ Please see Dependancies, Documentation, Project goals, Target User, Roadmap, W3C
 
 If you are interested in contributing to Open Web Standards connected to games, make sure to join the W3C Games Community Group http://www.w3.org/community/games.
 
+## License
+
+CC0 Public Domain - http://creativecommons.org/publicdomain/zero/1.0/
+
 ## Dependencies
 ### One time setup for build process:
 * Node.js (installation: https://github.com/joyent/node/wiki/Installation)
