@@ -3,4 +3,4 @@
 	url = https://github.com/jquery/qunit.git
 [submodule "wiki"]
 	path = wiki
-	url = git@github.com:boazsender/Abacus.wiki.git
+	url = git@github.com:Abacus/Abacus.wiki.git
