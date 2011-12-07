@@ -32,6 +32,129 @@ test('animation() fails', 1, function() {
   }, 'animation() cannot be called without options object');
 });
 
+test('layer.removeFrame', 8, function() {
+  var obj = {'x': 0, 'y': 0},
+      layer = Abacus.animation.layer({
+        tween: 'linear'
+      }),
+      fourthFrame = Abacus.animation.frame({
+        index: 40,
+        value: {'x': 8, 'y': 8}
+      });
+  
+  layer.addFrame({
+    index: 0,
+    value: {'x': 0, 'y': 0}
+  });
+  
+  layer.addFrame({
+    index: 10,
+    value: {'x': 1, 'y': 1}
+  });
+  
+  layer.addFrame({
+    index: 20,
+    value: {'x': 4, 'y': 4}
+  });
+  
+  layer.addFrame( fourthFrame );
+  
+  layer.step( {rate: 5}, obj, {sinceStart: 1000} );
+  
+  equal( obj.x, 0.5, 'x value in between first two frames' );
+  equal( obj.y, 0.5, 'y value in between first two frames' );
+  
+  layer.removeFrame( 10 );
+  
+  layer.step( {rate: 5}, obj, {sinceStart: 1000} );
+  
+  equal( obj.x, 1, 'x value in between first and third frames (after removal of second frame)' );
+  equal( obj.y, 1, 'y value in between first and third frames (after removal of second frame)' );
+  
+  layer.step( {rate: 5}, obj, {sinceStart: 8000} );
+  
+  equal( obj.x, 8, 'x value at end of fourth frame' );
+  equal( obj.y, 8, 'y value at end of fourth frame' );
+  
+  layer.removeFrame( fourthFrame );
+  
+  layer.reset();
+  layer.step( {rate: 5}, obj, {sinceStart: 8000} );
+  
+  equal( obj.x, 4, 'x value at end of third frame (after removal of third)' );
+  equal( obj.y, 4, 'y value at end of third frame (after removal of third)' );
+});
+
+test('layer sets values after hitting end of last frame', 2, function(){
+  var obj = {'x': 0, 'y': 0},
+      layer = Abacus.animation.layer({
+        tween: 'linear'
+      }).addFrame({
+        index: 0,
+        value: {'x': 1, 'y': 1}
+      });
+
+  layer.step({rate: 5}, obj, {sinceStart: 1000});
+
+  equal( obj.x, 1 );
+  equal( obj.y, 1 );
+});
+
+test('layer does not set values before first frame (aka non-zero index )', 2, function(){
+  var obj = {'x': 0, 'y': 0},
+      layer = Abacus.animation.layer({
+        tween: 'linear'
+      }).addFrame({
+        index: 10,
+        value: {'x': 1, 'y': 1}
+      });
+
+  layer.step({rate: 5}, obj, {sinceStart: 1000});
+
+  notEqual( obj.x, 1 );
+  notEqual( obj.y, 1 );
+});
+
+asyncTest('animation.stop stops animation', 6, function(){
+  var obj = {'x': 0, 'y': 0},
+      animation = Abacus.animation({
+        rate: 50,
+        tween: 'linear'
+      }).addLayer(Abacus.animation.layer().addFrame({
+        index: 0,
+        value: {'x': 0, 'y': 0}
+      }).addFrame({
+        index: 10,
+        value: {'x': 1, 'y': 1}
+      })),
+      x,
+      y;
+
+  animation.start( obj );
+
+  setTimeout(function(){
+    animation.stop();
+
+    // not equal to the start of the animation
+    notEqual( obj.x, 0 );
+    notEqual( obj.y, 0 );
+
+    x = obj.x;
+    y = obj.y;
+
+    setTimeout(function(){
+      // not equal to the end of the animation
+      notEqual( obj.x, 1 );
+      notEqual( obj.y, 1 );
+
+      equal( obj.x, x );
+      equal( obj.y, y );
+
+      start();
+    }, 200);
+  }, 100);
+});
+
 test('layer.step updates values', 2, function() {
   var position = [0, 0],
       layer = Abacus.animation.layer({
@@ -133,6 +256,61 @@ asyncTest('animation stops timer after completion', 3, function() {
     }
     start();
   }, 300);
+});
+
+test('deep object animation', 2, function() {
+  var obj = {
+        x: 0,
+        ary: [ 0, 0, 0 ],
+        deep: {
+          ary: [{x: 0, y: 0}, {x: 0, y: 0}]
+        }
+      },
+      layer = Abacus.animation.layer({
+        tween: 'linear'
+      }).addFrame({
+        index: 0,
+        value: {
+          x: 0,
+          ary: [ 0, 0, 0 ],
+          deep: {
+            ary: [{}, {
+                x: 0, 
+                y: 0
+              }]
+          }
+        }
+      }).addFrame({
+        index: 10,
+        value: {
+          x: 6,
+          ary: [ 1, 2, 3 ],
+          deep: {
+            ary: [{}, {
+                x: 4, 
+                y: 5
+              }]
+          }
+        }
+      });
+
+  layer.step({ rate: 5 }, obj, { sinceStart: 2000 });
+
+  equal( obj.x, 6 );
+
+  deepEqual( obj, {
+    x: 6,
+    ary: [ 1, 2, 3 ],
+    deep: {
+      ary: [{
+          x: 0,
+          y: 0
+        }, {
+          x: 4, 
+          y: 5
+        }]
+    }
+  }, 'deep object animation set all appropriate values' );
 });
 
 test('layer works with typed arrays', 7, function() {

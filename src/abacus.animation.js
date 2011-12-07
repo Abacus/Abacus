@@ -87,7 +87,7 @@
     }
 
     for ( key = 0, length = keys.length; key < length; key++ ) {
-      keys.push( cacheKeys( values[ key ] , [] ) );
+      keys.push( cacheKeys( values[ keys[ key ] ] , [] ) );
     }
 
     return keys;
@@ -252,6 +252,16 @@
 
         // at end of layer?
         if ( nextFrame == null ) {
+          doTween(
+            lastFrame.value,
+            lastFrame.value,
+            lastFrame.tweenable,
+            lastFrame.keys,
+            target,
+            ( lastFrame.tween || this.tween || animation.tween ).type,
+            0
+          );
+
           return false;
         }
       }
