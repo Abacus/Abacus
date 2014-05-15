@@ -115,6 +115,52 @@ test('Abacus.extend( ... )', 12, function() {
   equal( typeof dest[ 'key23' ], 'function', 'dest[key23] is a function' );
 });
 
+test( "Abacus.forEach", 3, function() {
+
+  var count = 0,
+      nodelist = document.querySelectorAll( "div[id^='qunit-']" ),
+      array = [ 1, 2 ],
+      object = {
+        a: "1",
+        b: "2"
+      };
+
+  Abacus.forEach( nodelist, function() {
+    count++;
+  });
+
+  equal( count, nodelist.length, nodelist.length + " elements in NodeList" );
+  count = 0;
+
+  Abacus.forEach( array, function() {
+    count++;
+  });
+
+  equal( count, array.length, array.length + " items in Array" );
+  count = 0;
+
+  Abacus.forEach( object, function() {
+    count++;
+  });
+
+  equal( count, Abacus.sizeOf( object ), Abacus.sizeOf( object ) + " properties in object" );
+});
+
+test( "Abacus.sizeOf", 6, function() {
+
+  equal( typeof Abacus.sizeOf, "function", "Abacus.sizeOf() is a provided static function" );
+
+  equal( Abacus.sizeOf([ "a", "b", "c" ]), 3, "Abacus.sizeOf working with arrays" );
+
+  equal( Abacus.sizeOf([ ]), 0, "Abacus.sizeOf working with empty arrays" );
+
+  equal( Abacus.sizeOf({ a: 1, b: "test" }), 2, "Abacus.sizeOf working with objects" );
+
+  equal( Abacus.sizeOf({ }), 0, "Abacus.sizeOf working with empty objects" );
+
+  equal( Abacus.sizeOf(), 0, "Abacus.sizeOf safely handling no parameter being passed in" );
+});
+
 test('Abacus.noop()', 2, function() {
   equal( typeof Abacus.noop, 'function', 'Abacus.noop is a function' );
   equal( Abacus.noop(), undefined, 'Abacus.noop() returns undefined' );

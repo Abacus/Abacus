@@ -96,6 +96,50 @@
     return dest;
   };
 
+  // Lifted from rwaldron's implementation in Popcorn.js
+  // https://github.com/webmademovies/popcorn-js/blob/master/popcorn.js#L307
+  Abacus.forEach = function( obj, fn, context ) {
+
+    if ( !obj || !fn ) {
+      return {};
+    }
+
+    context = context || this;
+
+    var key, len;
+
+    // Use native whenever possible
+    if ( Array.prototype.forEach && obj.forEach === Array.prototype.forEach ) {
+      return obj.forEach( fn, context );
+    }
+
+    if ( toString.call( obj ) === "[object NodeList]" ) {
+      for ( key = 0, len = obj.length; key < len; key++ ) {
+        fn.call( context, obj[ key ], key, obj );
+      }
+      return obj;
+    }
+
+    for ( key in obj ) {
+      if ( hasOwn.call( obj, key ) ) {
+        fn.call( context, obj[ key ], key, obj );
+      }
+    }
+    return obj;
+  };
+
+  // Lifted from rwaldron's implementation in Popcorn.js
+  // https://github.com/webmademovies/popcorn-js/blob/master/popcorn.js#L367
+  Abacus.sizeOf = function( obj ) {
+    var size = 0;
+
+    for ( var prop in obj ) {
+      size++;
+    }
+
+    return size;
+  },
+
   // Abacus.noop
   // No operation function expression literal
   Abacus.noop = function() {};
