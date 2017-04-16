@@ -1,4 +1,4 @@
-#Abacus.js
+# Abacus.js
 Abacus is an Open Source HTML5 Game Framework. Abacus is currently in the early pre 0.1 stage of development. Take a look at the milestones to see our progress: https://github.com/Abacus/Abacus/issues/milestones
 
 Please see Dependancies, Documentation, Project goals, Target User, Roadmap, W3C API requests, Style Guide, Contributing Guide, and Target Browsers below.
